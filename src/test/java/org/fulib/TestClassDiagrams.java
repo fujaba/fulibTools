@@ -57,7 +57,6 @@ public class TestClassDiagrams
 
       // dump the class diagram
       ClassDiagrams.dumpPng(model);
-      ClassDiagrams.dumpPng(model, "../fulib/doc/images/SimpleClassDiag.png");
       // end_code_fragment:
    }
 }

@@ -21,7 +21,6 @@ Example:
 
       // dump the class diagram
       ClassDiagrams.dumpPng(model);
-      ClassDiagrams.dumpPng(model, "../fulib/doc/images/SimpleClassDiag.png");
  <!-- end_code_fragment: -->
 
 You find the class diagram at:

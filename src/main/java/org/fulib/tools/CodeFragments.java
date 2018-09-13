@@ -200,11 +200,12 @@ public class CodeFragments
 
             String fragmentText = fragmentMap.get(key);
 
-            if (fragmentText == null) fragmentText = "\n";
-
-            newContent.append(content.substring(lastEnd, end))
-                  .append(fragmentText);
-            lastEnd = endOfFragment;
+            if (fragmentText != null)
+            {
+               newContent.append(content.substring(lastEnd, end))
+                     .append(fragmentText);
+               lastEnd = endOfFragment;
+            }
          }
 
          if (lastEnd == 0) return;
