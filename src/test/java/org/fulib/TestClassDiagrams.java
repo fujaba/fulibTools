@@ -1,5 +1,7 @@
 package org.fulib;
 
+import org.fulib.builder.ClassBuilder;
+import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.tools.ClassDiagrams;
 
@@ -39,5 +41,22 @@ public class TestClassDiagrams
 
          assertThat(Files.exists(diagramPath), is(true));
       }
+   }
+
+   @Test
+   public void test4Readme()
+   {
+      // start_code_fragment: test4Readme
+      // build example model
+      ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.groupaccount");
+      ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
+      ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
+      university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
+
+      ClassModel model = mb.getClassModel();
+
+      // dump the class diagram
+      ClassDiagrams.dumpPng(model);
+      // end_code_fragment:
    }
 }
