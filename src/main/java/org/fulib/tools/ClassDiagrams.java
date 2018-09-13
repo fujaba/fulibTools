@@ -25,7 +25,23 @@ public class ClassDiagrams
       return new ClassDiagrams().doClassDiag(model);
    }
 
+   /**
+    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * @param model
+    */
+   public static String dumpPng(ClassModel model, String diagramFileName)
+   {
+      return new ClassDiagrams().doClassDiag(model, diagramFileName);
+   }
+
+
    public String doClassDiag(ClassModel model)
+   {
+      String diagramFileName = model.getPackageSrcFolder() + "/doc-files/classDiagram.png";
+      return doClassDiag(model, diagramFileName);
+   }
+
+   public String doClassDiag(ClassModel model, String diagramFileName)
    {
       try
       {
@@ -45,12 +61,9 @@ public class ClassDiagrams
          st.add("edges", edgesString);
          dotString = st.render();
 
-         String imageFileName = model.getPackageSrcFolder() + "/doc-files/classDiagram.png";
-         // System.out.println(dotString.toString());
-         System.out.println(new File(".").getAbsolutePath());
-         Graphviz.fromString(dotString.toString()).render(Format.PNG).toFile(new File(imageFileName));
+         Graphviz.fromString(dotString.toString()).render(Format.PNG).toFile(new File(diagramFileName));
 
-         return imageFileName;
+         return diagramFileName;
       }
       catch (IOException e)
       {

@@ -17,7 +17,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  * Example use:
  * <pre>
  * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".");
+               CodeFragments.updateCodeFragments(".", folder);
          <!-- end_code_fragment: -->
  * </pre>
  */
@@ -27,7 +27,7 @@ public class CodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".");
+               CodeFragments.updateCodeFragments(".", folder);
          
          
          
@@ -35,20 +35,19 @@ public class CodeFragments
          <!-- end_code_fragment: -->
     * </pre>
     */
-   public static Map<String, String> updateCodeFragments(String folder)
+   public static Map<String, String> updateCodeFragments(String... folderList)
    {
-      return new CodeFragments().doUpdateCodeFragments(folder);
+      return new CodeFragments().doUpdateCodeFragments(folderList);
    }
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
    private String phase = "read";
 
-   private Map<String, String> doUpdateCodeFragments(String folder)
+   private Map<String, String> doUpdateCodeFragments(String... folderList)
    {
       // collect code fragments from source files
       try
       {
-         Path path = Paths.get(folder);
          FileVisitor<Path> visitor = new FileVisitor<Path>()
          {
             @Override
@@ -78,11 +77,21 @@ public class CodeFragments
          };
 
          // fetch
-         Files.walkFileTree(path, visitor);
+         for (String folder : folderList)
+         {
+            Path path = Paths.get(folder);
+            if ( ! Files.exists(path)) continue;
+            Files.walkFileTree(path, visitor);
+         }
 
          // insert
          phase = "insert";
-         Files.walkFileTree(path, visitor);
+         for (String folder : folderList)
+         {
+            Path path = Paths.get(folder);
+            if ( ! Files.exists(path)) continue;
+            Files.walkFileTree(path, visitor);
+         }
       }
       catch (IOException e)
       {

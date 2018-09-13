@@ -9,7 +9,7 @@ Dump a class diagram from a ClassModel
 
 Example:
 
-<!-- insert_code_fragment: test4Readme -->
+<!-- insert_code_fragment: test4Readme.classmodel -->
 
       // build example model
       ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.groupaccount");
@@ -21,6 +21,7 @@ Example:
 
       // dump the class diagram
       ClassDiagrams.dumpPng(model);
+      ClassDiagrams.dumpPng(model, "../fulib/doc/images/SimpleClassDiag.png");
  <!-- end_code_fragment: -->
 
 You find the class diagram at:

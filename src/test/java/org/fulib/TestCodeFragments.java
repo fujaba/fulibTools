@@ -16,7 +16,7 @@ public class TestCodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".");
+               CodeFragments.updateCodeFragments(".", folder);
          <!-- end_code_fragment: -->
     * </pre>
     */
@@ -47,7 +47,7 @@ public class TestCodeFragments
          Map<String, String> fragmentMap =
 
                // start_code_fragment: CodeFragments.updateCodeFragments
-               CodeFragments.updateCodeFragments(folder);
+               CodeFragments.updateCodeFragments(".", folder);
          // end_code_fragment:
 
          assertThat(fragmentMap.size(), not(equalTo(0)));

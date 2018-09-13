@@ -46,7 +46,7 @@ public class TestClassDiagrams
    @Test
    public void test4Readme()
    {
-      // start_code_fragment: test4Readme
+      // start_code_fragment: test4Readme.classmodel
       // build example model
       ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.groupaccount");
       ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
@@ -57,6 +57,7 @@ public class TestClassDiagrams
 
       // dump the class diagram
       ClassDiagrams.dumpPng(model);
+      ClassDiagrams.dumpPng(model, "../fulib/doc/images/SimpleClassDiag.png");
       // end_code_fragment:
    }
 }
