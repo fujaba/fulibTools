@@ -17,7 +17,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  * Example use:
  * <pre>
  * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-         Map<String, String> fragmentMap = CodeFragments.updateCodeFragments(".");
+               CodeFragments.updateCodeFragments(".");
          <!-- end_code_fragment: -->
  * </pre>
  */
@@ -27,7 +27,7 @@ public class CodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-         Map<String, String> fragmentMap = CodeFragments.updateCodeFragments(".");
+               CodeFragments.updateCodeFragments(".");
          
          
          

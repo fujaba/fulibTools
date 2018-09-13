@@ -16,11 +16,7 @@ public class TestCodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-         Map<String, String> fragmentMap = CodeFragments.updateCodeFragments(".");
-         
-         
-         
-         
+               CodeFragments.updateCodeFragments(".");
          <!-- end_code_fragment: -->
     * </pre>
     */
@@ -30,13 +26,32 @@ public class TestCodeFragments
       String folder = ".";
       if (Files.exists(Paths.get(folder)))
       {
-         // start_code_fragment: CodeFragments.updateCodeFragments
-         Map<String, String> fragmentMap = CodeFragments.updateCodeFragments(".");
+         Map<String, String> fragmentMap =
+
+               // start_code_fragment: CodeFragments.updateCodeFragments
+         CodeFragments.updateCodeFragments(".");
          // end_code_fragment:
 
          String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragments.updateCodeFragments");
          assertThat(codeFragments_updateCodeFragments, notNullValue());
       }
-
    }
+
+
+   @Test
+   public void testFulibCodeFragments()
+   {
+      String folder = "../fulib";
+      if (Files.exists(Paths.get(folder)))
+      {
+         Map<String, String> fragmentMap =
+
+               // start_code_fragment: CodeFragments.updateCodeFragments
+               CodeFragments.updateCodeFragments(folder);
+         // end_code_fragment:
+
+         assertThat(fragmentMap.size(), not(equalTo(0)));
+      }
+   }
+
 }
