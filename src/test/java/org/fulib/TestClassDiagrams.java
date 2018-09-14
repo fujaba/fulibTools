@@ -3,7 +3,6 @@ package org.fulib;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
-import org.fulib.tools.ClassDiagrams;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
@@ -35,7 +34,7 @@ public class TestClassDiagrams
          model.setMainJavaDir(srcFolder);
 
          // generate class diagram
-         ClassDiagrams.dumpPng(model);
+         FulibTools.createClassDiagrams().dumpPng(model);
 
          Path diagramPath = packageFolder.resolve("doc-files/classDiagram.png");
 
@@ -47,16 +46,19 @@ public class TestClassDiagrams
    public void test4Readme()
    {
       // start_code_fragment: test4Readme.classmodel
-      // build example model
-      ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.groupaccount");
+      ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.studyright");
       ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
       ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
       university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
 
       ClassModel model = mb.getClassModel();
 
-      // dump the class diagram
-      ClassDiagrams.dumpPng(model);
+      // for usage in java doc
+      FulibTools.createClassDiagrams().dumpPng(model);
+      // is equivalent to
+      FulibTools.createClassDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
+      // for usage in e.g. readme.md
+      FulibTools.createClassDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
       // end_code_fragment:
    }
 }

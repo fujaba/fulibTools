@@ -1,5 +1,7 @@
 package org.fulib.tools;
 
+import org.fulib.FulibTools;
+
 import java.io.IOException;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -17,33 +19,17 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  * Example use:
  * <pre>
  * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".", folder);
-         <!-- end_code_fragment: -->
+               FulibTools.createCodeFragments().updateCodeFragments(".");
+ * <!-- end_code_fragment: -->
  * </pre>
  */
 public class CodeFragments
 {
-   /**
-    * Example use:
-    * <pre>
-    * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".", folder);
-         
-         
-         
-         
-         <!-- end_code_fragment: -->
-    * </pre>
-    */
-   public static Map<String, String> updateCodeFragments(String... folderList)
-   {
-      return new CodeFragments().doUpdateCodeFragments(folderList);
-   }
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
    private String phase = "read";
 
-   private Map<String, String> doUpdateCodeFragments(String... folderList)
+   public Map<String, String> updateCodeFragments(String... folderList)
    {
       // collect code fragments from source files
       try

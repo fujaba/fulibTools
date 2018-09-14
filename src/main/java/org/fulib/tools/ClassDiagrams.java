@@ -13,35 +13,45 @@ import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
 
+
+/**
+ * To create a class diagram png for usage in java doc comments,
+ * dumpPng(model) creates file .../doc-files/classDiagram.png within the model source folder
+ * <pre>
+ * <!-- insert_code_fragment: test4Readme.classmodel-->
+      ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.studyright");
+      ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
+      ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
+      university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
+
+      ClassModel model = mb.getClassModel();
+
+      // for usage in java doc
+      FulibTools.createClassDiagrams().dumpPng(model);
+      // is equivalent to
+      FulibTools.createClassDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
+      // for usage in e.g. readme.md
+      FulibTools.createClassDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
+ * <!-- end_code_fragment: -->
+ * </pre>
+ */
 public class ClassDiagrams
 {
-
    /**
     * create a class diagram png in modelFolder/doc-files/classDiagram.png
     * @param model
     */
-   public static String dumpPng(ClassModel model)
-   {
-      return new ClassDiagrams().doClassDiag(model);
-   }
-
-   /**
-    * create a class diagram png in modelFolder/doc-files/classDiagram.png
-    * @param model
-    */
-   public static String dumpPng(ClassModel model, String diagramFileName)
-   {
-      return new ClassDiagrams().doClassDiag(model, diagramFileName);
-   }
-
-
-   public String doClassDiag(ClassModel model)
+   public String dumpPng(ClassModel model)
    {
       String diagramFileName = model.getPackageSrcFolder() + "/doc-files/classDiagram.png";
-      return doClassDiag(model, diagramFileName);
+      return dumpPng(model, diagramFileName);
    }
 
-   public String doClassDiag(ClassModel model, String diagramFileName)
+   /**
+    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * @param model
+    */
+   public String dumpPng(ClassModel model, String diagramFileName)
    {
       try
       {

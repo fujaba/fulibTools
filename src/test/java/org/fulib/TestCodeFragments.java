@@ -1,6 +1,5 @@
 package org.fulib;
 
-import org.fulib.tools.CodeFragments;
 import org.junit.Test;
 
 import java.nio.file.Files;
@@ -16,7 +15,7 @@ public class TestCodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               CodeFragments.updateCodeFragments(".", folder);
+               FulibTools.createCodeFragments().updateCodeFragments(".");
          <!-- end_code_fragment: -->
     * </pre>
     */
@@ -29,7 +28,7 @@ public class TestCodeFragments
          Map<String, String> fragmentMap =
 
                // start_code_fragment: CodeFragments.updateCodeFragments
-         CodeFragments.updateCodeFragments(".");
+               FulibTools.createCodeFragments().updateCodeFragments(".");
          // end_code_fragment:
 
          String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragments.updateCodeFragments");
@@ -45,10 +44,7 @@ public class TestCodeFragments
       if (Files.exists(Paths.get(folder)))
       {
          Map<String, String> fragmentMap =
-
-               // start_code_fragment: CodeFragments.updateCodeFragments
-               CodeFragments.updateCodeFragments(".", folder);
-         // end_code_fragment:
+               FulibTools.createCodeFragments().updateCodeFragments(".", folder);
 
          assertThat(fragmentMap.size(), not(equalTo(0)));
       }
