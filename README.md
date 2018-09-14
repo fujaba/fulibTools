@@ -11,7 +11,7 @@ Example:
 
 <!-- insert_code_fragment: test4Readme.classmodel -->
 
-      ClassModelBuilder mb = ClassModelBuilder.get("org.fulib.studyright");
+      ClassModelBuilder mb = Fulib.createClassModelBuilder("org.fulib.studyright");
       ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
       ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
       university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);

@@ -106,7 +106,10 @@ public class CodeFragments
    {
       String fileName = file.toString();
 
-      if ( ! (fileName.endsWith(".java") || fileName.endsWith(".md"))) return;
+      if ( ! (fileName.endsWith(".java")
+            || fileName.endsWith(".md")
+            || fileName.endsWith("build.gradle")))
+         return;
 
       try
       {
