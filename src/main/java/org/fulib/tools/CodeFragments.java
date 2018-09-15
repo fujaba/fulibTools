@@ -19,7 +19,7 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  * Example use:
  * <pre>
  * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               FulibTools.createCodeFragments().updateCodeFragments(".");
+               FulibTools.codeFragments().updateCodeFragments(".");
  * <!-- end_code_fragment: -->
  * </pre>
  */

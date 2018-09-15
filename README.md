@@ -11,7 +11,7 @@ Example:
 
 <!-- insert_code_fragment: test4Readme.classmodel -->
 
-      ClassModelBuilder mb = Fulib.createClassModelBuilder("org.fulib.studyright");
+      ClassModelBuilder mb = Fulib.classModelBuilder("org.fulib.studyright");
       ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
       ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
       university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
@@ -19,11 +19,11 @@ Example:
       ClassModel model = mb.getClassModel();
 
       // for usage in java doc
-      FulibTools.createClassDiagrams().dumpPng(model);
+      FulibTools.classDiagrams().dumpPng(model);
       // is equivalent to
-      FulibTools.createClassDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
+      FulibTools.classDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
       // for usage in e.g. readme.md
-      FulibTools.createClassDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
+      FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
  <!-- end_code_fragment: -->
 
 You find the class diagram at:
@@ -98,6 +98,6 @@ Or in e.g. Readme.md insert:
 
 Update the code fragements by running e.g.:
 <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               FulibTools.createCodeFragments().updateCodeFragments(".");
+               FulibTools.codeFragments().updateCodeFragments(".");
 <!-- end_code_fragment: -->
 

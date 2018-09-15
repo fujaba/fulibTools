@@ -15,7 +15,7 @@ public class TestCodeFragments
     * Example use:
     * <pre>
     * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               FulibTools.createCodeFragments().updateCodeFragments(".");
+               FulibTools.codeFragments().updateCodeFragments(".");
          <!-- end_code_fragment: -->
     * </pre>
     */
@@ -28,7 +28,7 @@ public class TestCodeFragments
          Map<String, String> fragmentMap =
 
                // start_code_fragment: CodeFragments.updateCodeFragments
-               FulibTools.createCodeFragments().updateCodeFragments(".");
+               FulibTools.codeFragments().updateCodeFragments(".");
          // end_code_fragment:
 
          String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragments.updateCodeFragments");
@@ -44,7 +44,7 @@ public class TestCodeFragments
       if (Files.exists(Paths.get(folder)))
       {
          Map<String, String> fragmentMap =
-               FulibTools.createCodeFragments().updateCodeFragments(".", folder);
+               FulibTools.codeFragments().updateCodeFragments(".", folder);
 
          assertThat(fragmentMap.size(), not(equalTo(0)));
       }
