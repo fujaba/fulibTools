@@ -48,11 +48,10 @@ uploadArchives {
 
       pom.project {
         name 'fulibTools'
-        packaging 'jar' 
+        packaging 'jar'
         artifactId archivesBaseName
         version version
-        description '
-FulibTools provides some additional features like class diagrams and object diagrams to the Fulib code generator. These additional features require some large dependencies and as not every user benefits from them, we seperated these additional features from Fulib into FulibTools.'
+        description 'FulibTools provides some additional features like class diagrams and object diagrams to the Fulib code generator. These additional features require some large dependencies and as not every user benefits from them, we seperated these additional features from Fulib into FulibTools.'
         url 'http://fulib.org'
 
         scm {
