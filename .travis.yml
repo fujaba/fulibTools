@@ -5,7 +5,7 @@ jdk:
 script:
 - "./gradlew test"
 after_success:
-- "./.travis/travis-deploy.sh"
+- "./travis-deploy.sh"
 env:
   global:
   - secure: LQ1tKVXH8YEfhRx1Ow0l7U+7jSnf8j70AViqkOjCwKO3eOHMifWAPColSaIszxRoNGApuniH7PcPDReUy7q5x8ZRxxTNdMqZHoteGzJY0N3Rv8AS18CfXsWvdfV5fBmvdFHvY8iAVf/6e4ru9MT9vEz4gkFU1ICdiIC1rtMGWoVrgf0mpC1SUTsRr/vwbV+itgPCdL59JYIyD/QTq0TtTrDHcAtj3CEnr2+Q9YDMEYtrCLzvKpr9DEy0wn574Y5oZMK5lSxDNb8gBLl4HbpTOyDnIZh4ZU/CPtozr5j55yjXfpEF6ksjBY5hg8yyOI69kB4TmK1Rr6/Ovf5dpX6vli29qXTIZsfT+LFAlrx5nQMblv+1pDMGHRqZgwWNWIXIO2HEOSEOcjodtLPsP0cizahuvO2A3RmVH0MXA/CHzHmAsPnyZ5dGSzmBwo0s/iQfza0FWVjT+tzHPxDDbiI8LI34dnR0gyowYa1cp182p9AsCcwz6QCkD+uxi70zwy6YbLPs02wqrlFYnptciOj8fQNvVWRAGec4Kr5y8JTTbtzdTtHBICotQ7U3pAOjuhdwCtYrjpUgUdTxLaF2q7+Hhr0wZGXVzcBmRFZjiJTdVdcepiiQwcroM/AO6iRerrs+hAdyE7tA665mrAmPxI7y3/qkoy3F1reHYzFyUW7qZms=
