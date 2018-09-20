@@ -1,9 +1,21 @@
-plugins {
-    id 'java'
+// add the build script
+buildscript {
+  repositories {
+    maven {
+      url 'https://plugins.gradle.org/m2/'
+    }
+  }
+  dependencies {
+    classpath 'net.researchgate:gradle-release:2.6.0'
+  }
 }
 
-group 'org.fulib'
-version '1.0'
+//declare the release plugin
+apply plugin: 'net.researchgate.release'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply from: 'gradle/mavencentral.gradle'
+
 
 sourceCompatibility = 1.8
 
