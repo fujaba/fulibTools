@@ -1,6 +1,7 @@
 package org.fulib;
 
 import org.fulib.tools.ClassDiagrams;
+import org.fulib.tools.ObjectDiagrams;
 import org.fulib.tools.CodeFragments;
 
 public class FulibTools
@@ -31,6 +32,11 @@ public class FulibTools
    public static ClassDiagrams classDiagrams()
    {
       return new ClassDiagrams();
+   }
+
+   public static ObjectDiagrams objectDiagrams()
+   {
+      return new ObjectDiagrams();
    }
 
 
