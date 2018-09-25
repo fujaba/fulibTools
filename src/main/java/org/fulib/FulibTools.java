@@ -3,6 +3,7 @@ package org.fulib;
 import org.fulib.tools.ClassDiagrams;
 import org.fulib.tools.ObjectDiagrams;
 import org.fulib.tools.CodeFragments;
+import org.fulib.tools.Tables;
 
 public class FulibTools
 {
@@ -34,6 +35,16 @@ public class FulibTools
       return new ClassDiagrams();
    }
 
+   /**
+    * Create object diagrams.
+    * <pre>
+    * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
+    FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+    * <!-- end_code_fragment: -->
+    * </pre>
+    * <img src="tools/doc-files/studyRightObjects.png">
+    * @return the object diagram tool
+    */
    public static ObjectDiagrams objectDiagrams()
    {
       return new ObjectDiagrams();
@@ -51,6 +62,15 @@ public class FulibTools
    public static CodeFragments codeFragments()
    {
       return new CodeFragments();
+   }
+
+   /**
+    * Table tool to generate html tables or line charts from fulib tables
+    * @return a table tool
+    */
+   public static Tables tables()
+   {
+      return new Tables();
    }
 
 }

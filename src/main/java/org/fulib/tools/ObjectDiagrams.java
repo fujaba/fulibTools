@@ -19,31 +19,22 @@ import java.util.*;
 
 
 /**
- * To create a class diagram png for usage in java doc comments,
- * dumpPng(model) creates file .../doc-files/classDiagram.png within the model source folder
+ * Create object diagrams.
  * <pre>
- * <!-- insert_code_fragment: test4Readme.classmodel-->
-      ClassModelBuilder mb = Fulib.classModelBuilder("org.fulib.studyright");
-      ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
-      ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
-      university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
-
-      ClassModel model = mb.getClassModel();
-
-      // for usage in java doc
-      FulibTools.classDiagrams().dumpPng(model);
-      // is equivalent to
-      FulibTools.classDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
-      // for usage in e.g. readme.md
-      FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
+ * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
+ FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
  * <!-- end_code_fragment: -->
  * </pre>
+ * Example: <br>
+ * <img src="doc-files/studyRightObjects.png" width="343">
  */
 public class ObjectDiagrams
 {
    private LinkedHashMap<Object,String> diagramNames = new LinkedHashMap<>();
    /**
-    * create an object diagram png in tmp/TheFirstObjectsClass.1.png
+    * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
+    * Example: <br>
+    * <img src="doc-files/studyRightObjects.png" width="343">
     * @param objectList
     */
    public String dumpPng(Object... objectList)
@@ -68,9 +59,17 @@ public class ObjectDiagrams
    }
 
    /**
-    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * Create object diagrams.
+    * <pre>
+    * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
+    FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+    * <!-- end_code_fragment: -->
+    * </pre>
+    * Example: <br>
+    * <img src="doc-files/studyRightObjects.png" width="343">
     * @param diagramFileName
     * @param objectList
+    * @return file name
     */
    public String dumpPng(String diagramFileName, Object... objectList)
    {
