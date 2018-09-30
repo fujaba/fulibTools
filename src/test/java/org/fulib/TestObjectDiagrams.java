@@ -3,6 +3,7 @@ package org.fulib;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
+import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 
 import java.io.IOException;

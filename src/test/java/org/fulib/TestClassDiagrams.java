@@ -6,6 +6,8 @@ import org.fulib.classmodel.ClassModel;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
+
+import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 
 import java.io.IOException;

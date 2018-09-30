@@ -3,14 +3,14 @@ package org.fulib.tools;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import org.fulib.StrUtil;
-import org.fulib.YamlIdMap;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.AssocRole;
 import org.fulib.classmodel.Attribute;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
-import org.fulib.util.Reflector;
-import org.fulib.util.ReflectorMap;
+import org.fulib.yaml.Reflector;
+import org.fulib.yaml.ReflectorMap;
+import org.fulib.yaml.YamlIdMap;
 import org.stringtemplate.v4.ST;
 
 import java.io.File;
