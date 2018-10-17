@@ -4,12 +4,16 @@ import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.yaml.YamlIdMap;
+import org.fulib.yaml.YamlObject;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -17,30 +21,22 @@ import static org.junit.Assert.assertThat;
 public class TestObjectDiagrams
 {
    @Test
-   public void testObjectDiagrams() throws IOException
+   public void testObjectDiagrams() throws IOException, URISyntaxException
    {
-       // load model
-      String packagName = ClassModel.class.getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packagName);
+      URL url = ClassLoader.getSystemResource("initStudentsSubscribeToModeling.yaml");
+      Path initData = Paths.get(url.toURI());
+      byte[] bytes = Files.readAllBytes(initData);
+      String yamlString = new String(bytes);
 
-      String srcFolder = "../fulib/src/main/java/";
-      Path packageFolder = Paths.get(srcFolder + packagName.replaceAll("\\.", "/"));
-      Path yamlPath = packageFolder.resolve("classModel.yaml");
-      if (Files.exists(yamlPath))
-      {
-         byte[] bytes = Files.readAllBytes(yamlPath);
-         String yamlString = new String(bytes);
-         ClassModel model = (ClassModel) idMap.decode(yamlString);
+      YamlIdMap idMap = new YamlIdMap();
 
-         model.setMainJavaDir(srcFolder);
+      Object root = idMap.decode(yamlString);
 
-         // generate class diagram
-         FulibTools.objectDiagrams().dumpPng(model);
+      YamlObject alice = (YamlObject) root;
 
-         Path diagramPath = Paths.get("tmp/ClassModel.1.png");
+      FulibTools.objectDiagrams().dumpPng(root);
 
-         assertThat(Files.exists(diagramPath), is(true));
-      }
+      System.out.println(alice);
    }
 
 

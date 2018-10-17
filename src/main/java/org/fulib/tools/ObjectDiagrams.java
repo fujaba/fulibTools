@@ -11,6 +11,7 @@ import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.Reflector;
 import org.fulib.yaml.ReflectorMap;
 import org.fulib.yaml.YamlIdMap;
+import org.fulib.yaml.YamlObject;
 import org.stringtemplate.v4.ST;
 
 import java.io.File;
@@ -153,6 +154,16 @@ public class ObjectDiagrams
 
          String className = obj.getClass().getSimpleName();
 
+         if (obj instanceof YamlObject)
+         {
+            YamlObject yamlObj = (YamlObject) obj;
+            Object type = yamlObj.getMap().get("type");
+            if (type != null)
+            {
+               className = type.toString();
+            }
+         }
+
 
          buf.append(key).append(" " +
                "[\n" +
@@ -166,10 +177,13 @@ public class ObjectDiagrams
                      "       <tr><td>");
 
          // attrs
-         Reflector creator = reflectorMap.getReflector(className);
+         Reflector creator = reflectorMap.getReflector(obj);
 
          for (String prop : creator.getProperties())
          {
+            if (obj instanceof YamlObject && ".id".equals(prop)) continue;
+            if (obj instanceof YamlObject && "type".equals(prop)) continue;
+
             Object value = creator.getValue(obj, prop);
 
             if (value == null)

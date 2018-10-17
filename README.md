@@ -101,3 +101,18 @@ Update the code fragements by running e.g.:
                FulibTools.codeFragments().updateCodeFragments(".");
 <!-- end_code_fragment: -->
 
+
+### Gradle
+
+<pre>
+repositories {
+    mavenCentral()
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+</pre>
+
+<pre>
+dependencies {
+    testCompile 'org.fulib:fulibTools:1.0.+'
+}
+</pre>

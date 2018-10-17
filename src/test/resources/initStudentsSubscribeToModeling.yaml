@@ -1,0 +1,26 @@
+
+- Alice: .Map
+  type: UniStudent
+  studentId: m4242
+  majorSubject: CS
+  enrollments: enrol1
+
+- CS: .Map
+  type: Program
+  courses: math modeling
+
+- math: .Map
+  type: Course
+
+- modeling: .Map
+  type: Course
+
+- modelingWT1819Exam: .Map
+  type: Exam
+  topic: modeling
+
+- enrol1: .Map
+  type: Enrollment
+  exam: modelingWT1819Exam
+  result: open
+
