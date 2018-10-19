@@ -53,6 +53,21 @@ public class ClassDiagrams
     */
    public String dumpPng(ClassModel model, String diagramFileName)
    {
+      return dump(model, diagramFileName, Format.PNG);
+   }
+
+   /**
+    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * @param model
+    */
+   public String dumpSVG(ClassModel model, String diagramFileName)
+   {
+      return dump(model, diagramFileName, Format.SVG);
+   }
+
+
+   public String dump(ClassModel model, String diagramFileName, Format format)
+   {
       try
       {
          String dotString = "" +
@@ -71,7 +86,7 @@ public class ClassDiagrams
          st.add("edges", edgesString);
          dotString = st.render();
 
-         Graphviz.fromString(dotString.toString()).render(Format.PNG).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString.toString()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }

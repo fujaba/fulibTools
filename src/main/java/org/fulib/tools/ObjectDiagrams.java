@@ -32,6 +32,8 @@ import java.util.*;
 public class ObjectDiagrams
 {
    private LinkedHashMap<Object,String> diagramNames = new LinkedHashMap<>();
+
+
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
     * Example: <br>
@@ -53,11 +55,13 @@ public class ObjectDiagrams
       return dumpPng(diagramFileName, objectList);
    }
 
+
    private String lastDotSplit(String name)
    {
       String[] split = name.split("\\.");
       return split[split.length-1];
    }
+
 
    /**
     * Create object diagrams.
@@ -73,6 +77,31 @@ public class ObjectDiagrams
     * @return file name
     */
    public String dumpPng(String diagramFileName, Object... objectList)
+   {
+      return dump(Format.PNG, diagramFileName, objectList);
+   }
+
+
+   /**
+    * Create object diagrams.
+    * <pre>
+    * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
+    FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+    * <!-- end_code_fragment: -->
+    * </pre>
+    * Example: <br>
+    * <img src="doc-files/studyRightObjects.png" width="343">
+    * @param diagramFileName
+    * @param objectList
+    * @return file name
+    */
+   public String dumpSVG(String diagramFileName, Object... objectList)
+   {
+      return dump(Format.SVG_STANDALONE, diagramFileName, objectList);
+   }
+
+
+   private String dump(Format format, String diagramFileName, Object... objectList)
    {
       try
       {
@@ -103,7 +132,7 @@ public class ObjectDiagrams
          st.add("edges", edgesString);
          dotString = st.render();
 
-         Graphviz.fromString(dotString.toString()).render(Format.PNG).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString.toString()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }
