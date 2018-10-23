@@ -168,7 +168,9 @@ public class ClassDiagrams
 
          for (Attribute key : clazz.getAttributes())
          {
-            buf.append(key).append("<br  align='left'/>");
+            buf.append(key.getName())
+                  .append(" :").append(key.getType())
+                  .append("<br  align='left'/>");
          }
 
          buf.append("</td></tr>\n" +
