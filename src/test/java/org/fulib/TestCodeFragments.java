@@ -26,7 +26,6 @@ public class TestCodeFragments
       if (Files.exists(Paths.get(folder)))
       {
          Map<String, String> fragmentMap =
-
                // start_code_fragment: CodeFragments.updateCodeFragments
                FulibTools.codeFragments().updateCodeFragments(".");
          // end_code_fragment:

@@ -48,12 +48,22 @@ public class TestClassDiagrams
    public void test4Readme()
    {
       // start_code_fragment: test4Readme.classmodel
-      ClassModelBuilder mb = Fulib.classModelBuilder("org.fulib.studyright");
-      ClassBuilder university = mb.buildClass("University").buildAttribute("name", mb.STRING);
-      ClassBuilder student = mb.buildClass("Student").buildAttribute("studentId", mb.STRING);
-      university.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
+      ClassModelBuilder mb = Fulib.classModelBuilder("de.uniks.studyright");
+      ClassBuilder uni = mb.buildClass("University")
+            .buildAttribute("name", mb.STRING);
+      ClassBuilder student = mb.buildClass("Student")
+            .buildAttribute("name", mb.STRING)
+            .buildAttribute("studentId", mb.STRING)
+            .buildAttribute("matNo", mb.INT);
+      uni.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
+      ClassBuilder room = mb.buildClass("Room")
+            .buildAttribute("roomNo", mb.STRING);
+      uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
+            .setAggregation();
+      room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
 
       ClassModel model = mb.getClassModel();
+      // end_code_fragment:
 
       // for usage in java doc
       FulibTools.classDiagrams().dumpPng(model);
@@ -61,6 +71,8 @@ public class TestClassDiagrams
       FulibTools.classDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
       // for usage in e.g. readme.md
       FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
-      // end_code_fragment:
+
+      FulibTools.classDiagrams().dumpPng(model, "../fulib/doc/images/SimpleClassDiagram.png");
+
    }
 }
