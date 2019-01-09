@@ -27,6 +27,12 @@ public class CodeFragments
 {
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
+
+   public LinkedHashMap<String, String> getFragmentMap()
+   {
+      return fragmentMap;
+   }
+
    private String phase = "read";
 
    public Map<String, String> updateCodeFragments(String... folderList)
