@@ -2,6 +2,7 @@ package org.fulib.tools;
 
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import org.apache.commons.text.StringEscapeUtils;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.AssocRole;
 import org.fulib.classmodel.Attribute;
@@ -171,7 +172,7 @@ public class ClassDiagrams
          for (Attribute key : clazz.getAttributes())
          {
             buf.append(key.getName())
-                  .append(" :").append(key.getType())
+                  .append(" :").append(StringEscapeUtils.escapeHtml4(key.getType()))
                   .append("<br  align='left'/>");
          }
 
