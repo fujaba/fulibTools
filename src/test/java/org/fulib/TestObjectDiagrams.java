@@ -36,6 +36,8 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpPng(root);
 
+      FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
+
       System.out.println(alice);
    }
 

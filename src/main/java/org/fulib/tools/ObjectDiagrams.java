@@ -16,6 +16,9 @@ import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 
 
@@ -98,6 +101,32 @@ public class ObjectDiagrams
    public String dumpSVG(String diagramFileName, Object... objectList)
    {
       return dump(Format.SVG_STANDALONE, diagramFileName, objectList);
+   }
+
+
+   /**
+    * Create yaml description.
+    *
+    * @param diagramFileName
+    * @param objectList
+    * @return file name
+    */
+   public String dumpYaml(String diagramFileName, Object... objectList)
+   {
+      Object firstObject = objectList[0];
+      String packageName = firstObject.getClass().getPackage().getName();
+      YamlIdMap idMap = new YamlIdMap(packageName);
+      String yaml = idMap.encode(objectList);
+
+      try
+      {
+         Files.write(Paths.get(diagramFileName), yaml.getBytes(StandardCharsets.UTF_8));
+      }
+      catch (IOException e)
+      {
+         e.printStackTrace();
+      }
+      return diagramFileName;
    }
 
 
