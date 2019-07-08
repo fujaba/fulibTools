@@ -222,6 +222,20 @@ public class ObjectDiagrams
             }
          }
 
+         // attrs
+         Reflector creator = reflectorMap.getReflector(obj);
+         String userKey = key;
+         Object tmp = creator.getValue(obj, "id");
+         if (tmp != null) {
+            userKey = StrUtil.downFirstChar(tmp.toString());
+
+         }
+         else {
+            tmp = creator.getValue(obj, "name");
+            if (tmp != null) {
+               userKey = StrUtil.downFirstChar(tmp.toString());
+            }
+         }
 
          buf.append(key).append(" " +
                "[\n" +
@@ -230,12 +244,10 @@ public class ObjectDiagrams
                "   label=<\n"  +
                "     <table border='0' cellborder='1' cellspacing='0'>\n" +
                "       <tr><td>")
-               .append("<u>").append(key).append(" :").append(className).append("</u>")
+               .append("<u>").append(userKey).append(" :").append(className).append("</u>")
                .append("</td></tr>\n"  +
                      "       <tr><td>");
 
-         // attrs
-         Reflector creator = reflectorMap.getReflector(obj);
 
          for (String prop : creator.getProperties())
          {

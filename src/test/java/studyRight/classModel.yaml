@@ -1,0 +1,58 @@
+- c1: 	ClassModel
+  classes: 	studyRight2 	student3 	
+  defaultPropertyStyle: 	POJO
+  defaultRoleType: 	"java.util.ArrayList<%s>"
+  mainJavaDir: 	"src/test/java"
+  packageName: 	studyRight
+  packageSrcFolder: 	"src/test/java/studyRight"
+
+- studyRight2: 	Clazz
+  attributes: 	id4 	
+  model: 	c1
+  modified: 	false
+  name: 	StudyRight
+  propertyStyle: 	POJO
+  roles: 	students5 	
+
+- student3: 	Clazz
+  attributes: 	name6 	
+  model: 	c1
+  modified: 	false
+  name: 	Student
+  propertyStyle: 	POJO
+  roles: 	uni7 	
+
+- id4: 	Attribute
+  clazz: 	studyRight2
+  modified: 	false
+  name: 	id
+  propertyStyle: 	POJO
+  type: 	String
+
+- students5: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	studyRight2
+  modified: 	false
+  name: 	students
+  other: 	uni7
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
+- name6: 	Attribute
+  clazz: 	student3
+  modified: 	false
+  name: 	name
+  propertyStyle: 	POJO
+  type: 	String
+
+- uni7: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	student3
+  modified: 	false
+  name: 	uni
+  other: 	students5
+  propertyStyle: 	POJO
+  roleType: 	"java.util.ArrayList<%s>"
+
