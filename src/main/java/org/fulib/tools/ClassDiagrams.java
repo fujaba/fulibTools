@@ -130,13 +130,13 @@ public class ClassDiagrams
          String targetId = assoc.getOther().getClazz().getName();
 
          String sourceLabel = assoc.getName();
-         if (assoc.getCardinality() == ClassModelBuilder.MANY)
+         if (assoc.getCardinality() != ClassModelBuilder.ONE)
          {
             sourceLabel += " *";
          }
 
          String targetLabel = assoc.getOther().getName();
-         if (assoc.getOther().getCardinality() == ClassModelBuilder.MANY)
+         if (assoc.getOther().getCardinality() != ClassModelBuilder.ONE)
          {
             targetLabel += " *";
          }

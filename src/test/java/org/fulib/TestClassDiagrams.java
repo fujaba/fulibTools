@@ -70,6 +70,7 @@ public class TestClassDiagrams
       // is equivalent to
       FulibTools.classDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
       // for usage in e.g. readme.md
+      FulibTools.classDiagrams().dumpSVG(model, "doc/images/StudyRightClassDiagram.svg");
       FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
 
       FulibTools.classDiagrams().dumpPng(model, "../fulib/doc/images/SimpleClassDiagram.png");
