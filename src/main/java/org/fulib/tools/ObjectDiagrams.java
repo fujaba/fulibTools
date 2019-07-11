@@ -16,6 +16,8 @@ import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -258,7 +260,18 @@ public class ObjectDiagrams
 
             if (value == null)
             {
-               buf.append("  ").append(prop).append(" = null").append("<br  align='left'/>");
+               try
+               {
+                  Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
+                  Class<?> fieldType = method.getReturnType();
+                  if (fieldType == String.class) {
+                     buf.append("  ").append(prop).append(" = null").append("<br  align='left'/>");
+                  }
+               }
+               catch (Exception e)
+               {
+                  e.printStackTrace();
+               }
                continue;
             }
 

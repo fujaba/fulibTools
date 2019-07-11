@@ -67,8 +67,10 @@ public class TestObjectDiagrams
       StudyRight studyRight = new StudyRight().setId("studyRight");
       new Student().setName("Alice").setUni(studyRight);
       new Student().setName("Bob").setUni(studyRight);
+      Student carli = new Student();
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight);
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
       FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
    }
 }
