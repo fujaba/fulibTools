@@ -115,6 +115,22 @@ public class ObjectDiagrams
     */
    public String dumpYaml(String diagramFileName, Object... objectList)
    {
+      Objects.requireNonNull(objectList);
+      if (objectList.length < 1) throw new IllegalArgumentException("empty objectList");
+
+      ArrayList flatList = new ArrayList();
+      for (Object obj : objectList)
+      {
+         if (obj instanceof Collection) {
+            flatList.addAll((Collection) obj);
+         }
+         else {
+            flatList.add(obj);
+         }
+      }
+
+      objectList = flatList.toArray();
+
       Object firstObject = objectList[0];
       String packageName = firstObject.getClass().getPackage().getName();
       YamlIdMap idMap = new YamlIdMap(packageName);
@@ -138,6 +154,19 @@ public class ObjectDiagrams
       {
          Objects.requireNonNull(objectList);
          if (objectList.length < 1) throw new IllegalArgumentException("empty objectList");
+
+         ArrayList flatList = new ArrayList();
+         for (Object obj : objectList)
+         {
+            if (obj instanceof Collection) {
+               flatList.addAll((Collection) obj);
+            }
+            else {
+               flatList.add(obj);
+            }
+         }
+
+         objectList = flatList.toArray();
 
          Object firstRoot = objectList[0];
 

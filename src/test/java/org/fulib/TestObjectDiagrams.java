@@ -15,6 +15,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -72,5 +73,21 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
       FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
+   }
+
+   @Test
+   public void testListsOfObjects()
+   {
+      StudyRight studyRight = new StudyRight().setId("studyRight");
+      Student alice = new Student().setName("Alice").setUni(studyRight);
+      Student bob = new Student().setName("Bob").setUni(studyRight);
+      Student carli = new Student();
+      ArrayList<Student> students = new ArrayList<>();
+      students.add(alice);
+      students.add(bob);
+      students.add(carli);
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/students.svg", students);
+      FulibTools.objectDiagrams().dumpYaml("tmp/students.yaml", students);
    }
 }
