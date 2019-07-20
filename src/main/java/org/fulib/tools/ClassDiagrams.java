@@ -33,6 +33,8 @@ import java.util.LinkedHashSet;
       uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
             .setAggregation();
       room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
+      ClassBuilder professor = mb.buildClass("Professor");
+      uni.buildAssociation(professor, "profs", mb.MANY, null, 1);
 
       ClassModel model = mb.getClassModel();
  * <!-- end_code_fragment: -->
@@ -130,12 +132,18 @@ public class ClassDiagrams
          String targetId = assoc.getOther().getClazz().getName();
 
          String sourceLabel = assoc.getName();
+         if (sourceLabel == null) {
+            sourceLabel = "";
+         }
          if (assoc.getCardinality() != ClassModelBuilder.ONE)
          {
             sourceLabel += " *";
          }
 
          String targetLabel = assoc.getOther().getName();
+         if (targetLabel == null) {
+            targetLabel = "";
+         }
          if (assoc.getOther().getCardinality() != ClassModelBuilder.ONE)
          {
             targetLabel += " *";

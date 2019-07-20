@@ -26,6 +26,8 @@ public class FulibTools
       uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
             .setAggregation();
       room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
+      ClassBuilder professor = mb.buildClass("Professor");
+      uni.buildAssociation(professor, "profs", mb.MANY, null, 1);
 
       ClassModel model = mb.getClassModel();
     * <!-- end_code_fragment: -->
