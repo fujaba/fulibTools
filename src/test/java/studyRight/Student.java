@@ -36,8 +36,6 @@ public class Student
       return this;
    }
 
-
-
    protected PropertyChangeSupport listeners = null;
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
@@ -88,16 +86,11 @@ public class Student
       return true;
    }
 
-
-
    public void removeYou()
    {
       this.setUni(null);
 
    }
-
-
-
 
    public static final String PROPERTY_name = "name";
 
@@ -118,7 +111,6 @@ public class Student
       }
       return this;
    }
-
 
    @Override
    public String toString()

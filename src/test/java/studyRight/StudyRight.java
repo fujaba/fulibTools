@@ -27,10 +27,8 @@ public class StudyRight
       return this;
    }
 
-
    public static final java.util.ArrayList<Student> EMPTY_students = new java.util.ArrayList<Student>()
    { @Override public boolean add(Student value){ throw new UnsupportedOperationException("No direct add! Use xy.withStudents(obj)"); }};
-
 
    public static final String PROPERTY_students = "students";
 
@@ -77,8 +75,6 @@ public class StudyRight
       return this;
    }
 
-
-
    public StudyRight withoutStudents(Object... value)
    {
       if (this.students == null || value==null) return this;
@@ -104,7 +100,6 @@ public class StudyRight
       }
       return this;
    }
-
 
    protected PropertyChangeSupport listeners = null;
 
@@ -162,7 +157,6 @@ public class StudyRight
 
 
    }
-
 
    @Override
    public String toString()
