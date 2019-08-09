@@ -192,6 +192,8 @@ public class ObjectDiagrams
          st.add("edges", edgesString);
          dotString = st.render();
 
+         // Files.write(Paths.get("tmp/dotString.txt"), dotString.getBytes());
+
          Graphviz.fromString(dotString.toString()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;

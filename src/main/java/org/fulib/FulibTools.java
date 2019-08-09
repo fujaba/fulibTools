@@ -1,9 +1,6 @@
 package org.fulib;
 
-import org.fulib.tools.ClassDiagrams;
-import org.fulib.tools.ObjectDiagrams;
-import org.fulib.tools.CodeFragments;
-import org.fulib.tools.Tables;
+import org.fulib.tools.*;
 
 public class FulibTools
 {
@@ -77,4 +74,8 @@ public class FulibTools
       return new Tables();
    }
 
+   public static ScenarioDiagrams scenarioDiagrams()
+   {
+      return new ScenarioDiagrams();
+   }
 }
