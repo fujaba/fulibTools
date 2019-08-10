@@ -102,6 +102,11 @@ public class ObjectDiagrams
     */
    public String dumpSVG(String diagramFileName, Object... objectList)
    {
+      if (diagramFileName.endsWith(".scenario.svg")) {
+         new ScenarioDiagrams().dump(diagramFileName, objectList[0]);
+         return diagramFileName;
+      }
+
       return dump(Format.SVG_STANDALONE, diagramFileName, objectList);
    }
 

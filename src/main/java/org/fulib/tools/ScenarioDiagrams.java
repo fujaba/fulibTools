@@ -54,12 +54,13 @@ public class ScenarioDiagrams
       }
    }
 
+   private int objCount = 0;
 
    private String makeServices(Object root, YamlIdMap idMap, ReflectorMap reflectorMap, StringBuilder messages, StringBuilder edges)
    {
       // make subgraphs for all services
       Reflector rootReflector = reflectorMap.getReflector(root);
-      Collection services = (Collection) rootReflector.getValue(root, "services");
+      Collection services = toCollection(rootReflector.getValue(root, "services"));
 
       StringBuilder buf = new StringBuilder();
 
@@ -73,9 +74,9 @@ public class ScenarioDiagrams
                "   }\n\n";
 
          Reflector serviceReflector = reflectorMap.getReflector(service);
-         Object id = serviceReflector.getValue(service, "id");
+         String id = idMap.getIdObjMap().get(service);
          Object description = serviceReflector.getValue(service, "description");
-         String states = makeStates(service, reflectorMap, messages, edges);
+         String states = makeStates(service, idMap, reflectorMap, messages, edges);
 
          ST st = new ST(oneService);
          st.add("name", id);
@@ -90,26 +91,29 @@ public class ScenarioDiagrams
    }
 
 
-   private String makeStates(Object service, ReflectorMap reflectorMap, StringBuilder messages, StringBuilder edges)
+   private String makeStates(Object service, YamlIdMap idMap, ReflectorMap reflectorMap, StringBuilder messages, StringBuilder edges)
    {
       Reflector reflector = reflectorMap.getReflector(service);
-      Collection states = (Collection) reflector.getValue(service, "states");
+      Collection states = toCollection(reflector.getValue(service, "states"));
       StringBuilder buf = new StringBuilder();
 
       for (Object state : states)
       {
          StringBuilder nodeBuf = new StringBuilder();
-         Reflector stateReflector = makeOneNode(reflectorMap, nodeBuf, state);
+         Reflector stateReflector = makeOneNode(idMap, reflectorMap, nodeBuf, state);
          nodeBuf.append(buf);
          buf = nodeBuf;
-         Object stateId = stateReflector.getValue(state, "id");
+         Object stateId = idMap.getIdObjMap().get(state);
+         if (stateId == null) {
+            stateId = "state" + objCount++;
+         }
 
-         Collection sendMessages = (Collection) stateReflector.getValue(state, "sendMessages");
+         Collection sendMessages = toCollection(stateReflector.getValue(state, "sendMessages"));
          for (Object message : sendMessages)
          {
             Reflector messageReflector = reflectorMap.getReflector(message);
-            Object messageId = messageReflector.getValue(message, "id");
-            makeOneNode(reflectorMap, messages, message);
+            Object messageId = idMap.getIdObjMap().get(message);
+            makeOneNode(idMap, reflectorMap, messages, message);
 
             edges.append(String.format("   %s -> %s;\n", stateId, messageId));
 
@@ -117,7 +121,7 @@ public class ScenarioDiagrams
             for (Object target : targets)
             {
                Reflector targetReflector = reflectorMap.getReflector(target);
-               Object targetId = targetReflector.getValue(target, "id");
+               Object targetId = idMap.getIdObjMap().get(target);
                edges.append(String.format("   %s -> %s;\n", messageId, targetId));
             }
          }
@@ -126,7 +130,7 @@ public class ScenarioDiagrams
       return buf.toString();
    }
 
-   private Reflector makeOneNode(ReflectorMap reflectorMap, StringBuilder buf, Object state)
+   private Reflector makeOneNode(YamlIdMap idMap, ReflectorMap reflectorMap, StringBuilder buf, Object state)
    {
       String oneNode = "" +
             "      <id> [\n" +
@@ -139,8 +143,11 @@ public class ScenarioDiagrams
             "          >];\n";
 
       Reflector stateReflector = reflectorMap.getReflector(state);
-      Object id = stateReflector.getValue(state, "id");
+      Object id = idMap.getIdObjMap().get(state);
       Object time = stateReflector.getValue(state, "time");
+      if (time == null) {
+         time = "00:00:00";
+      }
 
       StringBuilder descriptionTable = new StringBuilder();
       descriptionTable.append(String.format("                <tr><td>%s</td></tr>\n", time));
@@ -215,12 +222,6 @@ public class ScenarioDiagrams
          content.add(contentObj);
       }
       return content;
-   }
-
-
-   private String makeEdges(Object root, YamlIdMap idMap, ReflectorMap reflectorMap, LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap)
-   {
-      return "";
    }
 
 }

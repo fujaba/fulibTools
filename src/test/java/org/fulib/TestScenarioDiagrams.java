@@ -111,7 +111,9 @@ public class TestScenarioDiagrams
       scenario.getServices().add(aliceApp);
       scenario.getServices().add(backend);
 
-      String diagramFileName = "tmp/scenario-diagram.svg";
-      FulibTools.scenarioDiagrams().dump(diagramFileName, scenario);
+      String diagramFileName = "tmp/diag1.scenario.svg";
+      FulibTools.objectDiagrams().dumpSVG(diagramFileName, scenario);
+
+      assertThat(Files.exists(Paths.get(diagramFileName)), is(true));
    }
 }
