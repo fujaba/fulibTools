@@ -9,8 +9,6 @@ import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 
 public class ScenarioDiagrams
@@ -44,7 +42,7 @@ public class ScenarioDiagrams
          st.add("edges", edges);
          dotString = st.render();
 
-         Files.write(Paths.get("tmp/scenario-diagram.txt"), dotString.getBytes());
+         // Files.write(Paths.get("tmp/scenario-diagram.txt"), dotString.getBytes());
 
          Graphviz.fromString(dotString.toString()).render(Format.SVG).toFile(new File(fileName));
       }
@@ -99,25 +97,19 @@ public class ScenarioDiagrams
 
       for (Object state : states)
       {
-         StringBuilder nodeBuf = new StringBuilder();
-         Reflector stateReflector = makeOneNode(idMap, reflectorMap, nodeBuf, state);
-         nodeBuf.append(buf);
-         buf = nodeBuf;
+         Reflector stateReflector = makeOneNode(idMap, reflectorMap, buf, state, "state");
          Object stateId = idMap.getIdObjMap().get(state);
-         if (stateId == null) {
-            stateId = "state" + objCount++;
-         }
 
          Collection sendMessages = toCollection(stateReflector.getValue(state, "sendMessages"));
          for (Object message : sendMessages)
          {
             Reflector messageReflector = reflectorMap.getReflector(message);
             Object messageId = idMap.getIdObjMap().get(message);
-            makeOneNode(idMap, reflectorMap, messages, message);
+            makeOneNode(idMap, reflectorMap, messages, message, "message");
 
             edges.append(String.format("   %s -> %s;\n", stateId, messageId));
 
-            Collection targets = (Collection) messageReflector.getValue(message, "targets");
+            Collection targets = toCollection(messageReflector.getValue(message, "targets"));
             for (Object target : targets)
             {
                Reflector targetReflector = reflectorMap.getReflector(target);
@@ -130,7 +122,7 @@ public class ScenarioDiagrams
       return buf.toString();
    }
 
-   private Reflector makeOneNode(YamlIdMap idMap, ReflectorMap reflectorMap, StringBuilder buf, Object state)
+   private Reflector makeOneNode(YamlIdMap idMap, ReflectorMap reflectorMap, StringBuilder buf, Object state, String kind)
    {
       String oneNode = "" +
             "      <id> [\n" +
@@ -142,6 +134,19 @@ public class ScenarioDiagrams
             "             \\</table>\n" +
             "          >];\n";
 
+      if ("message".equals(kind)) {
+         oneNode = "" +
+               "      <id> [\n" +
+               "           shape=note\n" +
+               "           fontsize=\"10\"\n" +
+               "           label=\\<\n" +
+               "             \\<table border='0' cellborder='0' cellspacing='0'>\n" +
+               "<rows>" +
+               "             \\</table>\n" +
+               "          >];\n";
+
+      }
+
       Reflector stateReflector = reflectorMap.getReflector(state);
       Object id = idMap.getIdObjMap().get(state);
       Object time = stateReflector.getValue(state, "time");
@@ -150,7 +155,7 @@ public class ScenarioDiagrams
       }
 
       StringBuilder descriptionTable = new StringBuilder();
-      descriptionTable.append(String.format("                <tr><td>%s</td></tr>\n", time));
+      descriptionTable.append(String.format("                <tr><td bgcolor='#F0F0F0'>%s</td></tr>\n", time));
 
       makeOneDescription(state, stateReflector, descriptionTable);
 
@@ -186,11 +191,13 @@ public class ScenarioDiagrams
 
       for (String line : split)
       {
+         line = line.trim();
          StringBuilder cells = new StringBuilder();
          String[] words = line.split("\\|");
 
          for (String word : words)
          {
+            word = word.trim();
             if (word.startsWith("input")) {
                word = String.format("<u>%s</u>", word.substring("input ".length()));
             }
