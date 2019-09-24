@@ -2,6 +2,7 @@ package org.fulib;
 
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import org.junit.Ignore;
 import org.junit.Test;
 import warehouse.*;
 
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertThat;
 public class TestScenarioDiagrams
 {
    @Test
+   @Ignore // file tmp/example.txt is not in git, and this doesn't test any of our functionality, only Graphviz's
    public void testManual() throws IOException
    {
       String diagramText = "";
