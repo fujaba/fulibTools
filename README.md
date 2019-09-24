@@ -1,10 +1,33 @@
 # fulibTools - Additional features for fulib.
 
+[![Build Status](https://travis-ci.org/fujaba/fulibTools.svg?branch=master)](https://travis-ci.org/fujaba/fulibTools)
+[![Download](https://api.bintray.com/packages/fujaba/maven/fulibTools/images/download.svg)](https://bintray.com/fujaba/maven/fulibTools/_latestVersion "Download")
+
 FulibTools provides some additional features like class diagrams and object diagrams to the Fulib code generator.
 These additional features require some large dependencies and as not every user benefits from them, we seperated
 these additional features from Fulib into FulibTools.
 
+## Installation
+
+`build.gradle`:
+
+```groovy
+repositories {
+    mavenCentral()
+    // and/or:
+    jcenter()
+}
+```
+
+```groovy
+dependencies {
+    // https://mvnrepository.com/artifact/org.fulib/fulibYaml
+    compile group: 'org.fulib', name: 'fulibTools', version: '1.1.0'
+}
+```
+
 ## ClassDiagrams
+
 Dump a class diagram from a ClassModel
 
 Example:
@@ -104,19 +127,3 @@ Update the code fragements by running e.g.:
 <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
                FulibTools.codeFragments().updateCodeFragments(".");
 <!-- end_code_fragment: -->
-
-
-### Gradle
-
-<pre>
-repositories {
-    mavenCentral()
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
-}
-</pre>
-
-<pre>
-dependencies {
-    testCompile 'org.fulib:fulibTools:1.0.+'
-}
-</pre>
