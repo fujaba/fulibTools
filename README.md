@@ -14,7 +14,6 @@ these additional features from Fulib into FulibTools.
 ```groovy
 repositories {
     mavenCentral()
-    // and/or:
     jcenter()
 }
 ```
