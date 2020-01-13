@@ -386,9 +386,9 @@ public class ObjectDiagrams
       String newValue = (String) value;
       newValue = "\"" + newValue.replaceAll("\"", "\\\"") + "\"";
       // newValue = newValue.replaceAll("%", "");
+      newValue = newValue.replaceAll("&", "&amp;");
       newValue = newValue.replaceAll("<", "&lt;");
       newValue = newValue.replaceAll(">", "&gt;");
-      newValue = newValue.replaceAll("&", "&amp;");
       return newValue;
    }
 }

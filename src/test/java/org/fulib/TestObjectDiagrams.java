@@ -50,7 +50,8 @@ public class TestObjectDiagrams
       ClassModelBuilder mb = Fulib.classModelBuilder("studyRight", "src/test/java");
 
       ClassBuilder studyRight = mb.buildClass("StudyRight");
-      studyRight.buildAttribute("id", ClassModelBuilder.STRING);
+      studyRight.buildAttribute("id", ClassModelBuilder.STRING)
+            .buildAttribute("description", ClassModelBuilder.STRING);
 
       ClassBuilder student = mb.buildClass("Student");
       student.buildAttribute("name", ClassModelBuilder.STRING);
@@ -70,9 +71,24 @@ public class TestObjectDiagrams
       new Student().setName("Bob").setUni(studyRight);
       Student carli = new Student();
 
-
       FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
       FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
+   }
+
+
+   @Test
+   public void testSpecialCharsInStrings() throws IOException
+   {
+      StudyRight studyRight = new StudyRight().setId("studyRight")
+            .setDescription("<i>Greatest Ever</i>");
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/specialChars.svg", studyRight);
+      FulibTools.objectDiagrams().dumpPng("tmp/specialChars.png", studyRight);
+
+      byte[] bytes = Files.readAllBytes(Paths.get("tmp/specialChars.svg"));
+      String svgText = new String(bytes);
+
+      assertThat(svgText.contains("&lt;i&gt;Greatest Ever&lt;/i&gt;"), is(true));
    }
 
    @Test

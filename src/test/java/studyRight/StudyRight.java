@@ -164,9 +164,30 @@ public class StudyRight
       StringBuilder result = new StringBuilder();
 
       result.append(" ").append(this.getId());
+      result.append(" ").append(this.getDescription());
 
 
       return result.substring(1);
+   }
+
+   public static final String PROPERTY_description = "description";
+
+   private String description;
+
+   public String getDescription()
+   {
+      return description;
+   }
+
+   public StudyRight setDescription(String value)
+   {
+      if (value == null ? this.description != null : ! value.equals(this.description))
+      {
+         String oldValue = this.description;
+         this.description = value;
+         firePropertyChange("description", oldValue, value);
+      }
+      return this;
    }
 
 }
