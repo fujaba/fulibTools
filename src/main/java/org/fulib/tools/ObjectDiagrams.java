@@ -345,7 +345,7 @@ public class ObjectDiagrams
                {
                   if (value instanceof String)
                   {
-                     value = this.encodeDotString(value);
+                     value = encodeDotString((String) value);
                   }
                   buf.append("  ").append(prop).append(" = ").append(value.toString()).append("<br  align='left'/>");
                }
@@ -387,15 +387,13 @@ public class ObjectDiagrams
       }
    }
 
-   private Object encodeDotString(Object value)
+   private static String encodeDotString(String value)
    {
-      String newValue = (String) value;
-      newValue = "\"" + newValue.replaceAll("\"", "\\\"") + "\"";
-      // newValue = newValue.replaceAll("%", "");
-      newValue = newValue.replaceAll("<", "&lt;");
-      newValue = newValue.replaceAll(">", "&gt;");
-      newValue = newValue.replaceAll("&", "&amp;");
-      return newValue;
+      // value = value.replace("%", "");
+      value = value.replace("<", "&lt;");
+      value = value.replace(">", "&gt;");
+      value = value.replace("&", "&amp;");
+      value = "\"" + value.replace("\"", "\\\"") + "\"";
+      return value;
    }
 }
-
