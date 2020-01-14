@@ -25,6 +25,12 @@ public class CodeFragments
 {
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
 
+   /**
+    * @return the fragment map
+    *
+    * @deprecated since 1.2; use the result of {@link #updateCodeFragments(String...)} instead
+    */
+   @Deprecated
    public LinkedHashMap<String, String> getFragmentMap()
    {
       return this.fragmentMap;
