@@ -75,3 +75,14 @@ javadoc {
 revapi {
    oldVersion = '1.1.0'
 }
+
+test {
+   testLogging.showStandardStreams = true
+
+   workingDir = temporaryDir
+   outputs.dir workingDir
+
+   doFirst {
+      workingDir.mkdirs()
+   }
+}
