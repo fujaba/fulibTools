@@ -8,7 +8,6 @@ import org.fulib.classmodel.AssocRole;
 import org.fulib.classmodel.Attribute;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
-import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,17 +78,18 @@ public class ClassDiagrams
    {
       try
       {
-         String dotString = "" + "digraph H {\n" + "rankdir=BT\n" + "<nodes> \n" + "<edges> \n" + "}\n";
+         final StringBuilder dot = new StringBuilder();
+         dot.append("digraph H {\n");
+         dot.append("rankdir=BT\n");
 
-         String nodesString = this.makeNodes(model);
-         String edgesString = this.makeEdges(model);
+         this.makeNodes(model, dot);
+         dot.append('\n');
+         this.makeEdges(model, dot);
+         dot.append('\n');
 
-         ST st = new ST(dotString);
-         st.add("nodes", nodesString);
-         st.add("edges", edgesString);
-         dotString = st.render();
+         dot.append("}\n");
 
-         Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
+         Graphviz.fromString(dot.toString()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }
@@ -101,10 +101,8 @@ public class ClassDiagrams
       return null;
    }
 
-   private String makeEdges(ClassModel model)
+   private void makeEdges(ClassModel model, StringBuilder buf)
    {
-      StringBuilder buf = new StringBuilder();
-
       LinkedHashSet<AssocRole> roles = new LinkedHashSet<>();
 
       for (Clazz c : model.getClasses())
@@ -151,14 +149,10 @@ public class ClassDiagrams
          buf.append(targetId).append(" -> ").append(sourceId).append(" [arrowhead=none fontsize=\"10\" taillabel=\"")
             .append(sourceLabel).append("\" headlabel=\"").append(targetLabel).append("\"];\n");
       }
-
-      return buf.toString();
    }
 
-   private String makeNodes(ClassModel model)
+   private void makeNodes(ClassModel model, StringBuilder buf)
    {
-      StringBuilder buf = new StringBuilder();
-
       for (Clazz clazz : model.getClasses())
       {
          String objId = clazz.getName();
@@ -175,8 +169,5 @@ public class ClassDiagrams
 
          buf.append("</td></tr>\n" + "     </table>\n" + "  >];\n");
       }
-
-      return buf.toString();
    }
 }
-
