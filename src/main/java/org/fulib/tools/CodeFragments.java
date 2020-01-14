@@ -114,7 +114,7 @@ public class CodeFragments
    {
       String fileName = file.toString();
 
-      if (!(fileName.endsWith(".java") || fileName.endsWith(".md") || fileName.endsWith("build.gradle")))
+      if (!fileName.endsWith(".java") && !fileName.endsWith(".md") && !fileName.endsWith("build.gradle"))
       {
          return;
       }
@@ -159,13 +159,7 @@ public class CodeFragments
    private void insertFragments(Path file)
    {
       String fileName = file.toString();
-
-      if (fileName.endsWith(".md"))
-      {
-         System.out.println();
-      }
-
-      if (!(fileName.endsWith(".java") || fileName.endsWith(".md")))
+      if (!fileName.endsWith(".java") && !fileName.endsWith(".md"))
       {
          return;
       }
