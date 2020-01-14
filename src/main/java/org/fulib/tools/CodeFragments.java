@@ -5,6 +5,7 @@ import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -22,7 +23,6 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  */
 public class CodeFragments
 {
-
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
 
    public LinkedHashMap<String, String> getFragmentMap()
@@ -30,13 +30,12 @@ public class CodeFragments
       return this.fragmentMap;
    }
 
-   private String phase = "read";
-
    public Map<String, String> updateCodeFragments(String... folderList)
    {
       // collect code fragments from source files
       try
       {
+         AtomicBoolean write = new AtomicBoolean(false);
          FileVisitor<Path> visitor = new FileVisitor<Path>()
          {
             @Override
@@ -48,7 +47,14 @@ public class CodeFragments
             @Override
             public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
             {
-               CodeFragments.this.updateFile(file);
+               if (write.get())
+               {
+                  CodeFragments.this.insertFragments(file);
+               }
+               else
+               {
+                  CodeFragments.this.fetchFromFile(file);
+               }
                return FileVisitResult.CONTINUE;
             }
 
@@ -77,7 +83,7 @@ public class CodeFragments
          }
 
          // insert
-         this.phase = "insert";
+         write.set(true);
          for (String folder : folderList)
          {
             Path path = Paths.get(folder);
@@ -96,18 +102,6 @@ public class CodeFragments
       // inject code fragements
 
       return this.fragmentMap;
-   }
-
-   private void updateFile(Path file)
-   {
-      if ("read".equals(this.phase))
-      {
-         this.fetchFromFile(file);
-      }
-      else
-      {
-         this.insertFragments(file);
-      }
    }
 
    private void fetchFromFile(Path file)
