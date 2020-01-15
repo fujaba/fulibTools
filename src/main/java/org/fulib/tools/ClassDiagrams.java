@@ -146,7 +146,7 @@ public class ClassDiagrams
             targetLabel += " *";
          }
 
-         buf.append(targetId).append(" -> ").append(sourceId).append(" [arrowhead=none fontsize=\"10\" taillabel=\"")
+         buf.append(targetId).append(" -> ").append(sourceId).append(" [arrowhead=none taillabel=\"")
             .append(sourceLabel).append("\" headlabel=\"").append(targetLabel).append("\"];\n");
       }
    }
@@ -157,7 +157,7 @@ public class ClassDiagrams
       {
          String objId = clazz.getName();
 
-         buf.append(objId).append(" " + "[\n" + "   shape=plaintext\n" + "   fontsize=\"10\"\n" + "   label=<\n"
+         buf.append(objId).append(" " + "[\n" + "   shape=plaintext\n" + "   label=<\n"
                                   + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
             .append(objId).append("</td></tr>\n" + "       <tr><td>");
 
