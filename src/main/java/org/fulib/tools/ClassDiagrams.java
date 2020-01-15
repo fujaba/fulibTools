@@ -79,7 +79,7 @@ public class ClassDiagrams
       try
       {
          final StringBuilder dot = new StringBuilder();
-         dot.append("digraph H {\n");
+         dot.append("digraph \"").append(model.getPackageName()).append("\" {\n");
          dot.append("rankdir=BT\n");
 
          this.makeNodes(model, dot);
