@@ -11,7 +11,9 @@ import org.fulib.classmodel.Clazz;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.IdentityHashMap;
+import java.util.Set;
 
 /**
  * To create a class diagram png for usage in java doc comments,
@@ -103,27 +105,24 @@ public class ClassDiagrams
 
    private void makeEdges(ClassModel model, StringBuilder buf)
    {
-      LinkedHashSet<AssocRole> roles = new LinkedHashSet<>();
+      final Set<AssocRole> done = Collections.newSetFromMap(new IdentityHashMap<>());
 
-      for (Clazz c : model.getClasses())
+      for (Clazz clazz : model.getClasses())
       {
-         roles.addAll(c.getRoles());
-      }
-
-      LinkedHashSet<AssocRole> done = new LinkedHashSet<>();
-      for (AssocRole assoc : roles)
-      {
-         if (done.contains(assoc))
+         for (AssocRole assoc : clazz.getRoles())
          {
-            continue;
-         }
-         done.add(assoc);
-         if (assoc.getOther() != null)
-         {
-            done.add(assoc.getOther());
-         }
+            if (done.contains(assoc))
+            {
+               continue;
+            }
+            done.add(assoc);
+            if (assoc.getOther() != null)
+            {
+               done.add(assoc.getOther());
+            }
 
-         this.makeEdge(assoc, buf);
+            this.makeEdge(assoc, buf);
+         }
       }
    }
 
