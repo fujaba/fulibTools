@@ -51,16 +51,10 @@ public class ObjectDiagrams
       if (diagramFileName == null)
       {
          diagramFileName =
-            "tmp/" + this.lastDotSplit(firstRoot.getClass().getName()) + "." + (this.diagramNames.size() + 1) + ".png";
+            "tmp/" + firstRoot.getClass().getSimpleName() + "." + (this.diagramNames.size() + 1) + ".png";
          this.diagramNames.put(firstRoot, diagramFileName);
       }
       return this.dumpPng(diagramFileName, objectList);
-   }
-
-   private String lastDotSplit(String name)
-   {
-      String[] split = name.split("\\.");
-      return split[split.length - 1];
    }
 
    /**
