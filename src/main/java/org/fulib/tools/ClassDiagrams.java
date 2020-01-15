@@ -123,32 +123,37 @@ public class ClassDiagrams
             done.add(assoc.getOther());
          }
 
-         String sourceId = assoc.getClazz().getName();
-         String targetId = assoc.getOther().getClazz().getName();
-
-         String sourceLabel = assoc.getName();
-         if (sourceLabel == null)
-         {
-            sourceLabel = "";
-         }
-         if (assoc.getCardinality() != ClassModelBuilder.ONE)
-         {
-            sourceLabel += " *";
-         }
-
-         String targetLabel = assoc.getOther().getName();
-         if (targetLabel == null)
-         {
-            targetLabel = "";
-         }
-         if (assoc.getOther().getCardinality() != ClassModelBuilder.ONE)
-         {
-            targetLabel += " *";
-         }
-
-         buf.append(targetId).append(" -> ").append(sourceId).append(" [arrowhead=none taillabel=\"")
-            .append(sourceLabel).append("\" headlabel=\"").append(targetLabel).append("\"];\n");
+         this.makeEdge(assoc, buf);
       }
+   }
+
+   private void makeEdge(AssocRole assoc, StringBuilder buf)
+   {
+      String sourceId = assoc.getClazz().getName();
+      String targetId = assoc.getOther().getClazz().getName();
+
+      String sourceLabel = assoc.getName();
+      if (sourceLabel == null)
+      {
+         sourceLabel = "";
+      }
+      if (assoc.getCardinality() != ClassModelBuilder.ONE)
+      {
+         sourceLabel += " *";
+      }
+
+      String targetLabel = assoc.getOther().getName();
+      if (targetLabel == null)
+      {
+         targetLabel = "";
+      }
+      if (assoc.getOther().getCardinality() != ClassModelBuilder.ONE)
+      {
+         targetLabel += " *";
+      }
+
+      buf.append(targetId).append(" -> ").append(sourceId).append(" [arrowhead=none taillabel=\"")
+         .append(sourceLabel).append("\" headlabel=\"").append(targetLabel).append("\"];\n");
    }
 
    private void makeNodes(ClassModel model, StringBuilder buf)
