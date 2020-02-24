@@ -32,7 +32,7 @@ import java.util.*;
  * <!-- end_code_fragment: -->
  * </pre>
  * Example: <br>
- * <img src="doc-files/studyRightObjects.png" width="343">
+ * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
  */
 public class ObjectDiagrams
 {
@@ -42,7 +42,7 @@ public class ObjectDiagrams
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     * @param objectList
     */
    public String dumpPng(Object... objectList)
@@ -76,7 +76,7 @@ public class ObjectDiagrams
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     * @param diagramFileName
     * @param objectList
     * @return file name
@@ -95,7 +95,7 @@ public class ObjectDiagrams
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     * @param diagramFileName
     * @param objectList
     * @return file name
