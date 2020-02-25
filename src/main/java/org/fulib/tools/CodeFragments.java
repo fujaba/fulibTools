@@ -110,7 +110,7 @@ public class CodeFragments
     *
     * @since 1.2
     */
-   public void add(String key, String content)
+   public void addFragment(String key, String content)
    {
       this.fragmentMap.put(key, content);
    }
