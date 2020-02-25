@@ -27,6 +27,8 @@ import java.util.regex.Pattern;
  */
 public class CodeFragments
 {
+   // =============== Constants ===============
+
    private static final Pattern START_PATTERN = Pattern.compile("^(\\s*)// start_code_fragment: ([\\w.]+)\\s*$");
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
@@ -36,7 +38,11 @@ public class CodeFragments
 
    private static final String INSERT_INDENT = "    ";
 
+   // =============== Fields ===============
+
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
+
+   // =============== Properties ===============
 
    /**
     * @return the fragment map
@@ -115,6 +121,8 @@ public class CodeFragments
       this.fragmentMap.put(key, content);
    }
 
+   // =============== Methods ===============
+
    /**
     * @since 1.2
     */
@@ -169,6 +177,8 @@ public class CodeFragments
       this.update(folderList);
       return this.getFragments();
    }
+
+   // --------------- Helpers ---------------
 
    private void walkFiles(Path path, Consumer<? super Path> consumer) throws IOException
    {
