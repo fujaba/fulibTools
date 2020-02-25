@@ -115,26 +115,59 @@ public class CodeFragments
       this.fragmentMap.put(key, content);
    }
 
-   public Map<String, String> updateCodeFragments(String... folderList)
+   /**
+    * @since 1.2
+    */
+   public void load(String... folders)
    {
       try
       {
-         for (String folder : folderList)
+         for (String folder : folders)
          {
             this.walkFiles(Paths.get(folder), this::fetchFromFile);
-         }
-
-         for (String folder : folderList)
-         {
-            this.walkFiles(Paths.get(folder), this::insertFragments);
          }
       }
       catch (IOException e)
       {
          Logger.getGlobal().log(Level.WARNING, "file walk problem", e);
       }
+   }
 
-      return this.fragmentMap;
+   /**
+    * @since 1.2
+    */
+   public void write(String... folders)
+   {
+      try
+      {
+         for (String folder : folders)
+         {
+            this.walkFiles(Paths.get(folder), this::fetchFromFile);
+         }
+      }
+      catch (IOException e)
+      {
+         Logger.getGlobal().log(Level.WARNING, "file walk problem", e);
+      }
+   }
+
+   /**
+    * @since 1.2
+    */
+   public void update(String... folders)
+   {
+      this.load(folders);
+      this.write(folders);
+   }
+
+   /**
+    * @deprecated since 1.2; use {@link #update(String...)} and optionally {@link #getFragments()} instead
+    */
+   @Deprecated
+   public Map<String, String> updateCodeFragments(String... folderList)
+   {
+      this.update(folderList);
+      return this.getFragments();
    }
 
    private void walkFiles(Path path, Consumer<? super Path> consumer) throws IOException
