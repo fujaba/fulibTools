@@ -16,37 +16,19 @@ import java.util.IdentityHashMap;
 import java.util.Set;
 
 /**
- * To create a class diagram png for usage in java doc comments,
- * dumpPng(model) creates file .../doc-files/classDiagram.png within the model source folder
- * <pre>
- * <!-- insert_code_fragment: test4Readme.classmodel-->
- * ClassModelBuilder mb = Fulib.classModelBuilder("de.uniks.studyright");
- * ClassBuilder uni = mb.buildClass("University")
- * .buildAttribute("name", mb.STRING);
- * ClassBuilder student = mb.buildClass("Student")
- * .buildAttribute("name", mb.STRING)
- * .buildAttribute("studentId", mb.STRING)
- * .buildAttribute("matNo", mb.INT);
- * uni.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
- * ClassBuilder room = mb.buildClass("Room")
- * .buildAttribute("roomNo", mb.STRING);
- * uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
- * .setAggregation();
- * room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
- * ClassBuilder professor = mb.buildClass("Professor");
- * uni.buildAssociation(professor, "profs", mb.MANY, null, 1);
- *
- * ClassModel model = mb.getClassModel();
- * <!-- end_code_fragment: -->
- * </pre>
+ * Provides various methods for storing class diagrams as files.
  */
 public class ClassDiagrams
 {
    /**
-    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * Create a class diagram of the given class model at the path
+    * {@link ClassModel#getPackageSrcFolder() modelFolder}{@code /doc-files/classDiagram.png}.
+    * in png format.
     *
     * @param model
     *    the class model
+    *
+    * @return the diagram file name
     */
    public String dumpPng(ClassModel model)
    {
@@ -55,10 +37,15 @@ public class ClassDiagrams
    }
 
    /**
-    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * Creates a class diagram of the given class model at the path specified by {@code diagramFileName}
+    * in png format.
     *
     * @param model
     *    the class model
+    * @param diagramFileName
+    *    the diagram file name
+    *
+    * @return the diagram file name
     */
    public String dumpPng(ClassModel model, String diagramFileName)
    {
@@ -66,16 +53,34 @@ public class ClassDiagrams
    }
 
    /**
-    * create a class diagram png in modelFolder/doc-files/classDiagram.png
+    * Creates a class diagram of the given class model at the path specified by {@code diagramFileName}
+    * in svg format.
     *
     * @param model
     *    the class model
+    * @param diagramFileName
+    *    the diagram file name
+    *
+    * @return the diagram file name
     */
    public String dumpSVG(ClassModel model, String diagramFileName)
    {
       return this.dump(model, diagramFileName, Format.SVG);
    }
 
+   /**
+    * Creates a class diagram of the given class model at the path specified by {@code diagramFileName}
+    * in the given Graphviz {@code format}.
+    *
+    * @param model
+    *    the class model
+    * @param diagramFileName
+    *    the diagram file name
+    * @param format
+    *    the file format
+    *
+    * @return the diagram file name
+    */
    public String dump(ClassModel model, String diagramFileName, Format format)
    {
       try
@@ -163,13 +168,19 @@ public class ClassDiagrams
       {
          String objId = clazz.getName();
 
-         buf.append(objId).append(" " + "[\n" + "   shape=plaintext\n" + "   label=<\n"
-                                  + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
-            .append(objId).append("</td></tr>\n" + "       <tr><td>");
+         buf
+            .append(objId)
+            .append(" " + "[\n" + "   shape=plaintext\n" + "   label=<\n"
+                    + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
+            .append(objId)
+            .append("</td></tr>\n" + "       <tr><td>");
 
          for (Attribute key : clazz.getAttributes())
          {
-            buf.append(key.getName()).append(" :").append(StringEscapeUtils.escapeHtml4(key.getType()))
+            buf
+               .append(key.getName())
+               .append(" :")
+               .append(StringEscapeUtils.escapeHtml4(key.getType()))
                .append("<br  align='left'/>");
          }
 
