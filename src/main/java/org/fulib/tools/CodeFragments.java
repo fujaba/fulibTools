@@ -36,6 +36,56 @@ public class CodeFragments
       return this.fragmentMap;
    }
 
+   /**
+    * Allows specifying fragments that can be inserted but don't have to be present in source files.
+    * This is useful for showing test output without having to write it to a file.
+    * <p>
+    * Example:
+    * <p>
+    * {@code Example.java}:
+    * <pre><code>
+    *    final CodeFragments fragments = new CodeFragments();
+    *    // start_code_fragment: exampleCode
+    *    final String foo = "bar" + 42 + "baz";
+    *    // end_code_fragment:
+    *    fragments.add("exampleOutput", foo);
+    *    fragments.updateCodeFragments(".");
+    * </code></pre>
+    * <p>
+    * {@code README.md}, before:
+    * <pre><code>
+    *    Use the following code:
+    *    &lt;!-- insert_code_fragment: exampleCode -->
+    *    &lt;!-- end_code_fragment: -->
+    *    to get the output:
+    *    &lt;!-- insert_code_fragment: exampleOutput -->
+    *    &lt;!-- end_code_fragment: -->
+    * </code></pre>
+    * <p>
+    * {@code README.md}, after:
+    * <pre><code>
+    *    Use the following code:
+    *    &lt;!-- insert_code_fragment: exampleCode -->
+    *    final String foo = "bar" + 42 + "baz";
+    *    &lt;!-- end_code_fragment: -->
+    *    to get the output:
+    *    &lt;!-- insert_code_fragment: exampleOutput -->
+    *    bar42baz
+    *    &lt;!-- end_code_fragment: -->
+    * </code></pre>
+    *
+    * @param key
+    *    the fragment key
+    * @param content
+    *    the fragment content
+    *
+    * @since 1.2
+    */
+   public void add(String key, String content)
+   {
+      this.fragmentMap.put(key, content);
+   }
+
    public Map<String, String> updateCodeFragments(String... folderList)
    {
       // collect code fragments from source files
