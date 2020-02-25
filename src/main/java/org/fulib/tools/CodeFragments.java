@@ -41,7 +41,7 @@ public class CodeFragments
    /**
     * @return the fragment map
     *
-    * @deprecated since 1.2; use the result of {@link #updateCodeFragments(String...)} instead
+    * @deprecated since 1.2; use {@link #getFragments()} instead
     */
    @Deprecated
    public LinkedHashMap<String, String> getFragmentMap()
