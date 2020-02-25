@@ -1,8 +1,13 @@
 package org.fulib.tools;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.security.DigestInputStream;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -230,9 +235,11 @@ public class CodeFragments
          return;
       }
 
+      boolean hadInserts = false;
       final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
-      try (final BufferedReader reader = Files.newBufferedReader(file);
+      final MessageDigest inputDigest = createDigest();
+      try (final BufferedReader reader = newDigestReader(file, inputDigest);
            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream)))
       {
          String key = null;
@@ -278,6 +285,7 @@ public class CodeFragments
             // copy fragment content if the line was indeed <!-- insert ... -->
             if (content != null)
             {
+               hadInserts = true;
                writer.write(content);
             }
          }
@@ -292,13 +300,49 @@ public class CodeFragments
          Logger.getGlobal().log(Level.WARNING, "file read problem", e);
       }
 
+      if (!hadInserts)
+      {
+         // no inserts at all; skip writing file
+         return;
+      }
+
+      final byte[] bytes = outputStream.toByteArray();
+      final MessageDigest outputDigest = createDigest();
+      outputDigest.update(bytes);
+
+      if (Arrays.equals(inputDigest.digest(), outputDigest.digest()))
+      {
+         // input and output content equal; skip writing file
+         return;
+      }
+
       try
       {
-         Files.write(file, outputStream.toByteArray());
+         Files.write(file, bytes);
       }
       catch (IOException e)
       {
          Logger.getGlobal().log(Level.WARNING, "file write problem", e);
       }
+   }
+
+   private static BufferedReader newDigestReader(Path file, MessageDigest inputDigest) throws IOException
+   {
+      return new BufferedReader(
+         new InputStreamReader(new DigestInputStream(Files.newInputStream(file), inputDigest), StandardCharsets.UTF_8));
+   }
+
+   private static MessageDigest createDigest()
+   {
+      final MessageDigest inputDigest;
+      try
+      {
+         inputDigest = MessageDigest.getInstance("SHA-1");
+      }
+      catch (NoSuchAlgorithmException e)
+      {
+         throw new RuntimeException(e);
+      }
+      return inputDigest;
    }
 }
