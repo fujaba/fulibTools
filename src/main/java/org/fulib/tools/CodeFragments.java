@@ -8,6 +8,7 @@ import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -46,6 +47,22 @@ public class CodeFragments
    public LinkedHashMap<String, String> getFragmentMap()
    {
       return this.fragmentMap;
+   }
+
+   /**
+    * @since 1.2
+    */
+   public Map<String, String> getFragments()
+   {
+      return Collections.unmodifiableMap(this.fragmentMap);
+   }
+
+   /**
+    * @since 1.2
+    */
+   public String getFragment(String key)
+   {
+      return this.fragmentMap.get(key);
    }
 
    /**
