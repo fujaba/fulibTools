@@ -11,8 +11,6 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
-
 /**
  * Example use:
  * <pre>
@@ -26,8 +24,9 @@ public class CodeFragments
    private static final Pattern START_PATTERN = Pattern.compile("^\\s*// start_code_fragment: ([\\w.]+)\\s*$");
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
-   private static final Pattern INSERT_START_PATTERN = Pattern.compile("<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*\n");
-   private static final Pattern INSERT_END_PATTERN = Pattern.compile("\r?\n[\\s|*]*<!-- end_code_fragment:");
+   private static final Pattern INSERT_START_PATTERN = Pattern.compile(
+      "^[\\s*]*<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
+   private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*]*<!-- end_code_fragment:.*$");
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
 
@@ -231,57 +230,75 @@ public class CodeFragments
          return;
       }
 
-      try
+      final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+
+      try (final BufferedReader reader = Files.newBufferedReader(file);
+           final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream)))
       {
-         byte[] bytes = Files.readAllBytes(file);
+         String key = null;
 
-         String content = new String(bytes);
-         StringBuilder newContent = new StringBuilder();
-
-         Matcher startMatcher = INSERT_START_PATTERN.matcher(content);
-         Matcher endMatcher = INSERT_END_PATTERN.matcher(content);
-
-         int lastEnd = 0;
-
-         while (startMatcher.find())
+         String line;
+         while ((line = reader.readLine()) != null)
          {
-            int end = startMatcher.end();
-            String key = startMatcher.group(1);
-
-            boolean found = endMatcher.find(end - 2);
-
-            if (!found)
+            if (key != null) // inside fragment
             {
-               throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
+               if (INSERT_END_PATTERN.matcher(line).find())
+               {
+                  // copy the <!-- end ... --> line
+                  writer.write(line);
+                  writer.write(System.lineSeparator());
+                  key = null;
+               }
+
+               // don't copy anything before the <!-- end ... -->
+               continue;
             }
 
-            int endOfFragment = endMatcher.start();
-
-            String fragmentText = this.fragmentMap.get(key);
-
-            if (fragmentText != null)
+            final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
+            final String content;
+            if (startMatcher.find())
             {
-               newContent.append(content, lastEnd, end).append(fragmentText);
-               lastEnd = endOfFragment;
+               key = startMatcher.group(1);
+               content = this.fragmentMap.get(key);
+               if (content == null)
+               {
+                  System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+                  key = null;
+               }
             }
             else
             {
-               System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+               content = null;
+            }
+
+            // in any case, copy the current line (even the <!-- insert ... -->)
+            writer.write(line);
+            writer.write(System.lineSeparator());
+
+            // copy fragment content if the line was indeed <!-- insert ... -->
+            if (content != null)
+            {
+               writer.write(content);
             }
          }
 
-         if (lastEnd == 0)
+         if (key != null)
          {
-            return;
+            throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
          }
-
-         newContent.append(content.substring(lastEnd));
-
-         Files.write(file, newContent.toString().getBytes(), TRUNCATE_EXISTING);
       }
       catch (IOException e)
       {
          Logger.getGlobal().log(Level.WARNING, "file read problem", e);
+      }
+
+      try
+      {
+         Files.write(file, outputStream.toByteArray());
+      }
+      catch (IOException e)
+      {
+         Logger.getGlobal().log(Level.WARNING, "file write problem", e);
       }
    }
 }
