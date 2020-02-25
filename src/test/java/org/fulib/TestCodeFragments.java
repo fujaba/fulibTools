@@ -47,13 +47,32 @@ public class TestCodeFragments
       final Map<String, String> fragmentMap = FulibTools.codeFragments().updateCodeFragments(FOLDER);
 
       String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragmentExample.java.hello");
-      assertThat(codeFragments_updateCodeFragments, is("hello world" + System.lineSeparator()));
+      assertThat(codeFragments_updateCodeFragments,
+                 is("System.out.println(\"Hello World\");" + System.lineSeparator()));
 
-      final String actualContent = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
-                                              StandardCharsets.UTF_8);
-      final String expectedContent =
-         "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n" + "    hello world" + System.lineSeparator()
-         + "<!-- end_code_fragment: -->\n";
-      assertThat(actualContent, is(expectedContent));
+      final String actualMd = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
+                                         StandardCharsets.UTF_8);
+
+      // language=markdown
+      final String expectedMd = "Indentation level increased by 4 spaces:\n" + "\n"
+                                + "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
+                                + "    System.out.println(\"Hello World\");\n" + "<!-- end_code_fragment: -->\n" + "\n"
+                                + "Blockquotes:\n" + "\n"
+                                + "> <!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
+                                + ">     System.out.println(\"Hello World\");\n" + "> <!-- end_code_fragment: -->\n";
+      assertThat(actualMd, is(expectedMd));
+
+      final String actualJava = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.java")),
+                                           StandardCharsets.UTF_8);
+
+      // language=java
+      final String expectedJava =
+         "/**\n" + " * <pre><code>\n" + " * <!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
+         + " *     System.out.println(\"Hello World\");\n" + " * <!-- end_code_fragment: -->\n" + " * </code></pre>\n"
+         + " */\n" + "class CodeFragmentExample {\n" + "   void foo() {\n"
+         + "      // start_code_fragment: CodeFragmentExample.java.hello\n"
+         + "      System.out.println(\"Hello World\");\n" + "      // end_code_fragment:\n" + "   }\n" + "}\n";
+
+      assertThat(actualJava, is(expectedJava));
    }
 }
