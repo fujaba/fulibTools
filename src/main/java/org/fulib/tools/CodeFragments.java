@@ -23,6 +23,12 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  */
 public class CodeFragments
 {
+   private static final Pattern START_PATTERN = Pattern.compile("// start_code_fragment: ([\\w.]+)\\s*\n");
+   private static final Pattern END_PATTERN = Pattern.compile("\r?\n\\s*// end_code_fragment:");
+
+   private static final Pattern INSERT_START_PATTERN = Pattern.compile("<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*\n");
+   private static final Pattern INSERT_END_PATTERN = Pattern.compile("\r?\n[\\s|*]*<!-- end_code_fragment:");
+
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
 
    /**
@@ -175,11 +181,8 @@ public class CodeFragments
 
          String content = new String(bytes);
 
-         Pattern startPattern = Pattern.compile("" + "// start_code_fragment: ([\\w.]+)\\s*\n");
-         Matcher startMatcher = startPattern.matcher(content);
-
-         Pattern endPattern = Pattern.compile("" + "\r?\n\\s*// end_code_fragment:");
-         Matcher endMatcher = endPattern.matcher(content);
+         Matcher startMatcher = START_PATTERN.matcher(content);
+         Matcher endMatcher = END_PATTERN.matcher(content);
 
          while (startMatcher.find())
          {
@@ -221,11 +224,8 @@ public class CodeFragments
          String content = new String(bytes);
          StringBuilder newContent = new StringBuilder();
 
-         Pattern startPattern = Pattern.compile("" + "<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*\n");
-         Matcher startMatcher = startPattern.matcher(content);
-
-         Pattern endPattern = Pattern.compile("" + "\r?\n[\\s|*]*<!-- end_code_fragment:");
-         Matcher endMatcher = endPattern.matcher(content);
+         Matcher startMatcher = INSERT_START_PATTERN.matcher(content);
+         Matcher endMatcher = INSERT_END_PATTERN.matcher(content);
 
          int lastEnd = 0;
 
