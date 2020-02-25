@@ -52,7 +52,7 @@ public class TestCodeFragments
       final String actualContent = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
                                               StandardCharsets.UTF_8);
       final String expectedContent =
-         "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n" + "   hello world\n"
+         "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n" + "   hello world" + System.lineSeparator()
          + "<!-- end_code_fragment: -->\n";
       assertThat(actualContent, is(expectedContent));
    }
