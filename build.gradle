@@ -58,7 +58,7 @@ dependencies {
    implementation group: 'org.antlr', name: 'ST4', version: '4.0.8'
 
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-   implementation group: 'guru.nidi', name: 'graphviz-java', version: '0.11.0'
+   implementation group: 'guru.nidi', name: 'graphviz-java', version: '0.14.2'
 
    // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
    runtimeOnly group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.28'
