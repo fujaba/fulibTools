@@ -18,12 +18,63 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Example use:
- * <pre>
+ * Provides a data structure for mapping keys to code fragments,
+ * which can be loaded from and inserted into files via special comments.
+ * <p>
+ * Fragments can be defined in {@code .java}, {@code .md} and {@code build.gradle} files,
+ * by surrounding them with these comments:
+ * <pre><code>
+ *    // start_code_fragment: my.fragment.id
+ *    hello world
+ *    // end_code_fragment:
+ * </code></pre>
+ * Here, {@code my.fragment.id} is the fragment key. It can be any Java identifier including dots.
+ * When reading the fragment, each line is stripped of indentation to the level the
+ * {@code start_code_fragment} line was on.
+ * This means the above fragment's content will be {@code hello world\n}, with {@code \n} being a newline symbol.
+ * <p>
+ * You can also define fragments manually using {@link #addFragment(String, String)}.
+ * <p>
+ * Fragment insertion happens in {@code .java} and {@code .md} files, using special HTML comments:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id -->
+ *    &lt;!-- end_code_fragment: -->
+ * </code></pre>
+ * The inserted code fragment will use the same indentation as the insertion tag line, plus 4 extra spaces.
+ * The characters {@code *} (asterisk) and {@code >} (greater than) also count as indentation.
+ * This allows you to insert code fragments into JavaDoc or Markdown blockquotes:
+ * <pre><code>
+ *    /*
+ *     * &lt;!-- insert_code_fragment: my.fragment.id -->
+ *     * &lt;!-- end_code_fragment: -->
+ *     * /
+ *
+ *    > &lt;!-- insert_code_fragment: my.fragment.id -->
+ *    > &lt;!-- end_code_fragment: -->
+ * </code></pre>
+ * After processing, the above examples will look like this:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id -->
+ *    hello world
+ *    &lt;!-- end_code_fragment: -->
+ *
+ *    /*
+ *     * &lt;!-- insert_code_fragment: my.fragment.id -->
+ *     *     hello world
+ *     * &lt;!-- end_code_fragment: -->
+ *     * /
+ *
+ *    > &lt;!-- insert_code_fragment: my.fragment.id -->
+ *    >     hello world
+ *    > &lt;!-- end_code_fragment: -->
+ * </code></pre>
+ * <p>
+ * To update all code fragments in the current project, put this line into a main() program and run it:
+ * <pre><code>
  * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
  * FulibTools.codeFragments().updateCodeFragments(".");
  * <!-- end_code_fragment: -->
- * </pre>
+ * </code></pre>
  */
 public class CodeFragments
 {
@@ -45,7 +96,7 @@ public class CodeFragments
    // =============== Properties ===============
 
    /**
-    * @return the fragment map
+    * @return the internal, modifiable fragment map
     *
     * @deprecated since 1.2; use {@link #getFragments()} instead
     */
@@ -56,6 +107,8 @@ public class CodeFragments
    }
 
    /**
+    * @return an unmodifiable map from keys to fragments
+    *
     * @since 1.2
     */
    public Map<String, String> getFragments()
@@ -64,6 +117,11 @@ public class CodeFragments
    }
 
    /**
+    * @param key
+    *    the fragment key
+    *
+    * @return the fragment with the given {@code key}, or {@code null} if not found
+    *
     * @since 1.2
     */
    public String getFragment(String key)
@@ -124,6 +182,12 @@ public class CodeFragments
    // =============== Methods ===============
 
    /**
+    * Loads code fragments from all files within the given folders.
+    * If a folder path does not exist, it is ignored.
+    *
+    * @param folders
+    *    the folders to search for fragments
+    *
     * @since 1.2
     */
    public void load(String... folders)
@@ -142,6 +206,12 @@ public class CodeFragments
    }
 
    /**
+    * Inserts code fragments into all files within the given folders.
+    * If a folder path does not exist, it is ignored.
+    *
+    * @param folders
+    *    the folders to search for fragment insertion points
+    *
     * @since 1.2
     */
    public void write(String... folders)
@@ -160,6 +230,11 @@ public class CodeFragments
    }
 
    /**
+    * Runs {@link #load(String...)} and {@link #write(String...)} in succession.
+    *
+    * @param folders
+    *    the folders to search for fragments and fragment insertion points
+    *
     * @since 1.2
     */
    public void update(String... folders)
@@ -169,12 +244,19 @@ public class CodeFragments
    }
 
    /**
-    * @deprecated since 1.2; use {@link #update(String...)} and optionally {@link #getFragments()} instead
+    * Runs {@link #update(String...)} and then returns the {@linkplain #getFragments() map of fragments}.
+    *
+    * @param folders
+    *    the folders to search for fragments and fragment insertion points
+    *
+    * @return the {@linkplain #getFragments() map of fragments}
+    *
+    * @deprecated since 1.2; use {@link #update(String...)} and {@link #getFragments()} instead
     */
    @Deprecated
-   public Map<String, String> updateCodeFragments(String... folderList)
+   public Map<String, String> updateCodeFragments(String... folders)
    {
-      this.update(folderList);
+      this.update(folders);
       return this.getFragments();
    }
 
