@@ -1,44 +1,42 @@
 package org.fulib;
 
+import org.apache.commons.io.IOUtils;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
+import studyRight.StudyRight;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class TestClassDiagrams
 {
    @Test
    public void testClassDiagrams() throws IOException
    {
-       // load model
-      String packagName = ClassModel.class.getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packagName);
+      // load model
+      final String packageName = StudyRight.class.getPackage().getName();
 
-      String srcFolder = "../fulib/src/main/java/";
-      Path packageFolder = Paths.get(srcFolder + packagName.replaceAll("\\.", "/"));
-      Path yamlPath = packageFolder.resolve("classModel.yaml");
-      if (Files.exists(yamlPath))
+      try (final InputStream yamlInput = StudyRight.class.getResourceAsStream("classModel.yaml"))
       {
-         byte[] bytes = Files.readAllBytes(yamlPath);
-         String yamlString = new String(bytes);
+         final String yamlString = IOUtils.toString(yamlInput, StandardCharsets.UTF_8);
+         YamlIdMap idMap = new YamlIdMap(ClassModel.class.getPackage().getName());
          ClassModel model = (ClassModel) idMap.decode(yamlString);
 
-         model.setMainJavaDir(srcFolder);
+         model.setMainJavaDir("src/test/java");
 
-         // generate class diagram
          FulibTools.classDiagrams().dumpPng(model);
 
-         Path diagramPath = packageFolder.resolve("doc-files/classDiagram.png");
+         Path diagramPath = Paths.get("src/test/java/" + packageName.replace('.', '/') + "/doc-files/classDiagram.png");
 
          assertThat(Files.exists(diagramPath), is(true));
       }

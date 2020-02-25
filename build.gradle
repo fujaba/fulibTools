@@ -66,6 +66,9 @@ dependencies {
 
 // --------------- Misc. Settings ---------------
 
+// make the studyRight classModel.yaml available as a resource
+sourceSets.test.resources.srcDir 'src/test/java'
+
 javadoc {
    failOnError = false
 }
