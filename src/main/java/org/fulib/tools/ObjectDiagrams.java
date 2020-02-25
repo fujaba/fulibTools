@@ -25,7 +25,7 @@ import java.util.*;
  * <!-- end_code_fragment: -->
  * </pre>
  * Example: <br>
- * <img src="doc-files/studyRightObjects.png" width="343">
+ * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
  */
 public class ObjectDiagrams
 {
@@ -34,7 +34,7 @@ public class ObjectDiagrams
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
     * @param objectList
     */
@@ -65,7 +65,7 @@ public class ObjectDiagrams
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
     * @param diagramFileName
     * @param objectList
@@ -85,7 +85,7 @@ public class ObjectDiagrams
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
-    * <img src="doc-files/studyRightObjects.png" width="343">
+    * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
     * @param diagramFileName
     * @param objectList
@@ -384,9 +384,9 @@ public class ObjectDiagrams
    private static String encodeDotString(String value)
    {
       // value = value.replace("%", "");
+      value = value.replace("&", "&amp;");
       value = value.replace("<", "&lt;");
       value = value.replace(">", "&gt;");
-      value = value.replace("&", "&amp;");
       value = "\"" + value.replace("\"", "\\\"") + "\"";
       return value;
    }
