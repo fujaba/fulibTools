@@ -10,7 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -100,66 +100,16 @@ public class CodeFragments
 
    public Map<String, String> updateCodeFragments(String... folderList)
    {
-      // collect code fragments from source files
       try
       {
-         AtomicBoolean write = new AtomicBoolean(false);
-         FileVisitor<Path> visitor = new FileVisitor<Path>()
-         {
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-            {
-               return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-            {
-               if (write.get())
-               {
-                  CodeFragments.this.insertFragments(file);
-               }
-               else
-               {
-                  CodeFragments.this.fetchFromFile(file);
-               }
-               return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult visitFileFailed(Path file, IOException exc)
-            {
-               return FileVisitResult.CONTINUE;
-            }
-
-            @Override
-            public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-            {
-               return FileVisitResult.CONTINUE;
-            }
-         };
-
-         // fetch
          for (String folder : folderList)
          {
-            Path path = Paths.get(folder);
-            if (!Files.exists(path))
-            {
-               continue;
-            }
-            Files.walkFileTree(path, visitor);
+            this.walkFiles(Paths.get(folder), this::fetchFromFile);
          }
 
-         // insert
-         write.set(true);
          for (String folder : folderList)
          {
-            Path path = Paths.get(folder);
-            if (!Files.exists(path))
-            {
-               continue;
-            }
-            Files.walkFileTree(path, visitor);
+            this.walkFiles(Paths.get(folder), this::insertFragments);
          }
       }
       catch (IOException e)
@@ -167,9 +117,24 @@ public class CodeFragments
          Logger.getGlobal().log(Level.WARNING, "file walk problem", e);
       }
 
-      // inject code fragements
-
       return this.fragmentMap;
+   }
+
+   private void walkFiles(Path path, Consumer<? super Path> consumer) throws IOException
+   {
+      if (!Files.exists(path))
+      {
+         return;
+      }
+      Files.walkFileTree(path, new SimpleFileVisitor<Path>()
+      {
+         @Override
+         public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
+         {
+            consumer.accept(file);
+            return FileVisitResult.CONTINUE;
+         }
+      });
    }
 
    private void fetchFromFile(Path file)
