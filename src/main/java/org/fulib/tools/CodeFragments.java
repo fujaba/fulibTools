@@ -1,6 +1,6 @@
 package org.fulib.tools;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.LinkedHashMap;
@@ -23,8 +23,8 @@ import static java.nio.file.StandardOpenOption.TRUNCATE_EXISTING;
  */
 public class CodeFragments
 {
-   private static final Pattern START_PATTERN = Pattern.compile("// start_code_fragment: ([\\w.]+)\\s*\n");
-   private static final Pattern END_PATTERN = Pattern.compile("\r?\n\\s*// end_code_fragment:");
+   private static final Pattern START_PATTERN = Pattern.compile("^\\s*// start_code_fragment: ([\\w.]+)\\s*$");
+   private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile("<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*\n");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("\r?\n[\\s|*]*<!-- end_code_fragment:");
@@ -175,37 +175,46 @@ public class CodeFragments
          return;
       }
 
-      try
+      try (final BufferedReader reader = Files.newBufferedReader(file))
       {
-         byte[] bytes = Files.readAllBytes(file);
+         String key = null;
+         final StringBuilder contentBuf = new StringBuilder();
 
-         String content = new String(bytes);
-
-         Matcher startMatcher = START_PATTERN.matcher(content);
-         Matcher endMatcher = END_PATTERN.matcher(content);
-
-         while (startMatcher.find())
+         String line;
+         while ((line = reader.readLine()) != null)
          {
-            int end = startMatcher.end();
-            String key = startMatcher.group(1);
-
-            boolean found = endMatcher.find(end - 2);
-
-            if (!found)
+            if (key == null) // outside fragment
             {
-               throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
+               final Matcher startMatcher = START_PATTERN.matcher(line);
+               if (startMatcher.find())
+               {
+                  key = startMatcher.group(1);
+               }
+               // ordinary text, ignore
+               continue;
             }
 
-            int endOfFragment = endMatcher.start();
-
-            String fragmentText = content.substring(end, endOfFragment);
-
-            if (this.fragmentMap.containsKey(key))
+            if (END_PATTERN.matcher(line).find())
             {
-               System.out.printf("%s: warning: fragment '%s' was already defined, using content from this file%n",
-                                 fileName, key);
+               if (this.fragmentMap.containsKey(key))
+               {
+                  System.out.printf("%s: warning: fragment '%s' was already defined, using content from this file%n",
+                                    fileName, key);
+               }
+               final String fragmentText = contentBuf.toString();
+               this.fragmentMap.put(key, fragmentText);
+               key = null;
+               contentBuf.setLength(0);
             }
-            this.fragmentMap.put(key, fragmentText);
+            else
+            {
+               contentBuf.append(line).append(System.lineSeparator());
+            }
+         }
+
+         if (key != null)
+         {
+            throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
          }
       }
       catch (IOException e)
