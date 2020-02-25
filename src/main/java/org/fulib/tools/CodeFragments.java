@@ -200,6 +200,11 @@ public class CodeFragments
 
             String fragmentText = content.substring(end, endOfFragment);
 
+            if (this.fragmentMap.containsKey(key))
+            {
+               System.out.printf("%s: warning: fragment '%s' was already defined, using content from this file%n",
+                                 fileName, key);
+            }
             this.fragmentMap.put(key, fragmentText);
          }
       }
