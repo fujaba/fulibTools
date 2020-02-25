@@ -220,7 +220,7 @@ public class CodeFragments
       {
          for (String folder : folders)
          {
-            this.walkFiles(Paths.get(folder), this::fetchFromFile);
+            this.walkFiles(Paths.get(folder), this::insertFragments);
          }
       }
       catch (IOException e)
