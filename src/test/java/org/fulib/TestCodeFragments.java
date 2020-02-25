@@ -47,12 +47,12 @@ public class TestCodeFragments
       final Map<String, String> fragmentMap = FulibTools.codeFragments().updateCodeFragments(FOLDER);
 
       String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragmentExample.java.hello");
-      assertThat(codeFragments_updateCodeFragments, is("   hello world" + System.lineSeparator()));
+      assertThat(codeFragments_updateCodeFragments, is("hello world" + System.lineSeparator()));
 
       final String actualContent = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
                                               StandardCharsets.UTF_8);
       final String expectedContent =
-         "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n" + "   hello world" + System.lineSeparator()
+         "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n" + "    hello world" + System.lineSeparator()
          + "<!-- end_code_fragment: -->\n";
       assertThat(actualContent, is(expectedContent));
    }

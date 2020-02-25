@@ -26,12 +26,14 @@ import java.util.regex.Pattern;
  */
 public class CodeFragments
 {
-   private static final Pattern START_PATTERN = Pattern.compile("^\\s*// start_code_fragment: ([\\w.]+)\\s*$");
+   private static final Pattern START_PATTERN = Pattern.compile("^(\\s*)// start_code_fragment: ([\\w.]+)\\s*$");
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile(
-      "^[\\s*]*<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
+      "^([\\s*]*)<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*]*<!-- end_code_fragment:.*$");
+
+   private static final String INSERT_INDENT = "    ";
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
 
@@ -182,6 +184,7 @@ public class CodeFragments
       try (final BufferedReader reader = Files.newBufferedReader(file))
       {
          String key = null;
+         String indent = null;
          final StringBuilder contentBuf = new StringBuilder();
 
          String line;
@@ -192,7 +195,8 @@ public class CodeFragments
                final Matcher startMatcher = START_PATTERN.matcher(line);
                if (startMatcher.find())
                {
-                  key = startMatcher.group(1);
+                  indent = startMatcher.group(1);
+                  key = startMatcher.group(2);
                }
                // ordinary text, ignore
                continue;
@@ -212,7 +216,8 @@ public class CodeFragments
             }
             else
             {
-               contentBuf.append(line).append(System.lineSeparator());
+               final int start = commonPrefixLength(line, indent);
+               contentBuf.append(line, start, line.length()).append(System.lineSeparator());
             }
          }
 
@@ -225,6 +230,16 @@ public class CodeFragments
       {
          Logger.getGlobal().log(Level.WARNING, "file read problem", e);
       }
+   }
+
+   private static int commonPrefixLength(String a, String b)
+   {
+      int i = 0;
+      while (i < a.length() && i < b.length() && a.charAt(i) == b.charAt(i))
+      {
+         i++;
+      }
+      return i;
    }
 
    private void insertFragments(Path file)
@@ -263,9 +278,11 @@ public class CodeFragments
 
             final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
             final String content;
+            final String indent;
             if (startMatcher.find())
             {
-               key = startMatcher.group(1);
+               indent = startMatcher.group(1);
+               key = startMatcher.group(2);
                content = this.fragmentMap.get(key);
                if (content == null)
                {
@@ -276,6 +293,7 @@ public class CodeFragments
             else
             {
                content = null;
+               indent = null;
             }
 
             // in any case, copy the current line (even the <!-- insert ... -->)
@@ -286,7 +304,13 @@ public class CodeFragments
             if (content != null)
             {
                hadInserts = true;
-               writer.write(content);
+               for (String contentLine : content.split(System.lineSeparator()))
+               {
+                  writer.write(indent);
+                  writer.write(INSERT_INDENT);
+                  writer.write(contentLine);
+                  writer.write(System.lineSeparator());
+               }
             }
          }
 
