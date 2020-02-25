@@ -30,8 +30,8 @@ public class CodeFragments
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile(
-      "^([\\s*]*)<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
-   private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*]*<!-- end_code_fragment:.*$");
+      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
+   private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*>]*<!-- end_code_fragment:.*$");
 
    private static final String INSERT_INDENT = "    ";
 
