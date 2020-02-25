@@ -250,6 +250,10 @@ public class CodeFragments
                newContent.append(content, lastEnd, end).append(fragmentText);
                lastEnd = endOfFragment;
             }
+            else
+            {
+               System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+            }
          }
 
          if (lastEnd == 0)
