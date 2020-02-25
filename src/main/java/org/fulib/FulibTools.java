@@ -43,7 +43,7 @@ public class FulibTools
     FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
     * <!-- end_code_fragment: -->
     * </pre>
-    * <img src="tools/doc-files/studyRightObjects.png">
+    * <img src="tools/doc-files/studyRightObjects.png" alt="StudyRight Objects">
     * @return the object diagram tool
     */
    public static ObjectDiagrams objectDiagrams()

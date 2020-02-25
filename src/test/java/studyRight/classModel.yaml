@@ -7,20 +7,20 @@
   packageSrcFolder: 	"src/test/java/studyRight"
 
 - studyRight2: 	Clazz
-  attributes: 	id4 	
+  attributes: 	id4 	description5 	
   model: 	c1
   modified: 	false
   name: 	StudyRight
   propertyStyle: 	POJO
-  roles: 	students5 	
+  roles: 	students6 	
 
 - student3: 	Clazz
-  attributes: 	name6 	
+  attributes: 	name7 	
   model: 	c1
   modified: 	false
   name: 	Student
   propertyStyle: 	POJO
-  roles: 	uni7 	
+  roles: 	uni8 	
 
 - id4: 	Attribute
   clazz: 	studyRight2
@@ -29,30 +29,37 @@
   propertyStyle: 	POJO
   type: 	String
 
-- students5: 	AssocRole
+- description5: 	Attribute
+  clazz: 	studyRight2
+  modified: 	false
+  name: 	description
+  propertyStyle: 	POJO
+  type: 	String
+
+- students6: 	AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	studyRight2
   modified: 	false
   name: 	students
-  other: 	uni7
+  other: 	uni8
   propertyStyle: 	POJO
   roleType: 	"java.util.ArrayList<%s>"
 
-- name6: 	Attribute
+- name7: 	Attribute
   clazz: 	student3
   modified: 	false
   name: 	name
   propertyStyle: 	POJO
   type: 	String
 
-- uni7: 	AssocRole
+- uni8: 	AssocRole
   aggregation: 	false
   cardinality: 	1
   clazz: 	student3
   modified: 	false
   name: 	uni
-  other: 	students5
+  other: 	students6
   propertyStyle: 	POJO
   roleType: 	"java.util.ArrayList<%s>"
 
