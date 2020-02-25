@@ -60,9 +60,6 @@ dependencies {
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
    implementation group: 'guru.nidi', name: 'graphviz-java', version: '0.14.2'
 
-   // https://mvnrepository.com/artifact/org.slf4j/slf4j-nop
-   runtimeOnly group: 'org.slf4j', name: 'slf4j-nop', version: '1.7.28'
-
    // https://mvnrepository.com/artifact/org.junit/junit
    testImplementation group: 'junit', name: 'junit', version: '4.12'
 }
