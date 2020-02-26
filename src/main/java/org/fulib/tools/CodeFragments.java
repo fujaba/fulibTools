@@ -452,8 +452,12 @@ public class CodeFragments
 
          for (int i = 3; i <= startMatcher.groupCount(); i++)
          {
-            final String pipe = startMatcher.group(i);
-
+            final String arg = startMatcher.group(i);
+            final Pipe pipe = this.resolvePipe(arg);
+            if (pipe != null)
+            {
+               content = pipe.apply(content, arg);
+            }
          }
 
          // insert the fragment right away
@@ -468,6 +472,16 @@ public class CodeFragments
       }
 
       return hadInserts;
+   }
+
+   private Pipe resolvePipe(String arg)
+   {
+      final int colonIndex = arg.indexOf(':');
+      if (colonIndex >= 0)
+      {
+         arg = arg.substring(0, colonIndex);
+      }
+      return this.getPipe(arg);
    }
 
    private static void writeLine(BufferedWriter writer, String line) throws IOException
