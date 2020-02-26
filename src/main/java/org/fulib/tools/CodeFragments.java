@@ -7,10 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.DigestInputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -92,6 +89,7 @@ public class CodeFragments
    // =============== Fields ===============
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
+   private Map<String, Pipe> pipes = new HashMap<>();
 
    // =============== Properties ===============
 
@@ -177,6 +175,21 @@ public class CodeFragments
    public void addFragment(String key, String content)
    {
       this.fragmentMap.put(key, content);
+   }
+
+   public Pipe getPipe(String name)
+   {
+      return this.pipes.get(name);
+   }
+
+   public void addPipe(String name, Pipe pipe)
+   {
+      this.pipes.put(name, pipe);
+   }
+
+   public void removePipe(String name)
+   {
+      this.pipes.remove(name);
    }
 
    // =============== Methods ===============
@@ -429,7 +442,7 @@ public class CodeFragments
          }
 
          key = startMatcher.group(2);
-         final String content = this.fragmentMap.get(key);
+         String content = this.fragmentMap.get(key);
          if (content == null)
          {
             System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
