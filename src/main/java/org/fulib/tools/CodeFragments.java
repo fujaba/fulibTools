@@ -81,7 +81,7 @@ public class CodeFragments
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile(
-      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(?:\\|\\s*(\\w+)\\s*)?-->\\s*$");
+      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(?:\\|\\s*(\\w\\S*)\\s*)?-->\\s*$");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*>]*<!-- end_code_fragment:.*$");
 
    private static final Map<String, Pipe> DEFAULT_PIPES;
@@ -472,7 +472,7 @@ public class CodeFragments
             }
 
             final String pipeName = getPipeName(arg);
-            final Pipe pipe = this.getPipe(arg);
+            final Pipe pipe = this.getPipe(pipeName);
             if (pipe != null)
             {
                content = pipe.apply(content, arg);
