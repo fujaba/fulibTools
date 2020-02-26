@@ -84,7 +84,7 @@ public class CodeFragments
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile(
-      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*-->\\s*$");
+      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(\\|\\s*(\\w+)\\s*)*-->\\s*$");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*>]*<!-- end_code_fragment:.*$");
 
    private static final String INSERT_INDENT = "    ";
@@ -404,6 +404,12 @@ public class CodeFragments
                System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
                key = null;
                continue;
+            }
+
+            for (int i = 3; i <= startMatcher.groupCount(); i++)
+            {
+               final String pipe = startMatcher.group(i);
+
             }
 
             // insert the fragment right away
