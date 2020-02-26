@@ -419,17 +419,15 @@ public class CodeFragments
             continue;
          }
 
-         // in any case, copy the current line (even the <!-- insert ... -->)
+         // outside fragments, copy the current line in any case (even the <!-- insert ... -->)
          writeLine(writer, line);
 
          final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
          if (!startMatcher.find())
          {
-            writeLine(writer, line);
             continue;
          }
 
-         final String indent = startMatcher.group(1);
          key = startMatcher.group(2);
          final String content = this.fragmentMap.get(key);
          if (content == null)
@@ -441,6 +439,7 @@ public class CodeFragments
 
          // insert the fragment right away
          hadInserts = true;
+         final String indent = startMatcher.group(1);
          this.writeFragment(writer, indent, content);
       }
 
