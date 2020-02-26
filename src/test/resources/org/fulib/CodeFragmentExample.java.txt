@@ -1,5 +1,8 @@
 /**
  * <!-- insert_code_fragment: CodeFragmentExample.java.hello | javadoc -->
+ * <pre>{@code
+ * System.out.println("Hello World");
+ * }</pre>
  * <!-- end_code_fragment: -->
  */
 class CodeFragmentExample {

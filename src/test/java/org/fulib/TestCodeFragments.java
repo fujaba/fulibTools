@@ -1,5 +1,6 @@
 package org.fulib;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -53,25 +54,15 @@ public class TestCodeFragments
       final String actualMd = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
                                          StandardCharsets.UTF_8);
 
-      // language=markdown
-      final String expectedMd = "Indentation level increased by 4 spaces:\n" + "\n"
-                                + "<!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
-                                + "    System.out.println(\"Hello World\");\n" + "<!-- end_code_fragment: -->\n" + "\n"
-                                + "Blockquotes:\n" + "\n"
-                                + "> <!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
-                                + ">     System.out.println(\"Hello World\");\n" + "> <!-- end_code_fragment: -->\n";
+      final String expectedMd = IOUtils.toString(this.getClass().getResourceAsStream("CodeFragmentExample.md.txt"),
+                                                 StandardCharsets.UTF_8);
       assertThat(actualMd, is(expectedMd));
 
       final String actualJava = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.java")),
                                            StandardCharsets.UTF_8);
 
-      // language=java
-      final String expectedJava =
-         "/**\n" + " * <pre><code>\n" + " * <!-- insert_code_fragment: CodeFragmentExample.java.hello -->\n"
-         + " *     System.out.println(\"Hello World\");\n" + " * <!-- end_code_fragment: -->\n" + " * </code></pre>\n"
-         + " */\n" + "class CodeFragmentExample {\n" + "   void foo() {\n"
-         + "      // start_code_fragment: CodeFragmentExample.java.hello\n"
-         + "      System.out.println(\"Hello World\");\n" + "      // end_code_fragment:\n" + "   }\n" + "}\n";
+      final String expectedJava = IOUtils.toString(this.getClass().getResourceAsStream("CodeFragmentExample.java.txt"),
+                                                   StandardCharsets.UTF_8);
 
       assertThat(actualJava, is(expectedJava));
    }

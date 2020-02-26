@@ -1,29 +1,39 @@
 Plain:
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello -->
+System.out.println("Hello World");
 <!-- end_code_fragment: -->
 
 Indentation level increased by 4 spaces:
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | indent -->
+    System.out.println("Hello World");
 <!-- end_code_fragment: -->
 
 Blockquotes:
 
 > <!-- insert_code_fragment: CodeFragmentExample.java.hello | indent -->
+>     System.out.println("Hello World");
 > <!-- end_code_fragment: -->
 
 Fenced code (default):
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced -->
+```java
+System.out.println("Hello World");
+```
 <!-- end_code_fragment: -->
 
 Fenced code (custom language):
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced:js -->
+```js
+System.out.println("Hello World");
+```
 <!-- end_code_fragment: -->
 
 HTML escaped:
 
 <!-- insert_code_fragment: CodeFragmentExample.java.special | html -->
+List&lt;Integer&gt; lst = Arrays.asList(1 &amp; 3, 4 &amp; 5);
 <!-- end_code_fragment: -->
