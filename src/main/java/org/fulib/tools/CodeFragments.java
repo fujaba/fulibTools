@@ -84,13 +84,12 @@ public class CodeFragments
       "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(\\|\\s*(\\w+)\\s*)*-->\\s*$");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*>]*<!-- end_code_fragment:.*$");
 
-   private static final String INSERT_INDENT = "    ";
-
    private static final Map<String, Pipe> DEFAULT_PIPES;
 
    static
    {
       final Map<String, Pipe> defaultPipes = new HashMap<>();
+      defaultPipes.put(IndentPipe.NAME, new IndentPipe());
       defaultPipes.put(JavaDocPipe.NAME, new JavaDocPipe());
       defaultPipes.put(CodeFencePipe.NAME, new CodeFencePipe());
       defaultPipes.put(HtmlPipe.NAME, new HtmlPipe());
@@ -511,7 +510,6 @@ public class CodeFragments
       for (String contentLine : content.split(System.lineSeparator()))
       {
          writer.write(indent);
-         writer.write(INSERT_INDENT);
          writeLine(writer, contentLine);
       }
    }
