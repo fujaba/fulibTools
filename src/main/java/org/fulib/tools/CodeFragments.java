@@ -357,80 +357,19 @@ public class CodeFragments
          return;
       }
 
-      boolean hadInserts = false;
+      final boolean hadInserts;
       final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
       final MessageDigest inputDigest = createDigest();
       try (final BufferedReader reader = newDigestReader(file, inputDigest);
            final BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream)))
       {
-         String key = null;
-
-         String line;
-         while ((line = reader.readLine()) != null)
-         {
-            if (key != null) // inside fragment
-            {
-               if (INSERT_END_PATTERN.matcher(line).find())
-               {
-                  // copy the <!-- end ... --> line
-                  writer.write(line);
-                  writer.write(System.lineSeparator());
-                  key = null;
-               }
-
-               // don't copy anything before the <!-- end ... -->
-               continue;
-            }
-
-            // in any case, copy the current line (even the <!-- insert ... -->)
-            writer.write(line);
-            writer.write(System.lineSeparator());
-
-            final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
-            if (!startMatcher.find())
-            {
-               // ordinary line, copy
-               writer.write(line);
-               writer.write(System.lineSeparator());
-               continue;
-            }
-
-            final String indent = startMatcher.group(1);
-            key = startMatcher.group(2);
-            final String content = this.fragmentMap.get(key);
-            if (content == null)
-            {
-               System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
-               key = null;
-               continue;
-            }
-
-            for (int i = 3; i <= startMatcher.groupCount(); i++)
-            {
-               final String pipe = startMatcher.group(i);
-
-            }
-
-            // insert the fragment right away
-            hadInserts = true;
-            for (String contentLine : content.split(System.lineSeparator()))
-            {
-               writer.write(indent);
-               writer.write(INSERT_INDENT);
-               writer.write(contentLine);
-               writer.write(System.lineSeparator());
-            }
-         }
-
-         if (key != null)
-         {
-            throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
-         }
+         hadInserts = this.insertFragments(fileName, reader, writer);
       }
       catch (IOException e)
       {
          Logger.getGlobal().log(Level.WARNING, "file read problem", e);
+         return;
       }
 
       if (!hadInserts)
@@ -456,6 +395,81 @@ public class CodeFragments
       catch (IOException e)
       {
          Logger.getGlobal().log(Level.WARNING, "file write problem", e);
+      }
+   }
+
+   private boolean insertFragments(String fileName, BufferedReader reader, BufferedWriter writer) throws IOException
+   {
+      boolean hadInserts = false;
+      String key = null;
+
+      String line;
+      while ((line = reader.readLine()) != null)
+      {
+         if (key != null) // inside fragment
+         {
+            if (INSERT_END_PATTERN.matcher(line).find())
+            {
+               // copy the <!-- end ... --> line
+               writeLine(writer, line);
+               key = null;
+            }
+
+            // don't copy anything before the <!-- end ... -->
+            continue;
+         }
+
+         // outside fragments, copy the current line in any case (even the <!-- insert ... -->)
+         writeLine(writer, line);
+
+         final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
+         if (!startMatcher.find())
+         {
+            continue;
+         }
+
+         key = startMatcher.group(2);
+         final String content = this.fragmentMap.get(key);
+         if (content == null)
+         {
+            System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+            key = null;
+            continue;
+         }
+
+         for (int i = 3; i <= startMatcher.groupCount(); i++)
+         {
+            final String pipe = startMatcher.group(i);
+
+         }
+
+         // insert the fragment right away
+         hadInserts = true;
+         final String indent = startMatcher.group(1);
+         this.writeFragment(writer, indent, content);
+      }
+
+      if (key != null)
+      {
+         throw new IllegalArgumentException("could not find <!-- end_code_fragment: in " + fileName);
+      }
+
+      return hadInserts;
+   }
+
+   private static void writeLine(BufferedWriter writer, String line) throws IOException
+   {
+      writer.write(line);
+      writer.write(System.lineSeparator());
+   }
+
+   private void writeFragment(BufferedWriter writer, String indent, String content) throws IOException
+   {
+      for (String contentLine : content.split(System.lineSeparator()))
+      {
+         writer.write(indent);
+         writer.write(INSERT_INDENT);
+         writeLine(writer, contentLine);
       }
    }
 
