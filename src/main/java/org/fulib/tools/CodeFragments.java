@@ -453,10 +453,15 @@ public class CodeFragments
          for (int i = 3; i <= startMatcher.groupCount(); i++)
          {
             final String arg = startMatcher.group(i);
-            final Pipe pipe = this.resolvePipe(arg);
+            final String pipeName = getPipeName(arg);
+            final Pipe pipe = this.getPipe(arg);
             if (pipe != null)
             {
                content = pipe.apply(content, arg);
+            }
+            else
+            {
+               System.err.printf("%s: warning: unknown pipe '%s', skipping%n", fileName, pipeName);
             }
          }
 
@@ -474,14 +479,14 @@ public class CodeFragments
       return hadInserts;
    }
 
-   private Pipe resolvePipe(String arg)
+   private static String getPipeName(String arg)
    {
       final int colonIndex = arg.indexOf(':');
       if (colonIndex >= 0)
       {
          arg = arg.substring(0, colonIndex);
       }
-      return this.getPipe(arg);
+      return arg;
    }
 
    private static void writeLine(BufferedWriter writer, String line) throws IOException
