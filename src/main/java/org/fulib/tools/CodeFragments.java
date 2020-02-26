@@ -86,10 +86,21 @@ public class CodeFragments
 
    private static final String INSERT_INDENT = "    ";
 
+   private static final Map<String, Pipe> DEFAULT_PIPES;
+
+   static
+   {
+      final Map<String, Pipe> defaultPipes = new HashMap<>();
+      defaultPipes.put(JavaDocPipe.NAME, new JavaDocPipe());
+      defaultPipes.put(CodeFencePipe.NAME, new CodeFencePipe());
+      defaultPipes.put(HtmlPipe.NAME, new HtmlPipe());
+      DEFAULT_PIPES = Collections.unmodifiableMap(defaultPipes);
+   }
+
    // =============== Fields ===============
 
    private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
-   private Map<String, Pipe> pipes = new HashMap<>();
+   private Map<String, Pipe> pipes = new HashMap<>(DEFAULT_PIPES);
 
    // =============== Properties ===============
 
