@@ -383,41 +383,37 @@ public class CodeFragments
                continue;
             }
 
-            final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
-            final String content;
-            final String indent;
-            if (startMatcher.find())
-            {
-               indent = startMatcher.group(1);
-               key = startMatcher.group(2);
-               content = this.fragmentMap.get(key);
-               if (content == null)
-               {
-                  System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
-                  key = null;
-               }
-            }
-            else
-            {
-               content = null;
-               indent = null;
-            }
-
             // in any case, copy the current line (even the <!-- insert ... -->)
             writer.write(line);
             writer.write(System.lineSeparator());
 
-            // copy fragment content if the line was indeed <!-- insert ... -->
-            if (content != null)
+            final Matcher startMatcher = INSERT_START_PATTERN.matcher(line);
+            if (!startMatcher.find())
             {
-               hadInserts = true;
-               for (String contentLine : content.split(System.lineSeparator()))
-               {
-                  writer.write(indent);
-                  writer.write(INSERT_INDENT);
-                  writer.write(contentLine);
-                  writer.write(System.lineSeparator());
-               }
+               // ordinary line, copy
+               writer.write(line);
+               writer.write(System.lineSeparator());
+               continue;
+            }
+
+            final String indent = startMatcher.group(1);
+            key = startMatcher.group(2);
+            final String content = this.fragmentMap.get(key);
+            if (content == null)
+            {
+               System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+               key = null;
+               continue;
+            }
+
+            // insert the fragment right away
+            hadInserts = true;
+            for (String contentLine : content.split(System.lineSeparator()))
+            {
+               writer.write(indent);
+               writer.write(INSERT_INDENT);
+               writer.write(contentLine);
+               writer.write(System.lineSeparator());
             }
          }
 
