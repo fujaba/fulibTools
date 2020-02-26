@@ -81,7 +81,7 @@ public class CodeFragments
    private static final Pattern END_PATTERN = Pattern.compile("^\\s*// end_code_fragment:.*$");
 
    private static final Pattern INSERT_START_PATTERN = Pattern.compile(
-      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(\\|\\s*(\\w+)\\s*)*-->\\s*$");
+      "^([\\s*>]*)<!-- insert_code_fragment: ([\\w.]+)\\s*(?:\\|\\s*(\\w+)\\s*)?-->\\s*$");
    private static final Pattern INSERT_END_PATTERN = Pattern.compile("^[\\s*>]*<!-- end_code_fragment:.*$");
 
    private static final Map<String, Pipe> DEFAULT_PIPES;
@@ -460,9 +460,17 @@ public class CodeFragments
             continue;
          }
 
+         // currently, this only matches one pipe because the regex uses ? instead of *.
+         // the reason is that regex can only match a fixed number of groups, see
+         // https://stackoverflow.com/questions/5018487/regular-expression-with-variable-number-of-groups
          for (int i = 3; i <= startMatcher.groupCount(); i++)
          {
             final String arg = startMatcher.group(i);
+            if (arg == null)
+            {
+               continue;
+            }
+
             final String pipeName = getPipeName(arg);
             final Pipe pipe = this.getPipe(arg);
             if (pipe != null)
