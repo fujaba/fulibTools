@@ -34,36 +34,36 @@ import java.util.regex.Pattern;
  * <p>
  * Fragment insertion happens in {@code .java} and {@code .md} files, using special HTML comments:
  * <pre><code>
- *    &lt;!-- insert_code_fragment: my.fragment.id -->
- *    &lt;!-- end_code_fragment: -->
+ *    &lt;!-- insert_code_fragment: my.fragment.id --&gt;
+ *    &lt;!-- end_code_fragment: --&gt;
  * </code></pre>
  * The inserted code fragment will use the same indentation as the insertion tag line, plus 4 extra spaces.
  * The characters {@code *} (asterisk) and {@code >} (greater than) also count as indentation.
  * This allows you to insert code fragments into JavaDoc or Markdown blockquotes:
  * <pre><code>
  *    /*
- *     * &lt;!-- insert_code_fragment: my.fragment.id -->
- *     * &lt;!-- end_code_fragment: -->
+ *     * &lt;!-- insert_code_fragment: my.fragment.id --&gt;
+ *     * &lt;!-- end_code_fragment: --&gt;
  *     * /
  *
- *    > &lt;!-- insert_code_fragment: my.fragment.id -->
- *    > &lt;!-- end_code_fragment: -->
+ *    &gt; &lt;!-- insert_code_fragment: my.fragment.id --&gt;
+ *    &gt; &lt;!-- end_code_fragment: --&gt;
  * </code></pre>
  * After processing, the above examples will look like this:
  * <pre><code>
- *    &lt;!-- insert_code_fragment: my.fragment.id -->
+ *    &lt;!-- insert_code_fragment: my.fragment.id --&gt;
  *    hello world
- *    &lt;!-- end_code_fragment: -->
+ *    &lt;!-- end_code_fragment: --&gt;
  *
  *    /*
- *     * &lt;!-- insert_code_fragment: my.fragment.id -->
+ *     * &lt;!-- insert_code_fragment: my.fragment.id --&gt;
  *     *     hello world
- *     * &lt;!-- end_code_fragment: -->
+ *     * &lt;!-- end_code_fragment: --&gt;
  *     * /
  *
- *    > &lt;!-- insert_code_fragment: my.fragment.id -->
- *    >     hello world
- *    > &lt;!-- end_code_fragment: -->
+ *    &gt; &lt;!-- insert_code_fragment: my.fragment.id --&gt;
+ *    &gt;     hello world
+ *    &gt; &lt;!-- end_code_fragment: --&gt;
  * </code></pre>
  * <p>
  * To update all code fragments in the current project, put this line into a main() program and run it:
@@ -156,23 +156,23 @@ public class CodeFragments
     * {@code README.md}, before:
     * <pre><code>
     *    Use the following code:
-    *    &lt;!-- insert_code_fragment: exampleCode -->
-    *    &lt;!-- end_code_fragment: -->
+    *    &lt;!-- insert_code_fragment: exampleCode --&gt;
+    *    &lt;!-- end_code_fragment: --&gt;
     *    to get the output:
-    *    &lt;!-- insert_code_fragment: exampleOutput -->
-    *    &lt;!-- end_code_fragment: -->
+    *    &lt;!-- insert_code_fragment: exampleOutput --&gt;
+    *    &lt;!-- end_code_fragment: --&gt;
     * </code></pre>
     * <p>
     * {@code README.md}, after:
     * <pre><code>
     *    Use the following code:
-    *    &lt;!-- insert_code_fragment: exampleCode -->
+    *    &lt;!-- insert_code_fragment: exampleCode --&gt;
     *    final String foo = "bar" + 42 + "baz";
-    *    &lt;!-- end_code_fragment: -->
+    *    &lt;!-- end_code_fragment: --&gt;
     *    to get the output:
-    *    &lt;!-- insert_code_fragment: exampleOutput -->
+    *    &lt;!-- insert_code_fragment: exampleOutput --&gt;
     *    bar42baz
-    *    &lt;!-- end_code_fragment: -->
+    *    &lt;!-- end_code_fragment: --&gt;
     * </code></pre>
     *
     * @param key
