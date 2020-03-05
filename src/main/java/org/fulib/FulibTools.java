@@ -1,9 +1,15 @@
 package org.fulib;
 
+import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.engine.GraphvizJdkEngine;
 import org.fulib.tools.*;
 
 public class FulibTools
 {
+   static
+   {
+      Graphviz.useEngine(new GraphvizJdkEngine());
+   }
 
    /**
     * To create a class diagram png for usage in java doc comments,
