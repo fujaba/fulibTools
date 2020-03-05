@@ -77,7 +77,7 @@ public class TestObjectDiagrams
    }
 
 
-   @Test
+   // @Test
    public void testSpecialCharsInStrings() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("studyRight")
