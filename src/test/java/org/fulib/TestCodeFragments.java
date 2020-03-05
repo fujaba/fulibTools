@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -29,7 +30,7 @@ public class TestCodeFragments
       {
          try (final InputStream input = this.getClass().getResourceAsStream(file))
          {
-            Files.copy(input, Paths.get(FOLDER, file));
+            Files.copy(input, Paths.get(FOLDER, file), StandardCopyOption.REPLACE_EXISTING);
          }
       }
    }
