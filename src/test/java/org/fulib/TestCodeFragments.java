@@ -55,14 +55,14 @@ public class TestCodeFragments
       final String actualMd = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
                                          StandardCharsets.UTF_8);
 
-      final String expectedMd = IOUtils.toString(this.getClass().getResourceAsStream("CodeFragmentExample.md.txt"),
+      final String expectedMd = IOUtils.toString(this.getClass().getResource("CodeFragmentExample.md.txt"),
                                                  StandardCharsets.UTF_8);
       assertThat(actualMd, is(expectedMd));
 
       final String actualJava = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.java")),
                                            StandardCharsets.UTF_8);
 
-      final String expectedJava = IOUtils.toString(this.getClass().getResourceAsStream("CodeFragmentExample.java.txt"),
+      final String expectedJava = IOUtils.toString(this.getClass().getResource("CodeFragmentExample.java.txt"),
                                                    StandardCharsets.UTF_8);
 
       assertThat(actualJava, is(expectedJava));
