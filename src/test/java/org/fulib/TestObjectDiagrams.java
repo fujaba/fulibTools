@@ -18,6 +18,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
@@ -88,7 +89,7 @@ public class TestObjectDiagrams
       byte[] bytes = Files.readAllBytes(Paths.get("tmp/specialChars.svg"));
       String svgText = new String(bytes);
 
-      assertThat(svgText.contains("&lt;i&gt;Greatest Ever&lt;/i&gt;"), is(true));
+      assertThat(svgText, containsString("&lt;i&gt;Greatest Ever&lt;/i&gt;"));
    }
 
    @Test
