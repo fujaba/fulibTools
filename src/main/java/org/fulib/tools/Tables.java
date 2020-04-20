@@ -21,7 +21,7 @@ public class Tables
 
       StringBuilder buf = new StringBuilder();
 
-      Class clazz = table.getClass();
+      Class<?> clazz = table.getClass();
       try
       {
          Method getTable = clazz.getMethod("getTable");
@@ -31,11 +31,11 @@ public class Tables
          object = getColumnMap.invoke(table);
          LinkedHashMap<String, Integer> columnMap = (LinkedHashMap<String, Integer>) object;
 
-         genHeader(buf, columnMap, baseTable.get(0));
+         this.genHeader(buf, columnMap);
 
          for (ArrayList<Object> row : baseTable)
          {
-            genRow(buf, row);
+            this.genRow(buf, row);
          }
       }
       catch (Exception e)
@@ -46,7 +46,7 @@ public class Tables
       return buf.toString();
    }
 
-   private void genHeader(StringBuilder buf, LinkedHashMap<String, Integer> columnMap, ArrayList<Object> row)
+   private void genHeader(StringBuilder buf, LinkedHashMap<String, Integer> columnMap)
    {
       buf.append("<table>\n");
 
@@ -66,7 +66,6 @@ public class Tables
       buf.append("</table>\n");
    }
 
-
    private void genRow(StringBuilder buf, ArrayList<Object> row)
    {
       buf.append("<tr>");
@@ -81,8 +80,5 @@ public class Tables
       }
 
       buf.append("</tr>\n");
-
    }
-
-
 }
