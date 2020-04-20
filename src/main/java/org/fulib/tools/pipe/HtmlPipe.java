@@ -1,4 +1,4 @@
-package org.fulib.tools;
+package org.fulib.tools.pipe;
 
 import org.apache.commons.text.StringEscapeUtils;
 

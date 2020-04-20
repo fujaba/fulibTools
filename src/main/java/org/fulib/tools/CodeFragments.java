@@ -1,5 +1,7 @@
 package org.fulib.tools;
 
+import org.fulib.tools.pipe.*;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
