@@ -5,8 +5,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Objects;
 
+/**
+ * @deprecated since 1.2; use {@code HtmlRenderer} provided by FulibTables.
+ */
+@Deprecated
 public class Tables
 {
+   /**
+    * @deprecated since 1.2; use {@code HtmlRenderer} provided by FulibTables.
+    */
+   @Deprecated
    public String toHtml(Object table)
    {
       Objects.requireNonNull(table);
