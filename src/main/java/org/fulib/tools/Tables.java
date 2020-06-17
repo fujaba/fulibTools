@@ -13,6 +13,7 @@ public class Tables
     * @deprecated since 1.2; use {@code HtmlRenderer} provided by FulibTables.
     */
    @Deprecated
+   @SuppressWarnings("unchecked")
    public String toHtml(Object table)
    {
       Objects.requireNonNull(table);
@@ -24,8 +25,8 @@ public class Tables
       {
          final Method getTable = clazz.getMethod("getTable");
          final Method getColumnMap = clazz.getMethod("getColumnMap");
-         final List<? extends List<?>> baseTable = (ArrayList<ArrayList<Object>>) getTable.invoke(table);
-         final Map<String, Integer> columnMap = (LinkedHashMap<String, Integer>) getColumnMap.invoke(table);
+         final List<? extends List<?>> baseTable = (List<? extends List<?>>) getTable.invoke(table);
+         final Map<String, Integer> columnMap = (Map<String, Integer>) getColumnMap.invoke(table);
 
          this.genHeader(buf, columnMap);
 
