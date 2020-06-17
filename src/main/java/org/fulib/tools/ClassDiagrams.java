@@ -22,6 +22,35 @@ public class ClassDiagrams
    private static final STGroup TEMPLATE_GROUP = new STGroupFile(
       ClassDiagrams.class.getResource("templates/classDiagram.stg"));
 
+   private double scale = 1;
+
+   public double getScale()
+   {
+      return scale;
+   }
+
+   public void setScale(double scale)
+   {
+      this.scale = scale;
+   }
+
+   /**
+    * Sets the scaling factor to use when rendering (applies to PNG and SVG format).
+    * Default is {@code 1}.
+    *
+    * @param scale
+    *    the scaling factor
+    *
+    * @return this instance, to allow method chaining
+    *
+    * @since 1.2
+    */
+   public ClassDiagrams withScale(double scale)
+   {
+      this.setScale(scale);
+      return this;
+   }
+
    /**
     * Create a class diagram of the given class model at the path
     * {@link ClassModel#getPackageSrcFolder() modelFolder}{@code /doc-files/classDiagram.png}.
@@ -92,7 +121,7 @@ public class ClassDiagrams
          classDiagram.add("roles", getRolesWithoutOthers(model));
          final String dotString = classDiagram.render();
 
-         Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString).scale(this.getScale()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }
