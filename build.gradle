@@ -1,9 +1,13 @@
 plugins {
    id 'java-library'
    id 'maven-publish'
-   id 'com.jfrog.bintray' version '1.8.4'
-   id 'de.clashsoft.simple-publish' version '0.5.0'
-   id 'com.palantir.revapi' version '1.1.2'
+   // https://plugins.gradle.org/plugin/com.jfrog.bintray
+   id 'com.jfrog.bintray' version '1.8.5'
+   // https://plugins.gradle.org/plugin/de.clashsoft.simple-publish
+   id 'de.clashsoft.simple-publish' version '0.6.0'
+   // https://plugins.gradle.org/plugin/com.palantir.revapi
+   id 'com.palantir.revapi' version '1.4.3'
+   // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
    // id 'org.fulib.fulibGradle' version '0.1.0'
 }
 
@@ -58,13 +62,13 @@ dependencies {
    implementation group: 'org.antlr', name: 'ST4', version: '4.3'
 
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.15.1'
+   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.16.3'
 
    // https://mvnrepository.com/artifact/org.junit/junit
-   testImplementation group: 'junit', name: 'junit', version: '4.12'
+   testImplementation group: 'junit', name: 'junit', version: '4.13'
 
    // https://mvnrepository.com/artifact/commons-io/commons-io
-   testImplementation group: 'commons-io', name: 'commons-io', version: '2.6'
+   testImplementation group: 'commons-io', name: 'commons-io', version: '2.7'
 }
 
 // --------------- Misc. Settings ---------------
