@@ -2,17 +2,16 @@ package org.fulib.tools;
 
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
-import org.apache.commons.text.StringEscapeUtils;
-import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.AssocRole;
-import org.fulib.classmodel.Attribute;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.IdentityHashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -85,18 +84,15 @@ public class ClassDiagrams
    {
       try
       {
-         final StringBuilder dot = new StringBuilder();
-         dot.append("digraph \"").append(model.getPackageName()).append("\" {\n");
-         dot.append("rankdir=BT\n");
+         // TODO create only once
+         final STGroup group = new STGroupFile(getClass().getResource("templates/classDiagram.stg"));
 
-         this.makeNodes(model, dot);
-         dot.append('\n');
-         this.makeEdges(model, dot);
-         dot.append('\n');
+         final ST classDiagram = group.getInstanceOf("classDiagram");
+         classDiagram.add("classModel", model);
+         classDiagram.add("roles", getRolesWithoutOthers(model));
+         final String dotString = classDiagram.render();
 
-         dot.append("}\n");
-
-         Graphviz.fromString(dot.toString()).render(format).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }
@@ -108,83 +104,19 @@ public class ClassDiagrams
       return null;
    }
 
-   private void makeEdges(ClassModel model, StringBuilder buf)
+   private static Set<AssocRole> getRolesWithoutOthers(ClassModel model)
    {
-      final Set<AssocRole> done = Collections.newSetFromMap(new IdentityHashMap<>());
-
-      for (Clazz clazz : model.getClasses())
+      final Set<AssocRole> result = new HashSet<>();
+      for (final Clazz clazz : model.getClasses())
       {
-         for (AssocRole assoc : clazz.getRoles())
+         for (final AssocRole role : clazz.getRoles())
          {
-            if (done.contains(assoc))
+            if (!result.contains(role.getOther()))
             {
-               continue;
+               result.add(role);
             }
-            done.add(assoc);
-            if (assoc.getOther() != null)
-            {
-               done.add(assoc.getOther());
-            }
-
-            this.makeEdge(assoc, buf);
          }
       }
-   }
-
-   private void makeEdge(AssocRole assoc, StringBuilder buf)
-   {
-      final String sourceId = assoc.getClazz().getName();
-      final String targetId = assoc.getOther().getClazz().getName();
-
-      buf.append(targetId).append(" -> ").append(sourceId).append(" [\n");
-      buf.append("  arrowhead=none\n");
-
-      buf.append("  taillabel=\"");
-      this.appendLabel(assoc, buf);
-      buf.append("\"\n");
-
-      buf.append("  headlabel=\"");
-      this.appendLabel(assoc.getOther(), buf);
-      buf.append("\"\n");
-
-      buf.append("];\n");
-   }
-
-   private void appendLabel(AssocRole assoc, StringBuilder buf)
-   {
-      if (assoc.getName() != null)
-      {
-         buf.append(assoc.getName());
-      }
-      if (assoc.getCardinality() != ClassModelBuilder.ONE)
-      {
-         buf.append(" *");
-      }
-   }
-
-   private void makeNodes(ClassModel model, StringBuilder buf)
-   {
-      for (Clazz clazz : model.getClasses())
-      {
-         String objId = clazz.getName();
-
-         buf
-            .append(objId)
-            .append(" " + "[\n" + "   shape=plaintext\n" + "   label=<\n"
-                    + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
-            .append(objId)
-            .append("</td></tr>\n" + "       <tr><td>");
-
-         for (Attribute key : clazz.getAttributes())
-         {
-            buf
-               .append(key.getName())
-               .append(" :")
-               .append(StringEscapeUtils.escapeHtml4(key.getType()))
-               .append("<br  align='left'/>");
-         }
-
-         buf.append("</td></tr>\n" + "     </table>\n" + "  >];\n");
-      }
+      return result;
    }
 }

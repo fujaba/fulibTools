@@ -1,0 +1,36 @@
+delimiters "{", "}"
+
+classDiagram(classModel, roles) ::= <<
+digraph "{classModel.packageName}" \{
+   rankdir=BT
+
+   {classModel.classes:class(); separator="\n\n"}
+
+   {roles:role(); separator="\n\n"}
+}
+
+>>
+
+class(class) ::= <<
+{class.name} [
+   shape=plaintext
+   label=<
+     <table border='0' cellborder='1' cellspacing='0'>
+       <tr><td>{class.name}</td></tr>
+       <tr><td>{class.attributes:attribute(); separator=""}</td></tr>
+     </table>
+   >
+];
+>>
+
+attribute(attr) ::= <<
+{attr.name} :{attr.type; format="xml-encode"}<br align='left'/>
+>>
+
+role(role) ::= <<
+{role.other.clazz.name} -> {role.clazz.name} [
+   arrowhead=none
+   taillabel="{role.name}{if(role.toMany)} *{endif}"
+   headlabel="{role.other.name}{if(role.other.toMany)} *{endif}"
+];
+>>
