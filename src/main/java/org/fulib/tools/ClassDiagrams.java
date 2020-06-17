@@ -19,6 +19,9 @@ import java.util.Set;
  */
 public class ClassDiagrams
 {
+   private static final STGroup TEMPLATE_GROUP = new STGroupFile(
+      ClassDiagrams.class.getResource("templates/classDiagram.stg"));
+
    /**
     * Create a class diagram of the given class model at the path
     * {@link ClassModel#getPackageSrcFolder() modelFolder}{@code /doc-files/classDiagram.png}.
@@ -84,10 +87,7 @@ public class ClassDiagrams
    {
       try
       {
-         // TODO create only once
-         final STGroup group = new STGroupFile(getClass().getResource("templates/classDiagram.stg"));
-
-         final ST classDiagram = group.getInstanceOf("classDiagram");
+         final ST classDiagram = TEMPLATE_GROUP.getInstanceOf("classDiagram");
          classDiagram.add("classModel", model);
          classDiagram.add("roles", getRolesWithoutOthers(model));
          final String dotString = classDiagram.render();
