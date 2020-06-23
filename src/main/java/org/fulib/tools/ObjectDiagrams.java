@@ -231,7 +231,7 @@ public class ObjectDiagrams
          if (obj instanceof YamlObject)
          {
             YamlObject yamlObj = (YamlObject) obj;
-            Object type = yamlObj.getMap().get("type");
+            Object type = yamlObj.getType();
             if (type != null)
             {
                className = type.toString();
@@ -260,7 +260,7 @@ public class ObjectDiagrams
             .append("<u>").append(userKey).append(" :").append(className).append("</u>")
             .append("</td></tr>\n" + "       <tr><td>");
 
-         for (String prop : creator.getProperties())
+         for (String prop : creator.getOwnProperties())
          {
             if (obj instanceof YamlObject && ".id".equals(prop))
             {
@@ -297,20 +297,20 @@ public class ObjectDiagrams
                {
                   if (diagramObjects.contains(elem))
                   {
-                     String targetKey = idMap.getIdObjMap().get(elem);
+                     String targetKey = idMap.getId(elem);
                      this.addEdge(edgesMap, key, targetKey, prop);
                   }
                }
             }
             else
             {
-               String valueKey = idMap.getIdObjMap().get(value);
+               String valueKey = idMap.getId(value);
 
                if (valueKey != null)
                {
                   if (diagramObjects.contains(value))
                   {
-                     String targetKey = idMap.getIdObjMap().get(value);
+                     String targetKey = idMap.getId(value);
                      this.addEdge(edgesMap, key, targetKey, prop);
                   }
                }
