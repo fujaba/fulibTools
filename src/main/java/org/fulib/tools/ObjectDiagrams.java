@@ -35,7 +35,9 @@ public class ObjectDiagrams
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
-    * @param objectList
+    * @param objectList the list of objects to display
+    *
+    * @return the file name
     */
    public String dumpPng(Object... objectList)
    {
@@ -65,10 +67,10 @@ public class ObjectDiagrams
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
-    * @param diagramFileName
-    * @param objectList
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
     *
-    * @return file name
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpPng(String diagramFileName, Object... objectList)
    {
@@ -85,10 +87,10 @@ public class ObjectDiagrams
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
     *
-    * @param diagramFileName
-    * @param objectList
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
     *
-    * @return file name
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpSVG(String diagramFileName, Object... objectList)
    {
@@ -104,10 +106,10 @@ public class ObjectDiagrams
    /**
     * Create yaml description.
     *
-    * @param diagramFileName
-    * @param objectList
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
     *
-    * @return file name
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpYaml(String diagramFileName, Object... objectList)
    {
