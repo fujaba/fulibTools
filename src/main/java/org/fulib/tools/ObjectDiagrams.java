@@ -47,14 +47,17 @@ public class ObjectDiagrams
       }
 
       final Object firstRoot = objectList[0];
-      String diagramFileName = this.diagramNames.get(firstRoot);
-      if (diagramFileName == null)
-      {
-         diagramFileName =
-            "tmp/" + firstRoot.getClass().getSimpleName() + "." + (this.diagramNames.size() + 1) + ".png";
-         this.diagramNames.put(firstRoot, diagramFileName);
-      }
+      final String diagramFileName = getDiagramFileName(firstRoot);
       return this.dumpPng(diagramFileName, objectList);
+   }
+
+   private String getDiagramFileName(Object firstRoot)
+   {
+      return this.diagramNames.computeIfAbsent(firstRoot, obj -> {
+         final String className = obj.getClass().getSimpleName();
+         final int uniqueNumber = this.diagramNames.size() + 1;
+         return "tmp/" + className + "." + uniqueNumber + ".png";
+      });
    }
 
    /**
