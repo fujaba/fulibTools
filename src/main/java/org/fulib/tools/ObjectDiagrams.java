@@ -40,7 +40,6 @@ public class ObjectDiagrams
     */
    public String dumpPng(Object... objectList)
    {
-      Objects.requireNonNull(objectList);
       if (objectList.length < 1)
       {
          throw new IllegalArgumentException("missing root object");
@@ -113,7 +112,6 @@ public class ObjectDiagrams
     */
    public String dumpYaml(String diagramFileName, Object... objectList)
    {
-      Objects.requireNonNull(objectList);
       if (objectList.length < 1)
       {
          throw new IllegalArgumentException("empty objectList");
@@ -141,7 +139,6 @@ public class ObjectDiagrams
    {
       try
       {
-         Objects.requireNonNull(objectList);
          if (objectList.length < 1)
          {
             throw new IllegalArgumentException("empty objectList");
