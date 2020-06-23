@@ -119,20 +119,7 @@ public class ObjectDiagrams
          throw new IllegalArgumentException("empty objectList");
       }
 
-      ArrayList<Object> flatList = new ArrayList<>();
-      for (Object obj : objectList)
-      {
-         if (obj instanceof Collection)
-         {
-            flatList.addAll((Collection<?>) obj);
-         }
-         else
-         {
-            flatList.add(obj);
-         }
-      }
-
-      objectList = flatList.toArray();
+      objectList = flatten(objectList);
 
       Object firstObject = objectList[0];
       String packageName = firstObject.getClass().getPackage().getName();
@@ -160,20 +147,7 @@ public class ObjectDiagrams
             throw new IllegalArgumentException("empty objectList");
          }
 
-         ArrayList<Object> flatList = new ArrayList<>();
-         for (Object obj : objectList)
-         {
-            if (obj instanceof Collection)
-            {
-               flatList.addAll((Collection) obj);
-            }
-            else
-            {
-               flatList.add(obj);
-            }
-         }
-
-         objectList = flatList.toArray();
+         objectList = flatten(objectList);
 
          Object firstRoot = objectList[0];
 
@@ -207,6 +181,24 @@ public class ObjectDiagrams
       }
 
       return null;
+   }
+
+   private static Object[] flatten(Object... objectList)
+   {
+      final List<Object> flatList = new ArrayList<>();
+      for (Object obj : objectList)
+      {
+         if (obj instanceof Collection)
+         {
+            flatList.addAll((Collection<?>) obj);
+         }
+         else
+         {
+            flatList.add(obj);
+         }
+      }
+
+      return flatList.toArray();
    }
 
    private String makeEdges(LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap)
