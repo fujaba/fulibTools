@@ -68,7 +68,10 @@ public class FulibTools
    /**
     * Table tool to generate html tables or line charts from fulib tables
     * @return a table tool
+    *
+    * @deprecated since 1.2; use {@code HtmlRenderer} provided by FulibTables.
     */
+   @Deprecated
    public static Tables tables()
    {
       return new Tables();

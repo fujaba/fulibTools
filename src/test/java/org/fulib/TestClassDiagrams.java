@@ -1,44 +1,43 @@
 package org.fulib;
 
+import org.apache.commons.io.IOUtils;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertThat;
-
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
+import studyRight.StudyRight;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
+import static org.fulib.builder.ClassModelBuilder.*;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class TestClassDiagrams
 {
    @Test
    public void testClassDiagrams() throws IOException
    {
-       // load model
-      String packagName = ClassModel.class.getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packagName);
+      // load model
+      final String packageName = StudyRight.class.getPackage().getName();
 
-      String srcFolder = "../fulib/src/main/java/";
-      Path packageFolder = Paths.get(srcFolder + packagName.replaceAll("\\.", "/"));
-      Path yamlPath = packageFolder.resolve("classModel.yaml");
-      if (Files.exists(yamlPath))
+      try (final InputStream yamlInput = StudyRight.class.getResourceAsStream("classModel.yaml"))
       {
-         byte[] bytes = Files.readAllBytes(yamlPath);
-         String yamlString = new String(bytes);
+         final String yamlString = IOUtils.toString(yamlInput, StandardCharsets.UTF_8);
+         YamlIdMap idMap = new YamlIdMap(ClassModel.class.getPackage().getName());
          ClassModel model = (ClassModel) idMap.decode(yamlString);
 
-         model.setMainJavaDir(srcFolder);
+         model.setMainJavaDir("src/test/java");
 
-         // generate class diagram
          FulibTools.classDiagrams().dumpPng(model);
 
-         Path diagramPath = packageFolder.resolve("doc-files/classDiagram.png");
+         Path diagramPath = Paths.get("src/test/java/" + packageName.replace('.', '/') + "/doc-files/classDiagram.png");
 
          assertThat(Files.exists(diagramPath), is(true));
       }
@@ -47,25 +46,31 @@ public class TestClassDiagrams
    @Test
    public void test4Readme()
    {
+      // @formatter:off
       // start_code_fragment: test4Readme.classmodel
       ClassModelBuilder mb = Fulib.classModelBuilder("de.uniks.studyright");
+
       ClassBuilder uni = mb.buildClass("University")
-            .buildAttribute("name", mb.STRING);
+                           .buildAttribute("name", STRING);
+
       ClassBuilder student = mb.buildClass("Student")
-            .buildAttribute("name", mb.STRING)
-            .buildAttribute("studentId", mb.STRING)
-            .buildAttribute("matNo", mb.INT);
-      uni.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
+                               .buildAttribute("name", STRING)
+                               .buildAttribute("studentId", STRING)
+                               .buildAttribute("matNo", INT);
+
       ClassBuilder room = mb.buildClass("Room")
-            .buildAttribute("roomNo", mb.STRING);
-      uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
-            .setAggregation();
-      room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
+                            .buildAttribute("roomNo", STRING);
+
       ClassBuilder professor = mb.buildClass("Professor");
-      uni.buildAssociation(professor, "profs", mb.MANY, null, 1);
+
+      uni.buildAssociation(student, "students", MANY, "uni", ONE);
+      uni.buildAssociation(room, "rooms", MANY, "uni", ONE).setAggregation();
+      room.buildAssociation(student, "students", MANY, "in", ONE);
+      uni.buildAssociation(professor, "profs", MANY, null, 1);
 
       ClassModel model = mb.getClassModel();
       // end_code_fragment:
+      // @formatter:on
 
       // for usage in java doc
       FulibTools.classDiagrams().dumpPng(model);
@@ -76,6 +81,5 @@ public class TestClassDiagrams
       FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
 
       FulibTools.classDiagrams().dumpPng(model, "../fulib/doc/images/SimpleClassDiagram.png");
-
    }
 }

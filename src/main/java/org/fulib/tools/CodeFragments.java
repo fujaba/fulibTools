@@ -1,5 +1,7 @@
 package org.fulib.tools;
 
+import org.fulib.tools.pipe.*;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
@@ -98,8 +100,8 @@ public class CodeFragments
 
    // =============== Fields ===============
 
-   private LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
-   private Map<String, Pipe> pipes = new HashMap<>(DEFAULT_PIPES);
+   private final LinkedHashMap<String, String> fragmentMap = new LinkedHashMap<>();
+   private final Map<String, Pipe> pipes = new HashMap<>(DEFAULT_PIPES);
 
    // =============== Properties ===============
 

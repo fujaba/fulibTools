@@ -341,6 +341,10 @@ public class ObjectDiagrams
                   {
                      value = encodeDotString((String) value);
                   }
+                  else if (isLambdaClass(value.getClass()))
+                  {
+                     value = "&lt;lambda expression&gt;";
+                  }
                   buf.append("  ").append(prop).append(" = ").append(value.toString()).append("<br  align='left'/>");
                }
             }
@@ -350,6 +354,13 @@ public class ObjectDiagrams
       }
 
       return buf.toString();
+   }
+
+   private static boolean isLambdaClass(Class<?> aClass)
+   {
+      final String className = aClass.getName();
+      final int lambdaIndex = className.indexOf("$$Lambda$");
+      return 0 <= lambdaIndex && lambdaIndex <= className.indexOf('/');
    }
 
    private void addEdge(LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap, String key, String targetKey,
