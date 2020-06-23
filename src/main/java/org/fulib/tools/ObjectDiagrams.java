@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class ObjectDiagrams
 {
-   private Map<Object, String> diagramNames = new LinkedHashMap<>();
+   private final Map<Object, String> diagramNames = new LinkedHashMap<>();
 
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
@@ -46,7 +46,7 @@ public class ObjectDiagrams
          throw new IllegalArgumentException("missing root object");
       }
 
-      Object firstRoot = objectList[0];
+      final Object firstRoot = objectList[0];
       String diagramFileName = this.diagramNames.get(firstRoot);
       if (diagramFileName == null)
       {
@@ -119,10 +119,10 @@ public class ObjectDiagrams
          throw new IllegalArgumentException("empty objectList");
       }
 
-      Object firstObject = objectList[0];
-      String packageName = firstObject.getClass().getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packageName);
-      String yaml = idMap.encode(objectList);
+      final Object firstObject = objectList[0];
+      final String packageName = firstObject.getClass().getPackage().getName();
+      final YamlIdMap idMap = new YamlIdMap(packageName);
+      final String yaml = idMap.encode(objectList);
 
       try
       {
@@ -143,18 +143,18 @@ public class ObjectDiagrams
          throw new IllegalArgumentException("empty objectList");
       }
 
-      Object firstRoot = objectList[0];
+      final Object firstRoot = objectList[0];
 
-      String packageName = firstRoot.getClass().getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packageName);
-      ReflectorMap reflectorMap = new ReflectorMap(packageName);
-      Set<Object> diagramObjects = idMap.collectObjects(objectList);
-      Map<String, Map<String, String>> edgesMap = new LinkedHashMap<>();
+      final String packageName = firstRoot.getClass().getPackage().getName();
+      final YamlIdMap idMap = new YamlIdMap(packageName);
+      final ReflectorMap reflectorMap = new ReflectorMap(packageName);
+      final Set<Object> diagramObjects = idMap.collectObjects(objectList);
+      final Map<String, Map<String, String>> edgesMap = new LinkedHashMap<>();
 
-      String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
-      String edgesString = this.makeEdges(edgesMap);
+      final String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
+      final String edgesString = this.makeEdges(edgesMap);
 
-      String dotString = "digraph H {\n" + nodesString + "\n" + edgesString + "\n" + "}\n";
+      final String dotString = "digraph H {\n" + nodesString + "\n" + edgesString + "\n" + "}\n";
 
       try
       {
@@ -190,18 +190,17 @@ public class ObjectDiagrams
 
    private String makeEdges(Map<String, Map<String, String>> edgesMap)
    {
-      StringBuilder buf = new StringBuilder();
+      final StringBuilder buf = new StringBuilder();
 
       for (Map<String, String> edge : edgesMap.values())
       {
-
-         String sourceId = edge.get("src");
-         String targetId = edge.get("tgt");
+         final String sourceId = edge.get("src");
+         final String targetId = edge.get("tgt");
 
          String sourceLabel = edge.get("tail");
          sourceLabel = sourceLabel == null ? " " : sourceLabel;
 
-         String targetLabel = edge.get("head");
+         final String targetLabel = edge.get("head");
 
          buf.append(sourceId).append(" -> ").append(targetId)
             .append(" [arrowhead=none fontsize=\"10\" " + "taillabel=\"").append(sourceLabel).append("\" ")
@@ -214,12 +213,12 @@ public class ObjectDiagrams
    private String makeNodes(Set<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
       Map<String, Map<String, String>> edgesMap)
    {
-      StringBuilder buf = new StringBuilder();
+      final StringBuilder buf = new StringBuilder();
 
       for (Map.Entry<String, Object> entry : idMap.getObjIdMap().entrySet())
       {
-         String key = entry.getKey();
-         Object obj = entry.getValue();
+         final String key = entry.getKey();
+         final Object obj = entry.getValue();
 
          if (!diagramObjects.contains(obj))
          {
@@ -230,8 +229,8 @@ public class ObjectDiagrams
 
          if (obj instanceof YamlObject)
          {
-            YamlObject yamlObj = (YamlObject) obj;
-            Object type = yamlObj.getType();
+            final YamlObject yamlObj = (YamlObject) obj;
+            final Object type = yamlObj.getType();
             if (type != null)
             {
                className = type.toString();
@@ -239,7 +238,7 @@ public class ObjectDiagrams
          }
 
          // attrs
-         Reflector creator = reflectorMap.getReflector(obj);
+         final Reflector creator = reflectorMap.getReflector(obj);
          String userKey = key;
          Object tmp = creator.getValue(obj, "id");
          if (tmp != null)
@@ -277,8 +276,8 @@ public class ObjectDiagrams
             {
                try
                {
-                  Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
-                  Class<?> fieldType = method.getReturnType();
+                  final Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
+                  final Class<?> fieldType = method.getReturnType();
                   if (fieldType == String.class)
                   {
                      buf.append("  ").append(prop).append(" = null").append("<br  align='left'/>");
@@ -304,7 +303,7 @@ public class ObjectDiagrams
             }
             else
             {
-               String valueKey = idMap.getId(value);
+               final String valueKey = idMap.getId(value);
 
                if (valueKey != null)
                {
@@ -345,9 +344,9 @@ public class ObjectDiagrams
    private void addEdge(Map<String, Map<String, String>> edgesMap, String key, String targetKey,
       String prop)
    {
-      String fwdKey = key + ">" + targetKey;
-      String reverseKey = targetKey + ">" + key;
-      Map<String, String> reverseEdge = edgesMap.get(reverseKey);
+      final String fwdKey = key + ">" + targetKey;
+      final String reverseKey = targetKey + ">" + key;
+      final Map<String, String> reverseEdge = edgesMap.get(reverseKey);
       if (reverseEdge != null)
       {
          // add prop to tail label
