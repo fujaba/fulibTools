@@ -40,7 +40,7 @@ public class ObjectDiagrams
     */
    public String dumpPng(Object... objectList)
    {
-      if (objectList.length < 1)
+      if (objectList.length == 0)
       {
          throw new IllegalArgumentException("missing root object");
       }
@@ -112,12 +112,11 @@ public class ObjectDiagrams
     */
    public String dumpYaml(String diagramFileName, Object... objectList)
    {
-      if (objectList.length < 1)
+      objectList = flatten(objectList);
+      if (objectList.length == 0)
       {
          throw new IllegalArgumentException("empty objectList");
       }
-
-      objectList = flatten(objectList);
 
       Object firstObject = objectList[0];
       String packageName = firstObject.getClass().getPackage().getName();
@@ -139,12 +138,11 @@ public class ObjectDiagrams
    {
       try
       {
-         if (objectList.length < 1)
+         objectList = flatten(objectList);
+         if (objectList.length == 0)
          {
             throw new IllegalArgumentException("empty objectList");
          }
-
-         objectList = flatten(objectList);
 
          Object firstRoot = objectList[0];
 
