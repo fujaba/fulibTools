@@ -28,7 +28,7 @@ import java.util.*;
  */
 public class ObjectDiagrams
 {
-   private LinkedHashMap<Object, String> diagramNames = new LinkedHashMap<>();
+   private Map<Object, String> diagramNames = new LinkedHashMap<>();
 
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
@@ -148,8 +148,8 @@ public class ObjectDiagrams
       String packageName = firstRoot.getClass().getPackage().getName();
       YamlIdMap idMap = new YamlIdMap(packageName);
       ReflectorMap reflectorMap = new ReflectorMap(packageName);
-      LinkedHashSet<Object> diagramObjects = idMap.collectObjects(objectList);
-      LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap = new LinkedHashMap<>();
+      Set<Object> diagramObjects = idMap.collectObjects(objectList);
+      Map<String, Map<String, String>> edgesMap = new LinkedHashMap<>();
 
       String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
       String edgesString = this.makeEdges(edgesMap);
@@ -188,11 +188,11 @@ public class ObjectDiagrams
       return flatList.toArray();
    }
 
-   private String makeEdges(LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap)
+   private String makeEdges(Map<String, Map<String, String>> edgesMap)
    {
       StringBuilder buf = new StringBuilder();
 
-      for (LinkedHashMap<String, String> edge : edgesMap.values())
+      for (Map<String, String> edge : edgesMap.values())
       {
 
          String sourceId = edge.get("src");
@@ -211,8 +211,8 @@ public class ObjectDiagrams
       return buf.toString();
    }
 
-   private String makeNodes(LinkedHashSet<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
-      LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap)
+   private String makeNodes(Set<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
+      Map<String, Map<String, String>> edgesMap)
    {
       StringBuilder buf = new StringBuilder();
 
@@ -342,12 +342,12 @@ public class ObjectDiagrams
       return 0 <= lambdaIndex && lambdaIndex <= className.indexOf('/');
    }
 
-   private void addEdge(LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap, String key, String targetKey,
+   private void addEdge(Map<String, Map<String, String>> edgesMap, String key, String targetKey,
       String prop)
    {
       String fwdKey = key + ">" + targetKey;
       String reverseKey = targetKey + ">" + key;
-      LinkedHashMap<String, String> reverseEdge = edgesMap.get(reverseKey);
+      Map<String, String> reverseEdge = edgesMap.get(reverseKey);
       if (reverseEdge != null)
       {
          // add prop to tail label
@@ -357,7 +357,7 @@ public class ObjectDiagrams
       }
       else
       {
-         LinkedHashMap<String, String> edge = edgesMap.get(fwdKey);
+         Map<String, String> edge = edgesMap.get(fwdKey);
          if (edge == null)
          {
             edge = new LinkedHashMap<>();
