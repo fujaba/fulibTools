@@ -7,7 +7,6 @@ import org.fulib.yaml.Reflector;
 import org.fulib.yaml.ReflectorMap;
 import org.fulib.yaml.YamlIdMap;
 import org.fulib.yaml.YamlObject;
-import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
@@ -150,17 +149,10 @@ public class ObjectDiagrams
       LinkedHashSet<Object> diagramObjects = idMap.collectObjects(objectList);
       LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap = new LinkedHashMap<>();
 
-      String dotString = "" + "digraph H {\n" +
-                         // "rankdir=BT\n" +
-                         "<nodes> \n" + "<edges> \n" + "}\n";
-
       String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
       String edgesString = this.makeEdges(edgesMap);
 
-      ST st = new ST(dotString);
-      st.add("nodes", nodesString);
-      st.add("edges", edgesString);
-      dotString = st.render();
+      String dotString = "digraph H {\n" + nodesString + "\n" + edgesString + "\n" + "}\n";
 
       try
       {
