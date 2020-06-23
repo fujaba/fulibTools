@@ -136,36 +136,34 @@ public class ObjectDiagrams
 
    private String dump(Format format, String diagramFileName, Object... objectList)
    {
+      objectList = flatten(objectList);
+      if (objectList.length == 0)
+      {
+         throw new IllegalArgumentException("empty objectList");
+      }
+
+      Object firstRoot = objectList[0];
+
+      String packageName = firstRoot.getClass().getPackage().getName();
+      YamlIdMap idMap = new YamlIdMap(packageName);
+      ReflectorMap reflectorMap = new ReflectorMap(packageName);
+      LinkedHashSet<Object> diagramObjects = idMap.collectObjects(objectList);
+      LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap = new LinkedHashMap<>();
+
+      String dotString = "" + "digraph H {\n" +
+                         // "rankdir=BT\n" +
+                         "<nodes> \n" + "<edges> \n" + "}\n";
+
+      String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
+      String edgesString = this.makeEdges(edgesMap);
+
+      ST st = new ST(dotString);
+      st.add("nodes", nodesString);
+      st.add("edges", edgesString);
+      dotString = st.render();
+
       try
       {
-         objectList = flatten(objectList);
-         if (objectList.length == 0)
-         {
-            throw new IllegalArgumentException("empty objectList");
-         }
-
-         Object firstRoot = objectList[0];
-
-         String packageName = firstRoot.getClass().getPackage().getName();
-         YamlIdMap idMap = new YamlIdMap(packageName);
-         ReflectorMap reflectorMap = new ReflectorMap(packageName);
-         LinkedHashSet<Object> diagramObjects = idMap.collectObjects(objectList);
-         LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap = new LinkedHashMap<>();
-
-         String dotString = "" + "digraph H {\n" +
-                            // "rankdir=BT\n" +
-                            "<nodes> \n" + "<edges> \n" + "}\n";
-
-         String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
-         String edgesString = this.makeEdges(edgesMap);
-
-         ST st = new ST(dotString);
-         st.add("nodes", nodesString);
-         st.add("edges", edgesString);
-         dotString = st.render();
-
-         // Files.write(Paths.get("tmp/dotString.txt"), dotString.getBytes());
-
          Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
