@@ -30,6 +30,6 @@ public class JavaDocPipe implements Pipe
    @Override
    public String apply(String content, String arg)
    {
-      return "<pre>{@code\n" + content + "}</pre>\n";
+      return "<pre>{@code" + System.lineSeparator() + content + "}</pre>" + System.lineSeparator();
    }
 }
