@@ -1,6 +1,7 @@
 # fulibTools - Additional features for fulib.
 
 [![Build Status](https://travis-ci.org/fujaba/fulibTools.svg?branch=master)](https://travis-ci.org/fujaba/fulibTools)
+![Java CI](https://github.com/fujaba/fulibTools/workflows/Java%20CI/badge.svg)
 [![Download](https://api.bintray.com/packages/fujaba/maven/fulibTools/images/download.svg)](https://bintray.com/fujaba/maven/fulibTools/_latestVersion "Download")
 
 FulibTools provides some additional features like class diagrams and object diagrams to the Fulib code generator.
