@@ -1,6 +1,7 @@
 package org.fulib;
 
 import org.apache.commons.io.IOUtils;
+import org.fulib.tools.CodeFragments;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestCodeFragments
 {
@@ -46,11 +47,12 @@ public class TestCodeFragments
    @Test
    public void testCodeFragments() throws IOException
    {
-      final Map<String, String> fragmentMap = FulibTools.codeFragments().updateCodeFragments(FOLDER);
+      final CodeFragments fragments = FulibTools.codeFragments();
+      fragments.update(FOLDER);
+      final Map<String, String> fragmentMap = fragments.getFragments();
 
-      String codeFragments_updateCodeFragments = fragmentMap.get("CodeFragmentExample.java.hello");
-      assertThat(codeFragments_updateCodeFragments,
-                 is("System.out.println(\"Hello World\");" + System.lineSeparator()));
+      String codeFragmentExampleJavaHello = fragmentMap.get("CodeFragmentExample.java.hello");
+      assertThat(codeFragmentExampleJavaHello, is("System.out.println(\"Hello World\");" + System.lineSeparator()));
 
       final String actualMd = new String(Files.readAllBytes(Paths.get(FOLDER, "CodeFragmentExample.md")),
                                          StandardCharsets.UTF_8);
