@@ -123,6 +123,9 @@ import java.util.regex.Pattern;
  * The following pipes are predefined:
  *
  * <table>
+ *    <caption>
+ *       Predefined pipes
+ *    </caption>
  *    <tr>
  *       <th>Name</th>
  *       <th>Class</th>
