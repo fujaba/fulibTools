@@ -12,15 +12,24 @@ package org.fulib.tools.pipe;
  * Is transformed to
  *
  * <pre>{@code
- *    ```java
+ *    ```
  *    hello
  *    world
  *    ```
  * }</pre>
  * <p>
- * You can specify a language tag either with the pipe argument (e.g. {@code fenced:js}).
- * The default language tag is {@code java}, but you can override that using the {@link #CodeFencePipe(String)} constructor.
- * The empty string is allowed as a language tag.
+ * You can specify a language tag with the pipe argument (e.g. {@code fenced:js}).
+ * In this case, the output will be:
+ *
+ * <pre>{@code
+ *    ```js
+ *    hello
+ *    world
+ *    ```
+ * }</pre>
+ * <p>
+ * Using the {@link #CodeFencePipe(String)} constructor, you can specify a default language tag that will be used when
+ * none is specified via the argument.
  *
  * @since 1.2
  */
@@ -28,13 +37,11 @@ public class CodeFencePipe implements Pipe
 {
    public static final String NAME = "fenced";
 
-   private static final String DEFAULT_LANGUAGE = "java";
-
    private final String defaultLanguage;
 
    public CodeFencePipe()
    {
-      this(DEFAULT_LANGUAGE);
+      this.defaultLanguage = null;
    }
 
    public CodeFencePipe(String defaultLanguage)
@@ -56,6 +63,6 @@ public class CodeFencePipe implements Pipe
       {
          return arg.substring(index + 1);
       }
-      return this.defaultLanguage;
+      return this.defaultLanguage != null ? this.defaultLanguage : "";
    }
 }

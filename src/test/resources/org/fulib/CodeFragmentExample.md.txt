@@ -19,7 +19,7 @@ Blockquotes:
 Fenced code (default):
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced -->
-```java
+```
 System.out.println("Hello World");
 ```
 <!-- end_code_fragment: -->
