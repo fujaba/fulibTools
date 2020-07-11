@@ -24,10 +24,18 @@ System.out.println("Hello World");
 ```
 <!-- end_code_fragment: -->
 
-Fenced code (custom language):
+Fenced code (custom language with argument):
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced:js -->
 ```js
+System.out.println("Hello World");
+```
+<!-- end_code_fragment: -->
+
+Fenced code (custom language with constructor):
+
+<!-- insert_code_fragment: CodeFragmentExample.java.hello | fencedCustom -->
+```custom
 System.out.println("Hello World");
 ```
 <!-- end_code_fragment: -->

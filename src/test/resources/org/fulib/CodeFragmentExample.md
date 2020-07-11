@@ -18,9 +18,14 @@ Fenced code (default):
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced -->
 <!-- end_code_fragment: -->
 
-Fenced code (custom language):
+Fenced code (custom language with argument):
 
 <!-- insert_code_fragment: CodeFragmentExample.java.hello | fenced:js -->
+<!-- end_code_fragment: -->
+
+Fenced code (custom language with constructor):
+
+<!-- insert_code_fragment: CodeFragmentExample.java.hello | fencedCustom -->
 <!-- end_code_fragment: -->
 
 HTML escaped:

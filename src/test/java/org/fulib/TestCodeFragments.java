@@ -2,6 +2,7 @@ package org.fulib;
 
 import org.apache.commons.io.IOUtils;
 import org.fulib.tools.CodeFragments;
+import org.fulib.tools.pipe.CodeFencePipe;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -48,6 +49,7 @@ public class TestCodeFragments
    public void testCodeFragments() throws IOException
    {
       final CodeFragments fragments = FulibTools.codeFragments();
+      fragments.addPipe("fencedCustom", new CodeFencePipe("custom"));
       fragments.update(FOLDER);
       final Map<String, String> fragmentMap = fragments.getFragments();
 
