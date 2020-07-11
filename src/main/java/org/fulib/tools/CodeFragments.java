@@ -190,6 +190,9 @@ public class CodeFragments
    }
 
    /**
+    * @param name
+    *    the name of the pipe
+    *
     * @return the pipe with the given name, or {@code null} if none is found
     *
     * @since 1.2
