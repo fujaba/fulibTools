@@ -455,7 +455,7 @@ public class CodeFragments
       String key = null;
 
       String line;
-      while ((line = reader.readLine()) != null)
+      for (int lineNum = 1; (line = reader.readLine()) != null; lineNum++)
       {
          if (key != null) // inside fragment
          {
@@ -483,7 +483,7 @@ public class CodeFragments
          String content = this.fragmentMap.get(key);
          if (content == null)
          {
-            System.err.printf("%s: warning: undefined fragment '%s' was not inserted%n", fileName, key);
+            System.err.printf("%s:%d: warning: undefined fragment '%s' was not inserted%n", fileName, lineNum, key);
             key = null;
             continue;
          }
@@ -507,7 +507,7 @@ public class CodeFragments
             }
             else
             {
-               System.err.printf("%s: warning: unknown pipe '%s', skipping%n", fileName, pipeName);
+               System.err.printf("%s:%d: warning: unknown pipe '%s', skipping%n", fileName, lineNum, pipeName);
             }
          }
 
