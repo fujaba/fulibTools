@@ -189,16 +189,39 @@ public class CodeFragments
       this.fragmentMap.put(key, content);
    }
 
+   /**
+    * @return the pipe with the given name, or {@code null} if none is found
+    *
+    * @since 1.2
+    */
    public Pipe getPipe(String name)
    {
       return this.pipes.get(name);
    }
 
+   /**
+    * Adds or replaces a pipe with the given name.
+    *
+    * @param name
+    *    the name of the pipe
+    * @param pipe
+    *    the pipe implementation
+    *
+    * @since 1.2
+    */
    public void addPipe(String name, Pipe pipe)
    {
       this.pipes.put(name, pipe);
    }
 
+   /**
+    * Removes the pipe with the given name if one exists, otherwise does nothing.
+    *
+    * @param name
+    *    the name of the pipe to remove
+    *
+    * @since 1.2
+    */
    public void removePipe(String name)
    {
       this.pipes.remove(name);
