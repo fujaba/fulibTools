@@ -74,6 +74,75 @@ import java.util.regex.Pattern;
  * FulibTools.codeFragments().updateCodeFragments(".");
  * <!-- end_code_fragment: -->
  * </code></pre>
+ * <p>
+ * There may be situations in which you don't want the inserted code fragment to be formatted in exactly the same way
+ * as the original input.
+ * For example, you may want to wrap Java code in {@code <pre> </pre>} tags before including it in a JavaDoc comment,
+ * or you want to format code in a markdown document.
+ * You can achieve this with {@link Pipe Pipes}.
+ * Just put a pipe symbol ({@code |}) and the name of the pipe you want to apply behind the fragment name:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id | fenced --&gt;
+ *    &lt;!-- end_code_fragment: --&gt;
+ * </code></pre>
+ * <p>
+ * The output will look like this:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id | fenced --&gt;
+ *    ```
+ *    hello world
+ *    ```
+ *    &lt;!-- end_code_fragment: --&gt;
+ * </code></pre>
+ * <p>
+ * A pipe may have an optional argument that follows the pipe name with a colon ({@code :}) in between.
+ * E.g.:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id | fenced:java --&gt;
+ *    &lt;!-- end_code_fragment: --&gt;
+ * </code></pre>
+ * <p>
+ * The output will look like this:
+ * <pre><code>
+ *    &lt;!-- insert_code_fragment: my.fragment.id | fenced:java --&gt;
+ *    ```java
+ *    hello world
+ *    ```
+ *    &lt;!-- end_code_fragment: --&gt;
+ * </code></pre>
+ * <p>
+ * How the argument is interpreted depends on the pipe.
+ * In this example, we used the {@link CodeFencePipe}, which uses the argument as the language tag.
+ * The following pipes are predefined:
+ *
+ * <table>
+ *    <tr>
+ *       <th>Name</th>
+ *       <th>Class</th>
+ *    </tr>
+ *    <tr>
+ *       <td>indent</td>
+ *       <td>{@link IndentPipe}</td>
+ *    </tr>
+ *    <tr>
+ *       <td>javadoc</td>
+ *       <td>{@link JavaDocPipe}</td>
+ *    </tr>
+ *    <tr>
+ *       <td>fenced</td>
+ *       <td>{@link CodeFencePipe}</td>
+ *    </tr>
+ *    <tr>
+ *       <td>html</td>
+ *       <td>{@link HtmlPipe}</td>
+ *    </tr>
+ * </table>
+ * <p>
+ * You can create your own pipes by implementing the {@link Pipe} interface.
+ * Then, register them with the CodeFragments instance using the {@link #addPipe(String, Pipe)} method.
+ * {@link Pipe} is a {@linkplain FunctionalInterface functional interface}, which allows you to implement it with a
+ * lambda expression, e.g. {@code addPipe("foo", (content, arg) -> content + "foo" + arg);}.
+ * With the {@link #removePipe(String)} method, you can disable predefined or custom pipes.
  */
 public class CodeFragments
 {
