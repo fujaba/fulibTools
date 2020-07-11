@@ -68,10 +68,17 @@ import java.util.regex.Pattern;
  *    &gt; &lt;!-- end_code_fragment: --&gt;
  * </code></pre>
  * <p>
- * To update all code fragments in the current project, put this line into a main() program and run it:
+ * To update all code fragments in the current project, put this line into a main() program or test and run it:
  * <pre><code>
- * <!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
- * FulibTools.codeFragments().updateCodeFragments(".");
+ * <!-- insert_code_fragment: CodeFragments.update -->
+ * FulibTools.codeFragments().update(".");
+ * <!-- end_code_fragment: -->
+ * </code></pre>
+ * You can limit the process to certain files and directories.
+ * This can avoid unwanted file changes and is generally faster.
+ * <pre><code>
+ * <!-- insert_code_fragment: CodeFragments.updateSome -->
+ * FulibTools.codeFragments().update("README.md", "docs/", "src/test/java/");
  * <!-- end_code_fragment: -->
  * </code></pre>
  * <p>
