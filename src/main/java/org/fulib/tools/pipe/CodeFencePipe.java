@@ -53,7 +53,7 @@ public class CodeFencePipe implements Pipe
    public String apply(String content, String arg)
    {
       final String lang = this.getLanguage(arg);
-      return "```" + lang + "\n" + content + "```\n";
+      return "```" + lang + System.lineSeparator() + content + "```" + System.lineSeparator();
    }
 
    private String getLanguage(String arg)
