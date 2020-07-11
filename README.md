@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/fujaba/fulibTools.svg?branch=master)](https://travis-ci.org/fujaba/fulibTools)
 [![Java CI](https://github.com/fujaba/fulibTools/workflows/Java%20CI/badge.svg)](https://github.com/fujaba/fulibTools/actions)
 [![Download](https://api.bintray.com/packages/fujaba/maven/fulibTools/images/download.svg)](https://bintray.com/fujaba/maven/fulibTools/_latestVersion "Download")
+[![javadoc](https://javadoc.io/badge2/org.fulib/fulibTools/javadoc.svg)](https://javadoc.io/doc/org.fulib/fulibTools)
 
 FulibTools provides some additional features like class diagrams and object diagrams to the
 [Fulib](https://github.com/fujaba/fulib) code generator.
