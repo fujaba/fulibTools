@@ -24,11 +24,21 @@ public class ClassDiagrams
 
    private double scale = 1;
 
+   /**
+    * @return the scale factor for rendering
+    *
+    * @since 1.2
+    */
    public double getScale()
    {
       return scale;
    }
 
+   /**
+    * @param scale the scale factor for rendering
+    *
+    * @since 1.2
+    */
    public void setScale(double scale)
    {
       this.scale = scale;
