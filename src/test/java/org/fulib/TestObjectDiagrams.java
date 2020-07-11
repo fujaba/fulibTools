@@ -36,13 +36,9 @@ public class TestObjectDiagrams
 
       Object root = idMap.decode(yamlString);
 
-      YamlObject alice = (YamlObject) root;
-
       FulibTools.objectDiagrams().dumpPng(root);
 
       FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
-
-      System.out.println(alice);
    }
 
    @Test

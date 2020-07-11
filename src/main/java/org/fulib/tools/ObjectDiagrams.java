@@ -3,32 +3,24 @@ package org.fulib.tools;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import org.fulib.StrUtil;
-import org.fulib.builder.ClassModelBuilder;
-import org.fulib.classmodel.AssocRole;
-import org.fulib.classmodel.Attribute;
-import org.fulib.classmodel.ClassModel;
-import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.Reflector;
 import org.fulib.yaml.ReflectorMap;
 import org.fulib.yaml.YamlIdMap;
 import org.fulib.yaml.YamlObject;
-import org.stringtemplate.v4.ST;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
 
-
 /**
  * Create object diagrams.
  * <pre>
  * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
- FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+ * FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
  * <!-- end_code_fragment: -->
  * </pre>
  * Example: <br>
@@ -36,110 +28,104 @@ import java.util.*;
  */
 public class ObjectDiagrams
 {
-   private LinkedHashMap<Object,String> diagramNames = new LinkedHashMap<>();
-
+   private final Map<Object, String> diagramNames = new LinkedHashMap<>();
 
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
-    * @param objectList
+    *
+    * @param objectList the list of objects to display
+    *
+    * @return the file name
     */
    public String dumpPng(Object... objectList)
    {
-      Objects.requireNonNull(objectList);
-      if (objectList.length < 1) throw new IllegalArgumentException("missing root object");
-
-      Object firstRoot = objectList[0];
-      String diagramFileName = diagramNames.get(firstRoot);
-      if (diagramFileName == null)
+      if (objectList.length == 0)
       {
-         diagramFileName = "tmp/" + lastDotSplit(firstRoot.getClass().getName()) + "." + (diagramNames.size()+1) + ".png";
-         diagramNames.put(firstRoot, diagramFileName);
+         throw new IllegalArgumentException("missing root object");
       }
-      return dumpPng(diagramFileName, objectList);
+
+      final Object firstRoot = objectList[0];
+      final String diagramFileName = getDiagramFileName(firstRoot);
+      return this.dumpPng(diagramFileName, objectList);
    }
 
-
-   private String lastDotSplit(String name)
+   private String getDiagramFileName(Object firstRoot)
    {
-      String[] split = name.split("\\.");
-      return split[split.length-1];
+      return this.diagramNames.computeIfAbsent(firstRoot, obj -> {
+         final String className = obj.getClass().getSimpleName();
+         final int uniqueNumber = this.diagramNames.size() + 1;
+         return "tmp/" + className + "." + uniqueNumber + ".png";
+      });
    }
-
 
    /**
     * Create object diagrams.
     * <pre>
     * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
-    FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+    * FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
-    * @param diagramFileName
-    * @param objectList
-    * @return file name
+    *
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
+    *
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpPng(String diagramFileName, Object... objectList)
    {
-      return dump(Format.PNG, diagramFileName, objectList);
+      return this.dump(Format.PNG, diagramFileName, objectList);
    }
-
 
    /**
     * Create object diagrams.
     * <pre>
     * <!-- insert_code_fragment: StudyRightUserStories.FulibTools.objectDiagrams -->
-    FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
+    * FulibTools.objectDiagrams().dumpPng("../fulib/doc/images/studyRightObjects.png", studyRight);
     * <!-- end_code_fragment: -->
     * </pre>
     * Example: <br>
     * <img src="doc-files/studyRightObjects.png" width="343" alt="StudyRight Objects">
-    * @param diagramFileName
-    * @param objectList
-    * @return file name
+    *
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
+    *
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpSVG(String diagramFileName, Object... objectList)
    {
-      if (diagramFileName.endsWith(".scenario.svg")) {
+      if (diagramFileName.endsWith(".scenario.svg"))
+      {
          new ScenarioDiagrams().dump(diagramFileName, objectList[0]);
          return diagramFileName;
       }
 
-      return dump(Format.SVG_STANDALONE, diagramFileName, objectList);
+      return this.dump(Format.SVG_STANDALONE, diagramFileName, objectList);
    }
-
 
    /**
     * Create yaml description.
     *
-    * @param diagramFileName
-    * @param objectList
-    * @return file name
+    * @param diagramFileName the file name in which the diagram should be saved
+    * @param objectList the list of objects to display
+    *
+    * @return the file name (= {@code diagramFileName}), for compatibility with {@link #dumpPng(Object...)}
     */
    public String dumpYaml(String diagramFileName, Object... objectList)
    {
-      Objects.requireNonNull(objectList);
-      if (objectList.length < 1) throw new IllegalArgumentException("empty objectList");
-
-      ArrayList flatList = new ArrayList();
-      for (Object obj : objectList)
+      objectList = flatten(objectList);
+      if (objectList.length == 0)
       {
-         if (obj instanceof Collection) {
-            flatList.addAll((Collection) obj);
-         }
-         else {
-            flatList.add(obj);
-         }
+         throw new IllegalArgumentException("empty objectList");
       }
 
-      objectList = flatList.toArray();
-
-      Object firstObject = objectList[0];
-      String packageName = firstObject.getClass().getPackage().getName();
-      YamlIdMap idMap = new YamlIdMap(packageName);
-      String yaml = idMap.encode(objectList);
+      final Object firstObject = objectList[0];
+      final String packageName = firstObject.getClass().getPackage().getName();
+      final YamlIdMap idMap = new YamlIdMap(packageName);
+      final String yaml = idMap.encode(objectList);
 
       try
       {
@@ -152,54 +138,30 @@ public class ObjectDiagrams
       return diagramFileName;
    }
 
-
    private String dump(Format format, String diagramFileName, Object... objectList)
    {
+      objectList = flatten(objectList);
+      if (objectList.length == 0)
+      {
+         throw new IllegalArgumentException("empty objectList");
+      }
+
+      final Object firstRoot = objectList[0];
+
+      final String packageName = firstRoot.getClass().getPackage().getName();
+      final YamlIdMap idMap = new YamlIdMap(packageName);
+      final ReflectorMap reflectorMap = new ReflectorMap(packageName);
+      final Set<Object> diagramObjects = idMap.collectObjects(objectList);
+      final Map<String, Map<String, String>> edgesMap = new LinkedHashMap<>();
+
+      final String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
+      final String edgesString = this.makeEdges(edgesMap);
+
+      final String dotString = "digraph H {\n" + nodesString + "\n" + edgesString + "\n" + "}\n";
+
       try
       {
-         Objects.requireNonNull(objectList);
-         if (objectList.length < 1) throw new IllegalArgumentException("empty objectList");
-
-         ArrayList flatList = new ArrayList();
-         for (Object obj : objectList)
-         {
-            if (obj instanceof Collection) {
-               flatList.addAll((Collection) obj);
-            }
-            else {
-               flatList.add(obj);
-            }
-         }
-
-         objectList = flatList.toArray();
-
-         Object firstRoot = objectList[0];
-
-         String packageName = firstRoot.getClass().getPackage().getName();
-         YamlIdMap idMap = new YamlIdMap(packageName);
-         ReflectorMap reflectorMap = new ReflectorMap(packageName);
-         LinkedHashSet<Object> diagramObjects = idMap.collectObjects(objectList);
-         LinkedHashMap<String,LinkedHashMap<String,String>> edgesMap = new LinkedHashMap<>();
-
-
-         String dotString = "" +
-               "digraph H {\n" +
-               // "rankdir=BT\n" +
-               "<nodes> \n" +
-               "<edges> \n" +
-               "}\n";
-
-         String nodesString = makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
-         String edgesString = makeEdges(diagramObjects, idMap, reflectorMap, edgesMap);
-
-         ST st = new ST(dotString);
-         st.add("nodes", nodesString);
-         st.add("edges", edgesString);
-         dotString = st.render();
-
-         // Files.write(Paths.get("tmp/dotString.txt"), dotString.getBytes());
-
-         Graphviz.fromString(dotString.toString()).render(format).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }
@@ -211,49 +173,67 @@ public class ObjectDiagrams
       return null;
    }
 
-   private String makeEdges(LinkedHashSet<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
-                            LinkedHashMap<String,LinkedHashMap<String,String>> edgesMap)
+   private static Object[] flatten(Object... objectList)
    {
-      StringBuilder buf = new StringBuilder();
-
-      for (LinkedHashMap<String,String> edge: edgesMap.values())
+      final List<Object> flatList = new ArrayList<>();
+      for (Object obj : objectList)
       {
+         if (obj instanceof Collection)
+         {
+            flatList.addAll((Collection<?>) obj);
+         }
+         else
+         {
+            flatList.add(obj);
+         }
+      }
 
-         String sourceId = edge.get("src");
-         String targetId = edge.get("tgt");
+      return flatList.toArray();
+   }
+
+   private String makeEdges(Map<String, Map<String, String>> edgesMap)
+   {
+      final StringBuilder buf = new StringBuilder();
+
+      for (Map<String, String> edge : edgesMap.values())
+      {
+         final String sourceId = edge.get("src");
+         final String targetId = edge.get("tgt");
 
          String sourceLabel = edge.get("tail");
          sourceLabel = sourceLabel == null ? " " : sourceLabel;
 
-         String targetLabel = edge.get("head");
+         final String targetLabel = edge.get("head");
 
          buf.append(sourceId).append(" -> ").append(targetId)
-               .append(" [arrowhead=none fontsize=\"10\" " +
-                     "taillabel=\"" + sourceLabel + "\" " +
-                     "headlabel=\"" + targetLabel + "\"];\n");
+            .append(" [arrowhead=none fontsize=\"10\" " + "taillabel=\"").append(sourceLabel).append("\" ")
+            .append("headlabel=\"").append(targetLabel).append("\"];\n");
       }
 
       return buf.toString();
    }
 
-   private String makeNodes(LinkedHashSet<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
-                            LinkedHashMap<String,LinkedHashMap<String,String>> edgesMap)
+   private String makeNodes(Set<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
+      Map<String, Map<String, String>> edgesMap)
    {
-      StringBuilder buf = new StringBuilder();
+      final StringBuilder buf = new StringBuilder();
 
       for (Map.Entry<String, Object> entry : idMap.getObjIdMap().entrySet())
       {
-         String key = entry.getKey();
-         Object obj = entry.getValue();
+         final String key = entry.getKey();
+         final Object obj = entry.getValue();
 
-         if ( ! diagramObjects.contains(obj)) continue;
+         if (!diagramObjects.contains(obj))
+         {
+            continue;
+         }
 
          String className = obj.getClass().getSimpleName();
 
          if (obj instanceof YamlObject)
          {
-            YamlObject yamlObj = (YamlObject) obj;
-            Object type = yamlObj.getMap().get("type");
+            final YamlObject yamlObj = (YamlObject) obj;
+            final Object type = yamlObj.getType();
             if (type != null)
             {
                className = type.toString();
@@ -261,36 +241,37 @@ public class ObjectDiagrams
          }
 
          // attrs
-         Reflector creator = reflectorMap.getReflector(obj);
+         final Reflector creator = reflectorMap.getReflector(obj);
          String userKey = key;
          Object tmp = creator.getValue(obj, "id");
-         if (tmp != null) {
+         if (tmp != null)
+         {
             userKey = StrUtil.downFirstChar(tmp.toString());
-
          }
-         else {
+         else
+         {
             tmp = creator.getValue(obj, "name");
-            if (tmp != null) {
+            if (tmp != null)
+            {
                userKey = StrUtil.downFirstChar(tmp.toString());
             }
          }
 
-         buf.append(key).append(" " +
-               "[\n" +
-               "   shape=plaintext\n" +
-               "   fontsize=\"10\"\n" +
-               "   label=<\n"  +
-               "     <table border='0' cellborder='1' cellspacing='0'>\n" +
-               "       <tr><td>")
-               .append("<u>").append(userKey).append(" :").append(className).append("</u>")
-               .append("</td></tr>\n"  +
-                     "       <tr><td>");
+         buf.append(key).append(" " + "[\n" + "   shape=plaintext\n" + "   fontsize=\"10\"\n" + "   label=<\n"
+                                + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
+            .append("<u>").append(userKey).append(" :").append(className).append("</u>")
+            .append("</td></tr>\n" + "       <tr><td>");
 
-
-         for (String prop : creator.getProperties())
+         for (String prop : creator.getOwnProperties())
          {
-            if (obj instanceof YamlObject && ".id".equals(prop)) continue;
-            if (obj instanceof YamlObject && "type".equals(prop)) continue;
+            if (obj instanceof YamlObject && ".id".equals(prop))
+            {
+               continue;
+            }
+            if (obj instanceof YamlObject && "type".equals(prop))
+            {
+               continue;
+            }
 
             Object value = creator.getValue(obj, prop);
 
@@ -298,9 +279,10 @@ public class ObjectDiagrams
             {
                try
                {
-                  Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
-                  Class<?> fieldType = method.getReturnType();
-                  if (fieldType == String.class) {
+                  final Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
+                  final Class<?> fieldType = method.getReturnType();
+                  if (fieldType == String.class)
+                  {
                      buf.append("  ").append(prop).append(" = null").append("<br  align='left'/>");
                   }
                }
@@ -313,32 +295,32 @@ public class ObjectDiagrams
 
             if (value instanceof Collection)
             {
-               for (Object elem : (Collection) value)
+               for (Object elem : (Collection<?>) value)
                {
                   if (diagramObjects.contains(elem))
                   {
-                     String targetKey = idMap.getIdObjMap().get(elem);
-                     addEdge(edgesMap, key, targetKey, prop);
+                     String targetKey = idMap.getId(elem);
+                     this.addEdge(edgesMap, key, targetKey, prop);
                   }
                }
             }
             else
             {
-               String valueKey = idMap.getIdObjMap().get(value);
+               final String valueKey = idMap.getId(value);
 
                if (valueKey != null)
                {
                   if (diagramObjects.contains(value))
                   {
-                     String targetKey = idMap.getIdObjMap().get(value);
-                     addEdge(edgesMap, key, targetKey, prop);
+                     String targetKey = idMap.getId(value);
+                     this.addEdge(edgesMap, key, targetKey, prop);
                   }
                }
                else
                {
                   if (value instanceof String)
                   {
-                     value = encodeDotString(value);
+                     value = encodeDotString((String) value);
                   }
                   else if (isLambdaClass(value.getClass()))
                   {
@@ -349,9 +331,7 @@ public class ObjectDiagrams
             }
          }
 
-         buf.append("</td></tr>\n" +
-               "     </table>\n" +
-               "  >];\n");
+         buf.append("</td></tr>\n" + "     </table>\n" + "  >];\n");
       }
 
       return buf.toString();
@@ -364,43 +344,42 @@ public class ObjectDiagrams
       return 0 <= lambdaIndex && lambdaIndex <= className.indexOf('/');
    }
 
-   private void addEdge(LinkedHashMap<String, LinkedHashMap<String, String>> edgesMap, String key, String targetKey, String prop)
+   private void addEdge(Map<String, Map<String, String>> edgesMap, String key, String targetKey,
+      String prop)
    {
-      String fwdKey = key + ">" + targetKey;
-      String reverseKey = targetKey + ">" + key;
-      LinkedHashMap<String, String> reverseEdge = edgesMap.get(reverseKey);
+      final String fwdKey = key + ">" + targetKey;
+      final String reverseKey = targetKey + ">" + key;
+      final Map<String, String> reverseEdge = edgesMap.get(reverseKey);
       if (reverseEdge != null)
       {
          // add prop to tail label
          String tailLabel = reverseEdge.get("tail");
-         tailLabel = (tailLabel == null) ? prop : tailLabel + "\\n" +  prop;
+         tailLabel = (tailLabel == null) ? prop : tailLabel + "\\n" + prop;
          reverseEdge.put("tail", tailLabel);
       }
       else
       {
-         LinkedHashMap<String, String> edge = edgesMap.get(fwdKey);
+         Map<String, String> edge = edgesMap.get(fwdKey);
          if (edge == null)
          {
-            edge = new LinkedHashMap<String, String>();
+            edge = new LinkedHashMap<>();
             edgesMap.put(fwdKey, edge);
             edge.put("src", key);
             edge.put("tgt", targetKey);
          }
          String label = edge.get("head");
-         label = (label == null) ? prop  : label + "\\n" + prop;
+         label = (label == null) ? prop : label + "\\n" + prop;
          edge.put("head", label);
       }
    }
 
-   private Object encodeDotString(Object value)
+   private static String encodeDotString(String value)
    {
-      String newValue = (String) value;
-      newValue = "\"" + newValue.replaceAll("\"", "\\\"") + "\"";
-      // newValue = newValue.replaceAll("%", "");
-      newValue = newValue.replaceAll("&", "&amp;");
-      newValue = newValue.replaceAll("<", "&lt;");
-      newValue = newValue.replaceAll(">", "&gt;");
-      return newValue;
+      // value = value.replace("%", "");
+      value = value.replace("&", "&amp;");
+      value = value.replace("<", "&lt;");
+      value = value.replace(">", "&gt;");
+      value = "\"" + value.replace("\"", "\\\"") + "\"";
+      return value;
    }
 }
-
