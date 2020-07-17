@@ -3,9 +3,12 @@ package org.fulib;
 import org.apache.commons.io.IOUtils;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
+import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
+import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
+import org.omg.CORBA.MARSHAL;
 import studyRight.StudyRight;
 
 import java.io.IOException;
@@ -14,13 +17,56 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static org.fulib.builder.ClassModelBuilder.*;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestClassDiagrams
 {
+   @Test
+   public void testClassDiagramInheritance() throws IOException
+   {
+      ClassModelManager mm = new ClassModelManager();
+      mm.setPackageName("studyRight.inherited").setMainJavaDir("");
+      Clazz student = mm.haveClass("Student");
+      Clazz prof = mm.haveClass("Prof");
+      Clazz human = mm.haveClass("Human");
+      mm.haveAttribute(human, "id", STRING);
+
+      mm.associate(prof, "teaches", MANY, student, "profs", MANY);
+
+      student.setSuperClass(human);
+      prof.setSuperClass(human);
+
+      FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "tmp/StudIsHuman.svg");
+
+      // do we have an isA edge?
+      List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
+      boolean foundIsA = false;
+      for (String line : lines) {
+         // search for something like <g id="edge3" class="edge"><title>Student&#45;&gt;Human</title>
+         int pos = line.indexOf("class=\"edge\"");
+         if (pos < 0) {
+            continue;
+         }
+         pos = line.indexOf("Student");
+         if (pos < 0) {
+            continue;
+         }
+         pos = line.indexOf("Human");
+         if (pos < 0) {
+            continue;
+         }
+         foundIsA = true;
+         break;
+      }
+      assertThat(foundIsA, is(true));
+
+      System.out.println("produced tmp/StudIsHuman.svg");
+
+   }
    @Test
    public void testClassDiagrams() throws IOException
    {
