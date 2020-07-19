@@ -20,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import static org.fulib.builder.ClassModelBuilder.*;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -44,25 +45,7 @@ public class TestClassDiagrams
 
       // do we have an isA edge?
       List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
-      boolean foundIsA = false;
-      for (String line : lines) {
-         // search for something like <g id="edge3" class="edge"><title>Student&#45;&gt;Human</title>
-         int pos = line.indexOf("class=\"edge\"");
-         if (pos < 0) {
-            continue;
-         }
-         pos = line.indexOf("Student");
-         if (pos < 0) {
-            continue;
-         }
-         pos = line.indexOf("Human");
-         if (pos < 0) {
-            continue;
-         }
-         foundIsA = true;
-         break;
-      }
-      assertThat(foundIsA, is(true));
+      assertThat(lines, hasItem("<!-- Student&#45;&gt;Human -->"));
 
       System.out.println("produced tmp/StudIsHuman.svg");
 
