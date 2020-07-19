@@ -8,7 +8,6 @@ import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
-import org.omg.CORBA.MARSHAL;
 import studyRight.StudyRight;
 
 import java.io.IOException;
@@ -19,7 +18,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.fulib.builder.ClassModelBuilder.*;
+import static org.fulib.builder.Type.*;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
