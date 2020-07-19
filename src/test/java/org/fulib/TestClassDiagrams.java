@@ -45,10 +45,8 @@ public class TestClassDiagrams
       // do we have an isA edge?
       List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
       assertThat(lines, hasItem("<!-- Student&#45;&gt;Human -->"));
-
-      System.out.println("produced tmp/StudIsHuman.svg");
-
    }
+
    @Test
    public void testClassDiagrams() throws IOException
    {
