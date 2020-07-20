@@ -18,7 +18,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static org.fulib.builder.ClassModelBuilder.*;
+import static org.fulib.builder.Type.*;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -42,31 +43,10 @@ public class TestClassDiagrams
       FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "./tmp/StudIsHuman.svg");
 
       // do we have an isA edge?
-      List<String> lines = Files.readAllLines(Paths.get("./tmp/StudIsHuman.svg"));
-      assertThat(lines.size() > 0, is(true));
-      boolean foundIsA = false;
-      for (String line : lines) {
-         // search for something like <g id="edge3" class="edge"><title>Student&#45;&gt;Human</title>
-         int pos = line.indexOf("class=\"edge\"");
-         if (pos < 0) {
-            continue;
-         }
-         pos = line.indexOf("Student");
-         if (pos < 0) {
-            continue;
-         }
-         pos = line.indexOf("Human");
-         if (pos < 0) {
-            continue;
-         }
-         foundIsA = true;
-         break;
-      }
-      assertThat(foundIsA, is(true));
-
-      System.out.println("produced tmp/StudIsHuman.svg");
-
+      List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
+      assertThat(lines, hasItem("<!-- Student&#45;&gt;Human -->"));
    }
+
    @Test
    public void testClassDiagrams() throws IOException
    {
