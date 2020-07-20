@@ -7,9 +7,7 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.YamlIdMap;
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
-import org.omg.CORBA.MARSHAL;
 import studyRight.StudyRight;
 
 import java.io.IOException;
