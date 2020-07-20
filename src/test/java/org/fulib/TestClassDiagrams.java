@@ -7,6 +7,7 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.YamlIdMap;
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.omg.CORBA.MARSHAL;
 import studyRight.StudyRight;
@@ -40,10 +41,11 @@ public class TestClassDiagrams
       student.setSuperClass(human);
       prof.setSuperClass(human);
 
-      FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "tmp/StudIsHuman.svg");
+      FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "./tmp/StudIsHuman.svg");
 
       // do we have an isA edge?
-      List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
+      List<String> lines = Files.readAllLines(Paths.get("./tmp/StudIsHuman.svg"));
+      assertThat(lines.size() > 0, is(true));
       boolean foundIsA = false;
       for (String line : lines) {
          // search for something like <g id="edge3" class="edge"><title>Student&#45;&gt;Human</title>
