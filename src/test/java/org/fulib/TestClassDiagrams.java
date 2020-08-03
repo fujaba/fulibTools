@@ -3,7 +3,9 @@ package org.fulib;
 import org.apache.commons.io.IOUtils;
 import org.fulib.builder.ClassBuilder;
 import org.fulib.builder.ClassModelBuilder;
+import org.fulib.builder.ClassModelManager;
 import org.fulib.classmodel.ClassModel;
+import org.fulib.classmodel.Clazz;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 import studyRight.StudyRight;
@@ -14,13 +16,37 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
-import static org.fulib.builder.ClassModelBuilder.*;
+import static org.fulib.builder.Type.*;
+import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestClassDiagrams
 {
+   @Test
+   public void testClassDiagramInheritance() throws IOException
+   {
+      ClassModelManager mm = new ClassModelManager();
+      mm.setPackageName("studyRight.inherited").setMainJavaDir("");
+      Clazz student = mm.haveClass("Student");
+      Clazz prof = mm.haveClass("Prof");
+      Clazz human = mm.haveClass("Human");
+      mm.haveAttribute(human, "id", STRING);
+
+      mm.associate(prof, "teaches", MANY, student, "profs", MANY);
+
+      student.setSuperClass(human);
+      prof.setSuperClass(human);
+
+      FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "./tmp/StudIsHuman.svg");
+
+      // do we have an isA edge?
+      List<String> lines = Files.readAllLines(Paths.get("tmp/StudIsHuman.svg"));
+      assertThat(lines, hasItem("<!-- Student&#45;&gt;Human -->"));
+   }
+
    @Test
    public void testClassDiagrams() throws IOException
    {

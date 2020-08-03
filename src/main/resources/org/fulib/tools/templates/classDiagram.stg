@@ -1,12 +1,14 @@
 delimiters "{", "}"
 
-classDiagram(classModel, roles) ::= <<
+classDiagram(classModel, roles, subClasses) ::= <<
 digraph "{classModel.packageName}" \{
    rankdir=BT
 
    {classModel.classes:class(); separator="\n\n"}
 
    {roles:role(); separator="\n\n"}
+
+   {subClasses:isA(); separator="\n\n"}
 }
 
 >>
@@ -32,5 +34,11 @@ role(role) ::= <<
    arrowhead=none
    taillabel="{role.name}{if(role.toMany)} *{endif}"
    headlabel="{role.other.name}{if(role.other.toMany)} *{endif}"
+];
+>>
+
+isA(subClass) ::= <<
+{subClass.name} -> {subClass.superClass.name} [
+   arrowhead=onormal
 ];
 >>

@@ -129,6 +129,7 @@ public class ClassDiagrams
          final ST classDiagram = TEMPLATE_GROUP.getInstanceOf("classDiagram");
          classDiagram.add("classModel", model);
          classDiagram.add("roles", getRolesWithoutOthers(model));
+         classDiagram.add("subClasses", getClassesWithSuperClasses(model));
          final String dotString = classDiagram.render();
 
          Graphviz.fromString(dotString).scale(this.getScale()).render(format).toFile(new File(diagramFileName));
@@ -154,6 +155,16 @@ public class ClassDiagrams
             {
                result.add(role);
             }
+         }
+      }
+      return result;
+   }
+
+   private static Set<Clazz> getClassesWithSuperClasses(ClassModel model) {
+      Set<Clazz> result = new HashSet<>();
+      for (Clazz clazz : model.getClasses()) {
+         if (clazz.getSuperClass() != null) {
+            result.add(clazz);
          }
       }
       return result;
