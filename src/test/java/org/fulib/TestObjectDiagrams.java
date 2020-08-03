@@ -1,10 +1,6 @@
 package org.fulib;
 
-import org.fulib.builder.ClassBuilder;
-import org.fulib.builder.ClassModelBuilder;
-import org.fulib.classmodel.ClassModel;
 import org.fulib.yaml.YamlIdMap;
-import org.fulib.yaml.YamlObject;
 import org.junit.Test;
 import studyRight.Student;
 import studyRight.StudyRight;
@@ -16,10 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class TestObjectDiagrams
@@ -40,25 +34,6 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
    }
-
-   @Test
-   public void prepareNamingConventions()
-   {
-      ClassModelBuilder mb = Fulib.classModelBuilder("studyRight", "src/test/java");
-
-      ClassBuilder studyRight = mb.buildClass("StudyRight");
-      studyRight.buildAttribute("id", ClassModelBuilder.STRING)
-            .buildAttribute("description", ClassModelBuilder.STRING);
-
-      ClassBuilder student = mb.buildClass("Student");
-      student.buildAttribute("name", ClassModelBuilder.STRING);
-
-      studyRight.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
-
-      Fulib.generator().generate(mb.getClassModel());
-
-   }
-
 
    @Test
    public void testNamingConventions()

@@ -1,65 +1,80 @@
-- c1: 	ClassModel
-  classes: 	studyRight2 	student3 	
-  defaultPropertyStyle: 	POJO
+- c: 	ClassModel
+  classes: 	studyRight 	student
+  defaultCollectionType: 	c1
+  defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"src/test/java"
   packageName: 	studyRight
   packageSrcFolder: 	"src/test/java/studyRight"
 
-- studyRight2: 	Clazz
-  attributes: 	id4 	description5 	
-  model: 	c1
+- studyRight: 	Clazz
+  attributes: 	studyRight_id 	studyRight_description
+  model: 	c
   modified: 	false
   name: 	StudyRight
-  propertyStyle: 	POJO
-  roles: 	students6 	
+  propertyStyle: 	Bean
+  roles: 	studyRight_students
 
-- student3: 	Clazz
-  attributes: 	name7 	
-  model: 	c1
+- student: 	Clazz
+  attributes: 	student_name
+  model: 	c
   modified: 	false
   name: 	Student
-  propertyStyle: 	POJO
-  roles: 	uni8 	
+  propertyStyle: 	Bean
+  roles: 	student_uni
 
-- id4: 	Attribute
-  clazz: 	studyRight2
+- c1: 	CollectionType
+  implClass: 	class java.util.ArrayList
+  implTemplate: 	"java.util.ArrayList<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.List
+  qualifiedImplName: 	java.util.ArrayList
+  simpleImplName: 	ArrayList
+
+- studyRight_id: 	Attribute
+  clazz: 	studyRight
+  id: 	StudyRight_id
   modified: 	false
   name: 	id
-  propertyStyle: 	POJO
+  propertyStyle: 	Bean
   type: 	String
 
-- description5: 	Attribute
-  clazz: 	studyRight2
+- studyRight_description: 	Attribute
+  clazz: 	studyRight
+  id: 	StudyRight_description
   modified: 	false
   name: 	description
-  propertyStyle: 	POJO
+  propertyStyle: 	Bean
   type: 	String
 
-- students6: 	AssocRole
+- studyRight_students: 	AssocRole
   aggregation: 	false
   cardinality: 	42
-  clazz: 	studyRight2
+  clazz: 	studyRight
+  collectionType: 	c1
+  id: 	StudyRight_students
   modified: 	false
   name: 	students
-  other: 	uni8
-  propertyStyle: 	POJO
+  other: 	student_uni
+  propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- name7: 	Attribute
-  clazz: 	student3
+- student_name: 	Attribute
+  clazz: 	student
+  id: 	Student_name
   modified: 	false
   name: 	name
-  propertyStyle: 	POJO
+  propertyStyle: 	Bean
   type: 	String
 
-- uni8: 	AssocRole
+- student_uni: 	AssocRole
   aggregation: 	false
   cardinality: 	1
-  clazz: 	student3
+  clazz: 	student
+  collectionType: 	c1
+  id: 	Student_uni
   modified: 	false
   name: 	uni
-  other: 	students6
-  propertyStyle: 	POJO
+  other: 	studyRight_students
+  propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
