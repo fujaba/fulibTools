@@ -53,7 +53,7 @@ repositories {
 
 dependencies {
    // https://mvnrepository.com/artifact/org.fulib/fulib
-   api group: 'org.fulib', name: 'fulib', version: '1.2.0-beta.3'
+   api group: 'org.fulib', name: 'fulib', version: '1.2.0'
 
    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'

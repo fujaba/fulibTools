@@ -1,5 +1,11 @@
 package org.fulib.tools.pipe;
 
+/**
+ * A pipe that indents each line of the input text with 4 spaces.
+ * Useful in markdown contexts when fenced code blocks are not desired.
+ *
+ * @since 1.2
+ */
 public class IndentPipe implements Pipe
 {
    public static final String NAME = "indent";

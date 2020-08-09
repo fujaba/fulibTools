@@ -29,7 +29,8 @@ public class FulibTools
       ClassModel model = mb.getClassModel();
     * <!-- end_code_fragment: -->
     * </pre>
-    * @return
+    *
+    * @return a new {@link ClassDiagrams} instance
     */
    public static ClassDiagrams classDiagrams()
    {
@@ -59,6 +60,8 @@ public class FulibTools
                FulibTools.codeFragments().updateCodeFragments(".");
     * <!-- end_code_fragment: -->
     * </pre>
+    *
+    * @return a new {@link CodeFragments} instance
     */
    public static CodeFragments codeFragments()
    {

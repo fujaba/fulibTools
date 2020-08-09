@@ -46,6 +46,45 @@ public class ObjectDiagrams
 
    private final Map<Object, String> diagramNames = new LinkedHashMap<>();
 
+   private double scale = 1;
+
+   /**
+    * @return the scale factor for rendering
+    *
+    * @since 1.2
+    */
+   public double getScale()
+   {
+      return scale;
+   }
+
+   /**
+    * @param scale the scale factor for rendering
+    *
+    * @since 1.2
+    */
+   public void setScale(double scale)
+   {
+      this.scale = scale;
+   }
+
+   /**
+    * Sets the scaling factor to use when rendering (applies to PNG and SVG format).
+    * Default is {@code 1}.
+    *
+    * @param scale
+    *    the scaling factor
+    *
+    * @return this instance, to allow method chaining
+    *
+    * @since 1.2
+    */
+   public ObjectDiagrams withScale(double scale)
+   {
+      this.setScale(scale);
+      return this;
+   }
+
    /**
     * create an object diagram png in tmp/TheFirstObjectsClass.1.png <br>
     * Example: <br>
@@ -180,7 +219,7 @@ public class ObjectDiagrams
 
       try
       {
-         Graphviz.fromString(dotString).render(format).toFile(new File(diagramFileName));
+         Graphviz.fromString(dotString).scale(this.scale).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
       }

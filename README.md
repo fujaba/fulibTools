@@ -1,11 +1,17 @@
 # fulibTools - Additional features for fulib.
 
 [![Build Status](https://travis-ci.org/fujaba/fulibTools.svg?branch=master)](https://travis-ci.org/fujaba/fulibTools)
+[![Java CI](https://github.com/fujaba/fulibTools/workflows/Java%20CI/badge.svg)](https://github.com/fujaba/fulibTools/actions)
 [![Download](https://api.bintray.com/packages/fujaba/maven/fulibTools/images/download.svg)](https://bintray.com/fujaba/maven/fulibTools/_latestVersion "Download")
+[![javadoc](https://javadoc.io/badge2/org.fulib/fulibTools/javadoc.svg)](https://javadoc.io/doc/org.fulib/fulibTools)
 
-FulibTools provides some additional features like class diagrams and object diagrams to the Fulib code generator.
-These additional features require some large dependencies and as not every user benefits from them, we seperated
-these additional features from Fulib into FulibTools.
+fulibTools provides some additional features like class diagrams and object diagrams to the
+[fulib](https://github.com/fujaba/fulib) code generator.
+These additional features require some large dependencies and as not every user benefits from them,
+we separated them from fulib into fulibTools.
+
+Another big difference is that as of fulib v1.2.0, it is not used as a main or test dependency any more.
+fulibTools however serves as a library mostly for testing and should be used as a test dependency.
 
 ## Installation
 
@@ -20,109 +26,23 @@ repositories {
 
 ```groovy
 dependencies {
-    // https://mvnrepository.com/artifact/org.fulib/fulibYaml
-    compile group: 'org.fulib', name: 'fulibTools', version: '1.1.0'
+    // https://mvnrepository.com/artifact/org.fulib/fulibTools
+    testCompile group: 'org.fulib', name: 'fulibTools', version: '1.1.0'
 }
 ```
 
-## ClassDiagrams
+## Features
 
-Dump a class diagram from a ClassModel
+### Class Diagrams
 
-Example:
+fulibTools can generate class diagrams from a fulib `ClassModel`.
+View the [`ClassDiagrams` JavaDocs](https://javadoc.io/doc/org.fulib/fulibTools/latest/org/fulib/tools/ClassDiagrams.html) to find out more.
 
-<!-- insert_code_fragment: test4Readme.classmodel -->
+### Object Diagrams
 
-      ClassModelBuilder mb = Fulib.classModelBuilder("de.uniks.studyright");
-      ClassBuilder uni = mb.buildClass("University")
-            .buildAttribute("name", mb.STRING);
-      ClassBuilder student = mb.buildClass("Student")
-            .buildAttribute("name", mb.STRING)
-            .buildAttribute("studentId", mb.STRING)
-            .buildAttribute("matNo", mb.INT);
-      uni.buildAssociation(student, "students", mb.MANY, "uni", mb.ONE);
-      ClassBuilder room = mb.buildClass("Room")
-            .buildAttribute("roomNo", mb.STRING);
-      uni.buildAssociation(room, "rooms", mb.MANY, "uni", mb.ONE)
-            .setAggregation();
-      room.buildAssociation(student, "students", mb.MANY, "in", mb.ONE);
-      ClassBuilder professor = mb.buildClass("Professor");
-      uni.buildAssociation(professor, "profs", mb.MANY, null, 1);
+You can create Object Diagrams using the [`ObjectDiagrams`](https://javadoc.io/doc/org.fulib/fulibTools/latest/org/fulib/tools/ObjectDiagrams.html) utility.
 
-      ClassModel model = mb.getClassModel();
- <!-- end_code_fragment: -->
+### Code Fragments
 
-You find the class diagram at:
-
-      src/main/java/org/fulib/groupaccount/doc-files/classDiagram.png
-
-It looks like:
-
-![class diag](src/main/java/org/fulib/groupaccount/doc-files/classDiagram.png "Class Diagram")
-
-The JavaDoc of e.g. the org.fulib.groupaccount.University class
-may include the diagram like this:
-
-      /**
-       * <img src='doc-files/classDiagram.png' width='663'/>
-       */
-      public class University
-      {
-         ...
-      }
-
-
-## CodeFragments
-Find code fragements in Java files and copy them into JavaDoc or markdown files.
-
-Example:
-
-In some file src/main/test/org/fulib/TestCodeFragments.java mark some
-code you want to copy with
-
-    // start_code_fragment: yourFragmentName
-
-    code to be copied
-
-    as many lines as you want
-
-    // end_code_fragment:
-
-In some file src/main/java/org/fulib/CodeFragments.java mark the
-place for insertion of the code:
-
-    /**
-     * Example use:
-     * <pre>
-     * <!-- insert_code_fragment: yourFragmentName -->
-
-    code to be copied
-
-    as many lines as you want
-
-     * <!-- end_code_fragment: yourFragmentName: -->
-     * </pre>
-     */
-     public class CodeFragments
-     {
-         ...
-     }
-
-Or in e.g. Readme.md insert:
-
-    # header
-    Example:
-    <!-- insert_code_fragment: yourFragmentName -->
-
-    code to be copied
-
-    as many lines as you want
-
-    <!-- end_code_fragment: yourFragmentName: -->
-
-
-
-Update the code fragements by running e.g.:
-<!-- insert_code_fragment: CodeFragments.updateCodeFragments -->
-               FulibTools.codeFragments().updateCodeFragments(".");
-<!-- end_code_fragment: -->
+This feature allows you to keep your documentation up-to-date by automatically copying code fragments between source files.
+Check out the [`CodeFragments` JavaDocs](https://javadoc.io/doc/org.fulib/fulibTools/latest/org/fulib/tools/CodeFragments.html) for an extensive explanation.
