@@ -3,10 +3,16 @@ package org.fulib.tools;
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
 import org.fulib.StrUtil;
+import org.fulib.tools.diagrams.DiagramEdge;
+import org.fulib.tools.diagrams.DiagramObject;
 import org.fulib.yaml.Reflector;
 import org.fulib.yaml.ReflectorMap;
 import org.fulib.yaml.YamlIdMap;
 import org.fulib.yaml.YamlObject;
+import org.stringtemplate.v4.ST;
+import org.stringtemplate.v4.STGroup;
+import org.stringtemplate.v4.STGroupFile;
+import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,6 +34,16 @@ import java.util.*;
  */
 public class ObjectDiagrams
 {
+   private static final STGroup TEMPLATE_GROUP = new STGroupFile(
+      ClassDiagrams.class.getResource("templates/objectDiagram.stg"));
+
+   static {
+      final StringRenderer stringRenderer = new StringRenderer();
+      TEMPLATE_GROUP.registerRenderer(Object.class,
+                                      (value, formatString, locale) -> stringRenderer.toString(Objects.toString(value),
+                                                                                               formatString, locale));
+   }
+
    private final Map<Object, String> diagramNames = new LinkedHashMap<>();
 
    /**
@@ -151,13 +167,16 @@ public class ObjectDiagrams
       final String packageName = firstRoot.getClass().getPackage().getName();
       final YamlIdMap idMap = new YamlIdMap(packageName);
       final ReflectorMap reflectorMap = new ReflectorMap(packageName);
-      final Set<Object> diagramObjects = idMap.collectObjects(objectList);
-      final Map<String, Map<String, String>> edgesMap = new LinkedHashMap<>();
+      final Set<Object> relevantObjects = idMap.collectObjects(objectList);
+      final Set<DiagramObject> diagramObjects = new LinkedHashSet<>();
+      final Set<DiagramEdge> edges = new LinkedHashSet<>();
 
-      final String nodesString = this.makeNodes(diagramObjects, idMap, reflectorMap, edgesMap);
-      final String edgesString = this.makeEdges(edgesMap);
+      this.makeNodes(relevantObjects, idMap, reflectorMap, diagramObjects, edges);
 
-      final String dotString = "digraph H {\n" + nodesString + "\n" + edgesString + "\n" + "}\n";
+      final ST st = TEMPLATE_GROUP.getInstanceOf("objectDiagram");
+      st.add("objects", diagramObjects);
+      st.add("edges", edges);
+      final String dotString = st.render();
 
       try
       {
@@ -191,39 +210,15 @@ public class ObjectDiagrams
       return flatList.toArray();
    }
 
-   private String makeEdges(Map<String, Map<String, String>> edgesMap)
+   private void makeNodes(Set<Object> relevantObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
+      Set<DiagramObject> objects, Set<DiagramEdge> edges)
    {
-      final StringBuilder buf = new StringBuilder();
-
-      for (Map<String, String> edge : edgesMap.values())
-      {
-         final String sourceId = edge.get("src");
-         final String targetId = edge.get("tgt");
-
-         String sourceLabel = edge.get("tail");
-         sourceLabel = sourceLabel == null ? " " : sourceLabel;
-
-         final String targetLabel = edge.get("head");
-
-         buf.append(sourceId).append(" -> ").append(targetId)
-            .append(" [arrowhead=none fontsize=\"10\" " + "taillabel=\"").append(sourceLabel).append("\" ")
-            .append("headlabel=\"").append(targetLabel).append("\"];\n");
-      }
-
-      return buf.toString();
-   }
-
-   private String makeNodes(Set<Object> diagramObjects, YamlIdMap idMap, ReflectorMap reflectorMap,
-      Map<String, Map<String, String>> edgesMap)
-   {
-      final StringBuilder buf = new StringBuilder();
-
       for (Map.Entry<String, Object> entry : idMap.getObjIdMap().entrySet())
       {
          final String key = entry.getKey();
          final Object obj = entry.getValue();
 
-         if (!diagramObjects.contains(obj))
+         if (!relevantObjects.contains(obj))
          {
             continue;
          }
@@ -257,10 +252,9 @@ public class ObjectDiagrams
             }
          }
 
-         buf.append(key).append(" " + "[\n" + "   shape=plaintext\n" + "   fontsize=\"10\"\n" + "   label=<\n"
-                                + "     <table border='0' cellborder='1' cellspacing='0'>\n" + "       <tr><td>")
-            .append("<u>").append(userKey).append(" :").append(className).append("</u>")
-            .append("</td></tr>\n" + "       <tr><td>");
+         final Map<String, Object> attributes = new LinkedHashMap<>();
+         final DiagramObject diagramObject = new DiagramObject(key, userKey, className, attributes);
+         objects.add(diagramObject);
 
          for (String prop : creator.getOwnProperties())
          {
@@ -283,7 +277,7 @@ public class ObjectDiagrams
                   final Class<?> fieldType = method.getReturnType();
                   if (fieldType == String.class)
                   {
-                     buf.append("  ").append(prop).append(" = null").append("<br  align='left'/>");
+                     attributes.put(prop, "null");
                   }
                }
                catch (Exception e)
@@ -297,10 +291,10 @@ public class ObjectDiagrams
             {
                for (Object elem : (Collection<?>) value)
                {
-                  if (diagramObjects.contains(elem))
+                  if (relevantObjects.contains(elem))
                   {
                      String targetKey = idMap.getId(elem);
-                     this.addEdge(edgesMap, key, targetKey, prop);
+                     this.addEdge(edges, key, targetKey, prop);
                   }
                }
             }
@@ -310,31 +304,27 @@ public class ObjectDiagrams
 
                if (valueKey != null)
                {
-                  if (diagramObjects.contains(value))
+                  if (relevantObjects.contains(value))
                   {
                      String targetKey = idMap.getId(value);
-                     this.addEdge(edgesMap, key, targetKey, prop);
+                     this.addEdge(edges, key, targetKey, prop);
                   }
                }
                else
                {
                   if (value instanceof String)
                   {
-                     value = encodeDotString((String) value);
+                     value = "\"" + ((String) value).replace("\"", "\\\"") + "\"";
                   }
                   else if (isLambdaClass(value.getClass()))
                   {
-                     value = "&lt;lambda expression&gt;";
+                     value = "<lambda expression>";
                   }
-                  buf.append("  ").append(prop).append(" = ").append(value.toString()).append("<br  align='left'/>");
+                  attributes.put(prop, value);
                }
             }
          }
-
-         buf.append("</td></tr>\n" + "     </table>\n" + "  >];\n");
       }
-
-      return buf.toString();
    }
 
    private static boolean isLambdaClass(Class<?> aClass)
@@ -344,42 +334,23 @@ public class ObjectDiagrams
       return 0 <= lambdaIndex && lambdaIndex <= className.indexOf('/');
    }
 
-   private void addEdge(Map<String, Map<String, String>> edgesMap, String key, String targetKey,
-      String prop)
+   private void addEdge(Set<DiagramEdge> edges, String key, String targetKey, String prop)
    {
-      final String fwdKey = key + ">" + targetKey;
-      final String reverseKey = targetKey + ">" + key;
-      final Map<String, String> reverseEdge = edgesMap.get(reverseKey);
-      if (reverseEdge != null)
+      // TODO this is inefficient
+      for (DiagramEdge existing : edges)
       {
-         // add prop to tail label
-         String tailLabel = reverseEdge.get("tail");
-         tailLabel = (tailLabel == null) ? prop : tailLabel + "\\n" + prop;
-         reverseEdge.put("tail", tailLabel);
-      }
-      else
-      {
-         Map<String, String> edge = edgesMap.get(fwdKey);
-         if (edge == null)
+         if (key.equals(existing.getSource()) && targetKey.equals(existing.getTarget()))
          {
-            edge = new LinkedHashMap<>();
-            edgesMap.put(fwdKey, edge);
-            edge.put("src", key);
-            edge.put("tgt", targetKey);
+            existing.setTargetLabel(prop);
+            return;
          }
-         String label = edge.get("head");
-         label = (label == null) ? prop : label + "\\n" + prop;
-         edge.put("head", label);
+         else if (key.equals(existing.getTarget()) && targetKey.equals(existing.getSource()))
+         {
+            existing.setSourceLabel(prop);
+            return;
+         }
       }
-   }
-
-   private static String encodeDotString(String value)
-   {
-      // value = value.replace("%", "");
-      value = value.replace("&", "&amp;");
-      value = value.replace("<", "&lt;");
-      value = value.replace(">", "&gt;");
-      value = "\"" + value.replace("\"", "\\\"") + "\"";
-      return value;
+      final DiagramEdge edge = new DiagramEdge(key, targetKey, null, prop);
+      edges.add(edge);
    }
 }
