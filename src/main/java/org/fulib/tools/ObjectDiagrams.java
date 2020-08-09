@@ -341,16 +341,16 @@ public class ObjectDiagrams
       {
          if (key.equals(existing.getSource()) && targetKey.equals(existing.getTarget()))
          {
-            existing.setTargetLabel(prop);
+            existing.setSourceLabel(prop);
             return;
          }
          else if (key.equals(existing.getTarget()) && targetKey.equals(existing.getSource()))
          {
-            existing.setSourceLabel(prop);
+            existing.setTargetLabel(prop);
             return;
          }
       }
-      final DiagramEdge edge = new DiagramEdge(key, targetKey, null, prop);
+      final DiagramEdge edge = new DiagramEdge(key, targetKey, prop, null);
       edges.add(edge);
    }
 }
