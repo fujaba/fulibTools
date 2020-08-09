@@ -12,10 +12,10 @@ $object.id$ [
     shape=plaintext
     fontsize="10"
     label=<
-        <table border='0' cellborder='1' cellspacing='0'>
-            <tr><td><u>$object.name$ :$object.type$</u></td></tr>
-            <tr><td>$object.attributes.keys:{k|$k$ = $object.attributes.(k); format="xml-encode"$}; separator="<br align='left'/>"$</td></tr>
-        </table>
+      <table border='0' cellborder='1' cellspacing='0'>
+        <tr><td><u>$object.name$ :$object.type$</u></td></tr>
+        <tr><td>$object.attributes.keys:{k|$k$ = $object.attributes.(k); format="xml-encode"$<br align='left'/>}; separator=""$</td></tr>
+      </table>
     >
 ];
 >>
