@@ -1,0 +1,31 @@
+delimiters "$", "$"
+
+objectDiagram(objects, edges) ::= <<
+digraph H {
+    $objects:object(); separator="\n"$
+    $edges:edge(); separator="\n"$
+}
+>>
+
+object(object) ::= <<
+$object.id$ [
+    shape=plaintext
+    fontsize="10"
+    label=<
+      <table border='0' cellborder='1' cellspacing='0'>
+        <tr><td><u>$object.name$ :$object.type$</u></td></tr>
+        <tr><td>$object.attributes.keys:{k|$k$ = $object.attributes.(k); format="xml-encode"$<br align='left'/>}; separator=""$</td></tr>
+      </table>
+    >
+];
+>>
+
+
+edge(edge) ::= <<
+$edge.source$ -> $edge.target$ [
+    arrowhead=none
+    fontsize="10"
+    headlabel="$edge.sourceLabel$"
+    taillabel="$edge.targetLabel$"
+]
+>>
