@@ -213,6 +213,7 @@ public class ObjectDiagrams
       this.makeNodes(relevantObjects, idMap, reflectorMap, diagramObjects, edges);
 
       final ST st = TEMPLATE_GROUP.getInstanceOf("objectDiagram");
+      st.add("title", packageName);
       st.add("objects", diagramObjects);
       st.add("edges", edges);
       final String dotString = st.render();
