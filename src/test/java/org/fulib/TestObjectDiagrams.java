@@ -1,15 +1,15 @@
 package org.fulib;
 
+import org.apache.commons.io.IOUtils;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 import studyRight.Student;
 import studyRight.StudyRight;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -19,20 +19,17 @@ import static org.junit.Assert.assertThat;
 public class TestObjectDiagrams
 {
    @Test
-   public void testObjectDiagrams() throws IOException, URISyntaxException
+   public void testObjectDiagrams() throws IOException
    {
-      URL url = ClassLoader.getSystemResource("initStudentsSubscribeToModeling.yaml");
-      Path initData = Paths.get(url.toURI());
-      byte[] bytes = Files.readAllBytes(initData);
-      String yamlString = new String(bytes);
+      try (final InputStream input = getClass().getResourceAsStream("initStudentsSubscribeToModeling.yaml"))
+      {
+         final String yamlString = IOUtils.toString(input, StandardCharsets.UTF_8);
+         final YamlIdMap idMap = new YamlIdMap();
+         final Object root = idMap.decode(yamlString);
 
-      YamlIdMap idMap = new YamlIdMap();
-
-      Object root = idMap.decode(yamlString);
-
-      FulibTools.objectDiagrams().dumpPng(root);
-
-      FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
+         FulibTools.objectDiagrams().dumpPng(root);
+         FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
+      }
    }
 
    @Test
