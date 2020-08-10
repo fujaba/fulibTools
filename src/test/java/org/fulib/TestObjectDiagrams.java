@@ -47,12 +47,10 @@ public class TestObjectDiagrams
       FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
    }
 
-
    @Test
    public void testSpecialCharsInStrings() throws IOException
    {
-      StudyRight studyRight = new StudyRight().setId("studyRight")
-            .setDescription("<i>Greatest Ever</i>");
+      StudyRight studyRight = new StudyRight().setId("studyRight").setDescription("<i>Greatest Ever</i>");
 
       FulibTools.objectDiagrams().dumpSVG("tmp/specialChars.svg", studyRight);
       FulibTools.objectDiagrams().dumpPng("tmp/specialChars.png", studyRight);
