@@ -53,7 +53,7 @@ public class TestObjectDiagrams
    }
 
    @Test
-   public void testNamingConventions() throws IOException
+   public void dumpSVG() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("studyRight");
       new Student().setName("Alice").setUni(studyRight);
@@ -61,7 +61,6 @@ public class TestObjectDiagrams
       Student carli = new Student();
 
       FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
-      FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
 
       final String svgText = FileUtils.readFileToString(new File("tmp/studyRight.svg"), StandardCharsets.UTF_8);
 
@@ -83,7 +82,7 @@ public class TestObjectDiagrams
    }
 
    @Test
-   public void testSpecialCharsInStrings() throws IOException
+   public void dumpWithSpecialChars() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("studyRight").setDescription("<i>Greatest Ever</i>");
 
