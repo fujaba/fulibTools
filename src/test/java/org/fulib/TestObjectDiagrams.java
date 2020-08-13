@@ -14,7 +14,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestObjectDiagrams
 {
