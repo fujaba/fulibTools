@@ -15,7 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestObjectDiagrams
@@ -35,7 +35,7 @@ public class TestObjectDiagrams
    }
 
    @Test
-   public void testNamingConventions()
+   public void testNamingConventions() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("studyRight");
       new Student().setName("Alice").setUni(studyRight);
@@ -44,6 +44,24 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
       FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
+
+      final String svgText = FileUtils.readFileToString(new File("tmp/studyRight.svg"), StandardCharsets.UTF_8);
+
+      assertThat(svgText, containsString("studyRight :StudyRight"));
+      assertThat(svgText, containsString("id = &quot;studyRight&quot;"));
+      assertThat(svgText, containsString("description = null"));
+
+      assertThat(svgText, containsString("alice :Student"));
+      assertThat(svgText, containsString("name = &quot;Alice&quot;"));
+
+      assertThat(svgText, containsString("bob :Student"));
+      assertThat(svgText, containsString("name = &quot;Bob&quot;"));
+
+      assertThat(svgText, containsString("s :Student"));
+      assertThat(svgText, containsString("name = null"));
+
+      assertThat(svgText, containsString("uni"));
+      assertThat(svgText, containsString("students"));
    }
 
    @Test
@@ -53,6 +71,8 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpSVG("tmp/specialChars.svg", studyRight);
       FulibTools.objectDiagrams().dumpPng("tmp/specialChars.png", studyRight);
+
+      assertThat(new File("tmp/specialChars.png").exists(), equalTo(true));
 
       final String svgText = FileUtils.readFileToString(new File("tmp/specialChars.svg"), StandardCharsets.UTF_8);
 
