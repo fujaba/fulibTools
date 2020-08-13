@@ -21,7 +21,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class TestObjectDiagrams
 {
    @Test
-   public void testObjectDiagrams() throws IOException
+   public void yamlObjects() throws IOException
    {
       try (final InputStream input = getClass().getResourceAsStream("initStudentsSubscribeToModeling.yaml"))
       {
@@ -29,9 +29,27 @@ public class TestObjectDiagrams
          final YamlIdMap idMap = new YamlIdMap();
          final Object root = idMap.decode(yamlString);
 
-         FulibTools.objectDiagrams().dumpPng(root);
-         FulibTools.objectDiagrams().dumpYaml("tmp/tmpStudis.yaml", root);
+         FulibTools.objectDiagrams().dumpSVG("tmp/yamlObjects.svg", root);
       }
+
+      final String svgText = FileUtils.readFileToString(new File("tmp/yamlObjects.svg"), StandardCharsets.UTF_8);
+
+      assertThat(svgText, containsString("Alice :UniStudent"));
+      assertThat(svgText, containsString("studentId = &quot;m4242&quot;"));
+
+      assertThat(svgText, containsString("enrol1 :Enrollment"));
+      assertThat(svgText, containsString("result = &quot;open&quot;"));
+
+      assertThat(svgText, containsString("CS :Program"));
+      assertThat(svgText, containsString("math :Course"));
+      assertThat(svgText, containsString("modeling :Course"));
+      assertThat(svgText, containsString("modelingWT1819Exam :Exam"));
+
+      assertThat(svgText, containsString("majorSubject"));
+      assertThat(svgText, containsString("enrollments"));
+      assertThat(svgText, containsString("exam"));
+      assertThat(svgText, containsString("courses"));
+      assertThat(svgText, containsString("topic"));
    }
 
    @Test
