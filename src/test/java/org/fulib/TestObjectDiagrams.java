@@ -1,11 +1,13 @@
 package org.fulib;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 import studyRight.Student;
 import studyRight.StudyRight;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -52,8 +54,7 @@ public class TestObjectDiagrams
       FulibTools.objectDiagrams().dumpSVG("tmp/specialChars.svg", studyRight);
       FulibTools.objectDiagrams().dumpPng("tmp/specialChars.png", studyRight);
 
-      byte[] bytes = Files.readAllBytes(Paths.get("tmp/specialChars.svg"));
-      String svgText = new String(bytes);
+      final String svgText = FileUtils.readFileToString(new File("tmp/specialChars.svg"), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("&lt;i&gt;Greatest Ever&lt;/i&gt;"));
    }
