@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -130,21 +129,5 @@ public class TestObjectDiagrams
 
       assertThat(svgText, containsString("&lt;lambda expression&gt;"));
       assertThat(svgText, not(containsString("$$Lambda$")));
-   }
-
-   @Test
-   public void testListsOfObjects()
-   {
-      StudyRight studyRight = new StudyRight().setId("studyRight");
-      Student alice = new Student().setName("Alice").setUni(studyRight);
-      Student bob = new Student().setName("Bob").setUni(studyRight);
-      Student carli = new Student();
-      ArrayList<Student> students = new ArrayList<>();
-      students.add(alice);
-      students.add(bob);
-      students.add(carli);
-
-      FulibTools.objectDiagrams().dumpSVG("tmp/students.svg", students);
-      FulibTools.objectDiagrams().dumpYaml("tmp/students.yaml", students);
    }
 }
