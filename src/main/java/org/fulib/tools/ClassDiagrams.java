@@ -2,12 +2,14 @@ package org.fulib.tools;
 
 import guru.nidi.graphviz.engine.Format;
 import guru.nidi.graphviz.engine.Graphviz;
+import guru.nidi.graphviz.engine.GraphvizException;
 import org.fulib.classmodel.AssocRole;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.classmodel.Clazz;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,6 +23,11 @@ public class ClassDiagrams
 {
    private static final STGroup TEMPLATE_GROUP = new STGroupFile(
       ClassDiagrams.class.getResource("templates/classDiagram.stg"));
+
+   static
+   {
+      TEMPLATE_GROUP.registerRenderer(String.class, new StringRenderer());
+   }
 
    private double scale = 1;
 
@@ -124,16 +131,20 @@ public class ClassDiagrams
     */
    public String dump(ClassModel model, String diagramFileName, Format format)
    {
+      final ST classDiagram = TEMPLATE_GROUP.getInstanceOf("classDiagram");
+      classDiagram.add("classModel", model);
+      classDiagram.add("roles", getRolesWithoutOthers(model));
+      final String dotString = classDiagram.render();
+
       try
       {
-         final ST classDiagram = TEMPLATE_GROUP.getInstanceOf("classDiagram");
-         classDiagram.add("classModel", model);
-         classDiagram.add("roles", getRolesWithoutOthers(model));
-         final String dotString = classDiagram.render();
-
          Graphviz.fromString(dotString).scale(this.getScale()).render(format).toFile(new File(diagramFileName));
 
          return diagramFileName;
+      }
+      catch (GraphvizException graphvizException)
+      {
+         throw new RuntimeException("Graphviz rendering failed for dot string from class model:\n" + dotString, graphvizException);
       }
       catch (IOException e)
       {
