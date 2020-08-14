@@ -5,6 +5,8 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.Type;
 import org.fulib.classmodel.Clazz;
 
+import java.util.function.Predicate;
+
 public class GenModel implements ClassModelDecorator
 {
    @Override
@@ -17,6 +19,8 @@ public class GenModel implements ClassModelDecorator
 
       final Clazz student = mm.haveClass("Student", c -> {
          c.attribute("name", Type.STRING);
+         c.attribute("predicate", "Predicate<?>");
+         c.imports(Predicate.class.getCanonicalName());
       });
 
       mm.associate(studyRight, "students", Type.MANY, student, "uni", Type.ONE);

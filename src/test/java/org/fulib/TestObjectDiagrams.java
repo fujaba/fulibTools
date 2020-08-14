@@ -97,6 +97,19 @@ public class TestObjectDiagrams
    }
 
    @Test
+   public void dumpLambdaExpr() throws IOException
+   {
+      Student student = new Student().setName("Alice").setPredicate(x -> true);
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/lambdaExpr.svg", student);
+
+      final String svgText = FileUtils.readFileToString(new File("tmp/lambdaExpr.svg"), StandardCharsets.UTF_8);
+
+      assertThat(svgText, containsString("&lt;lambda expression&gt;"));
+      assertThat(svgText, not(containsString("$$Lambda$")));
+   }
+
+   @Test
    public void testListsOfObjects()
    {
       StudyRight studyRight = new StudyRight().setId("studyRight");

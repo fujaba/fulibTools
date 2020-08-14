@@ -16,7 +16,9 @@
   roles: 	studyRight_students
 
 - student: 	Clazz
-  attributes: 	student_name
+  attributes: 	student_name 	student_predicate
+  importList: 	java.util.function.Predicate
+  imports: 	java.util.function.Predicate
   model: 	c
   modified: 	false
   name: 	Student
@@ -65,6 +67,14 @@
   name: 	name
   propertyStyle: 	Bean
   type: 	String
+
+- student_predicate: 	Attribute
+  clazz: 	student
+  id: 	Student_predicate
+  modified: 	false
+  name: 	predicate
+  propertyStyle: 	Bean
+  type: 	"Predicate<?>"
 
 - student_uni: 	AssocRole
   aggregation: 	false

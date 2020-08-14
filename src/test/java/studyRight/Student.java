@@ -3,6 +3,7 @@ package studyRight;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.Objects;
+import java.util.function.Predicate;
 
 public class Student
 {
@@ -16,6 +17,10 @@ public class Student
    private StudyRight uni;
 
    protected PropertyChangeSupport listeners;
+
+   public static final String PROPERTY_predicate = "predicate";
+
+   private Predicate<?> predicate;
 
    public String getName()
    {
@@ -121,5 +126,23 @@ public class Student
    public void removeYou()
    {
       this.setUni(null);
+   }
+
+   public Predicate<?> getPredicate()
+   {
+      return this.predicate;
+   }
+
+   public Student setPredicate(Predicate<?> value)
+   {
+      if (Objects.equals(value, this.predicate))
+      {
+         return this;
+      }
+
+      final Predicate<?> oldValue = this.predicate;
+      this.predicate = value;
+      this.firePropertyChange(PROPERTY_predicate, oldValue, value);
+      return this;
    }
 }
