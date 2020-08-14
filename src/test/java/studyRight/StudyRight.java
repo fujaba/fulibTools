@@ -1,113 +1,137 @@
 package studyRight;
 
-import java.beans.PropertyChangeSupport;
-
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Collections;
+import java.util.Collection;
 
-public class StudyRight  
+public class StudyRight
 {
 
    public static final String PROPERTY_id = "id";
 
    private String id;
 
+   public static final String PROPERTY_description = "description";
+
+   private String description;
+
+   public static final String PROPERTY_students = "students";
+
+   private List<Student> students;
+
+   protected PropertyChangeSupport listeners;
+
    public String getId()
    {
-      return id;
+      return this.id;
    }
 
    public StudyRight setId(String value)
    {
-      if (value == null ? this.id != null : ! value.equals(this.id))
+      if (Objects.equals(value, this.id))
       {
-         String oldValue = this.id;
-         this.id = value;
-         firePropertyChange("id", oldValue, value);
+         return this;
       }
+
+      final String oldValue = this.id;
+      this.id = value;
+      this.firePropertyChange(PROPERTY_id, oldValue, value);
       return this;
    }
 
-   public static final java.util.ArrayList<Student> EMPTY_students = new java.util.ArrayList<Student>()
-   { @Override public boolean add(Student value){ throw new UnsupportedOperationException("No direct add! Use xy.withStudents(obj)"); }};
+   public String getDescription()
+   {
+      return this.description;
+   }
 
-   public static final String PROPERTY_students = "students";
+   public StudyRight setDescription(String value)
+   {
+      if (Objects.equals(value, this.description))
+      {
+         return this;
+      }
 
-   private java.util.ArrayList<Student> students = null;
+      final String oldValue = this.description;
+      this.description = value;
+      this.firePropertyChange(PROPERTY_description, oldValue, value);
+      return this;
+   }
 
-   public java.util.ArrayList<Student> getStudents()
+   public List<Student> getStudents()
+   {
+      return this.students != null ? Collections.unmodifiableList(this.students) : Collections.emptyList();
+   }
+
+   public StudyRight withStudents(Student value)
    {
       if (this.students == null)
       {
-         return EMPTY_students;
+         this.students = new ArrayList<>();
       }
-
-      return this.students;
-   }
-
-   public StudyRight withStudents(Object... value)
-   {
-      if(value==null) return this;
-      for (Object item : value)
+      if (!this.students.contains(value))
       {
-         if (item == null) continue;
-         if (item instanceof java.util.Collection)
-         {
-            for (Object i : (java.util.Collection) item)
-            {
-               this.withStudents(i);
-            }
-         }
-         else if (item instanceof Student)
-         {
-            if (this.students == null)
-            {
-               this.students = new java.util.ArrayList<Student>();
-            }
-            if ( ! this.students.contains(item))
-            {
-               this.students.add((Student)item);
-               ((Student)item).setUni(this);
-               firePropertyChange("students", null, item);
-            }
-         }
-         else throw new IllegalArgumentException();
+         this.students.add(value);
+         value.setUni(this);
+         this.firePropertyChange(PROPERTY_students, null, value);
       }
       return this;
    }
 
-   public StudyRight withoutStudents(Object... value)
+   public StudyRight withStudents(Student... value)
    {
-      if (this.students == null || value==null) return this;
-      for (Object item : value)
+      for (final Student item : value)
       {
-         if (item == null) continue;
-         if (item instanceof java.util.Collection)
-         {
-            for (Object i : (java.util.Collection) item)
-            {
-               this.withoutStudents(i);
-            }
-         }
-         else if (item instanceof Student)
-         {
-            if (this.students.contains(item))
-            {
-               this.students.remove((Student)item);
-               ((Student)item).setUni(null);
-               firePropertyChange("students", item, null);
-            }
-         }
+         this.withStudents(item);
       }
       return this;
    }
 
-   protected PropertyChangeSupport listeners = null;
+   public StudyRight withStudents(Collection<? extends Student> value)
+   {
+      for (final Student item : value)
+      {
+         this.withStudents(item);
+      }
+      return this;
+   }
+
+   public StudyRight withoutStudents(Student value)
+   {
+      if (this.students != null && this.students.remove(value))
+      {
+         value.setUni(null);
+         this.firePropertyChange(PROPERTY_students, value, null);
+      }
+      return this;
+   }
+
+   public StudyRight withoutStudents(Student... value)
+   {
+      for (final Student item : value)
+      {
+         this.withoutStudents(item);
+      }
+      return this;
+   }
+
+   public StudyRight withoutStudents(Collection<? extends Student> value)
+   {
+      for (final Student item : value)
+      {
+         this.withoutStudents(item);
+      }
+      return this;
+   }
 
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
-      if (listeners != null)
+      if (this.listeners != null)
       {
-         listeners.firePropertyChange(propertyName, oldValue, newValue);
+         this.listeners.firePropertyChange(propertyName, oldValue, newValue);
          return true;
       }
       return false;
@@ -115,79 +139,53 @@ public class StudyRight
 
    public boolean addPropertyChangeListener(PropertyChangeListener listener)
    {
-      if (listeners == null)
+      if (this.listeners == null)
       {
-         listeners = new PropertyChangeSupport(this);
+         this.listeners = new PropertyChangeSupport(this);
       }
-      listeners.addPropertyChangeListener(listener);
+      this.listeners.addPropertyChangeListener(listener);
       return true;
    }
 
    public boolean addPropertyChangeListener(String propertyName, PropertyChangeListener listener)
    {
-      if (listeners == null)
+      if (this.listeners == null)
       {
-         listeners = new PropertyChangeSupport(this);
+         this.listeners = new PropertyChangeSupport(this);
       }
-      listeners.addPropertyChangeListener(propertyName, listener);
+      this.listeners.addPropertyChangeListener(propertyName, listener);
       return true;
    }
 
    public boolean removePropertyChangeListener(PropertyChangeListener listener)
    {
-      if (listeners != null)
+      if (this.listeners != null)
       {
-         listeners.removePropertyChangeListener(listener);
+         this.listeners.removePropertyChangeListener(listener);
       }
       return true;
    }
 
-   public boolean removePropertyChangeListener(String propertyName,PropertyChangeListener listener)
+   public boolean removePropertyChangeListener(String propertyName, PropertyChangeListener listener)
    {
-      if (listeners != null)
+      if (this.listeners != null)
       {
-         listeners.removePropertyChangeListener(propertyName, listener);
+         this.listeners.removePropertyChangeListener(propertyName, listener);
       }
       return true;
-   }
-
-   public void removeYou()
-   {
-      this.withoutStudents(this.getStudents().clone());
-
-
    }
 
    @Override
    public String toString()
    {
-      StringBuilder result = new StringBuilder();
-
-      result.append(" ").append(this.getId());
-      result.append(" ").append(this.getDescription());
-
-
+      final StringBuilder result = new StringBuilder();
+      result.append(' ').append(this.getId());
+      result.append(' ').append(this.getDescription());
       return result.substring(1);
    }
 
-   public static final String PROPERTY_description = "description";
-
-   private String description;
-
-   public String getDescription()
+   public void removeYou()
    {
-      return description;
+      this.withoutStudents(new ArrayList<>(this.getStudents()));
    }
-
-   public StudyRight setDescription(String value)
-   {
-      if (value == null ? this.description != null : ! value.equals(this.description))
-      {
-         String oldValue = this.description;
-         this.description = value;
-         firePropertyChange("description", oldValue, value);
-      }
-      return this;
-   }
-
 }

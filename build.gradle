@@ -8,7 +8,7 @@ plugins {
    // https://plugins.gradle.org/plugin/com.palantir.revapi
    id 'com.palantir.revapi' version '1.4.3'
    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
-   // id 'org.fulib.fulibGradle' version '0.1.0'
+   id 'org.fulib.fulibGradle' version '0.4.0'
 }
 
 group = 'org.fulib'
@@ -52,6 +52,9 @@ repositories {
 }
 
 dependencies {
+   // https://mvnrepository.com/artifact/org.fulib/fulibScenarios
+   fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.4.0'
+
    // https://mvnrepository.com/artifact/org.fulib/fulib
    api group: 'org.fulib', name: 'fulib', version: '1.2.0'
 
