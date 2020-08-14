@@ -151,4 +151,17 @@ public class TestObjectDiagrams
       assertThat(decoded, instanceOf(StudyRight.class));
       assertThat(((StudyRight) decoded).getId(), equalTo("StudyRight"));
    }
+
+   @Test
+   public void dumpYamlCreatesParentDir()
+   {
+      StudyRight studyRight = new StudyRight().setId("studyRight");
+
+      new File("dumpYaml/studyRight.yaml").delete();
+      new File("dumpYaml").delete();
+
+      FulibTools.objectDiagrams().dumpYaml("dumpYaml/studyRight.yaml", studyRight);
+
+      assertThat(new File("dumpYaml/studyRight.yaml").exists(), equalTo(true));
+   }
 }

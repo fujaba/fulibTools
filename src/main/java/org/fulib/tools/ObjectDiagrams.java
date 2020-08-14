@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
@@ -184,7 +185,9 @@ public class ObjectDiagrams
 
       try
       {
-         Files.write(Paths.get(diagramFileName), yaml.getBytes(StandardCharsets.UTF_8));
+         final Path path = Paths.get(diagramFileName);
+         Files.createDirectories(path.getParent());
+         Files.write(path, yaml.getBytes(StandardCharsets.UTF_8));
       }
       catch (IOException e)
       {
