@@ -130,4 +130,25 @@ public class TestObjectDiagrams
       assertThat(svgText, containsString("&lt;lambda expression&gt;"));
       assertThat(svgText, not(containsString("$$Lambda$")));
    }
+
+   @Test
+   public void dumpYaml() throws IOException
+   {
+      StudyRight studyRight = new StudyRight().setId("StudyRight");
+
+      FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
+
+      assertThat(new File("tmp/studyRight.yaml").exists(), equalTo(true));
+
+      final String yaml = FileUtils.readFileToString(new File("tmp/studyRight.yaml"), StandardCharsets.UTF_8);
+
+      // language=YAML
+      assertThat(yaml, equalTo("- studyRight: \tStudyRight\n" + "  id: \tStudyRight\n\n"));
+
+      final YamlIdMap idMap = new YamlIdMap(StudyRight.class.getPackage().getName());
+      final Object decoded = idMap.decode(yaml);
+
+      assertThat(decoded, instanceOf(StudyRight.class));
+      assertThat(((StudyRight) decoded).getId(), equalTo("StudyRight"));
+   }
 }
