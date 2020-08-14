@@ -4,6 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.yaml.YamlIdMap;
+import org.junit.Before;
 import org.junit.Test;
 import studyRight.StudyRight;
 
@@ -11,36 +12,48 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 public class TestClassDiagrams
 {
-   @Test
-   public void testClassDiagrams() throws IOException
+   private ClassModel model;
+
+   @Before
+   public void setup() throws IOException
    {
-      final String packageName = StudyRight.class.getPackage().getName();
       try (final InputStream yamlInput = StudyRight.class.getResourceAsStream("classModel.yaml"))
       {
          final String yamlString = IOUtils.toString(yamlInput, StandardCharsets.UTF_8);
          final YamlIdMap idMap = new YamlIdMap(ClassModel.class.getPackage().getName());
-         final ClassModel model = (ClassModel) idMap.decode(yamlString);
-
-         model.setMainJavaDir("src/test/java");
-
-         FulibTools.classDiagrams().dumpPng(model);
-         FulibTools.classDiagrams().dumpPng(model, "tmp/classModel.png");
-         FulibTools.classDiagrams().dumpSVG(model, "tmp/classModel.svg");
+         this.model = (ClassModel) idMap.decode(yamlString);
+         this.model.setMainJavaDir("src/test/java");
       }
+   }
 
-      final File classDiagramPng = new File("src/test/java/" + packageName.replace('.', '/') + "/doc-files/classDiagram.png");
+   @Test
+   public void dumpPng()
+   {
+      FulibTools.classDiagrams().dumpPng(model);
+
+      final File classDiagramPng = new File("src/test/java/studyRight/doc-files/classDiagram.png");
       assertThat(classDiagramPng.exists(), equalTo(true));
+   }
+
+   @Test
+   public void dumpPngWithFileName()
+   {
+      FulibTools.classDiagrams().dumpPng(model, "tmp/classModel.png");
 
       assertThat(new File("tmp/classModel.png").exists(), equalTo(true));
+   }
+
+   @Test
+   public void dumpSVG() throws IOException
+   {
+      FulibTools.classDiagrams().dumpSVG(model, "tmp/classModel.svg");
 
       final String svgText = FileUtils.readFileToString(new File("tmp/classModel.svg"), StandardCharsets.UTF_8);
       assertThat(svgText, containsString("StudyRight"));
