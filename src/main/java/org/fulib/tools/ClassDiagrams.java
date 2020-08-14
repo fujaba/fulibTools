@@ -9,6 +9,7 @@ import org.fulib.classmodel.Clazz;
 import org.stringtemplate.v4.ST;
 import org.stringtemplate.v4.STGroup;
 import org.stringtemplate.v4.STGroupFile;
+import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,6 +23,11 @@ public class ClassDiagrams
 {
    private static final STGroup TEMPLATE_GROUP = new STGroupFile(
       ClassDiagrams.class.getResource("templates/classDiagram.stg"));
+
+   static
+   {
+      TEMPLATE_GROUP.registerRenderer(String.class, new StringRenderer());
+   }
 
    private double scale = 1;
 
