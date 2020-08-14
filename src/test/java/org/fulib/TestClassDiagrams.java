@@ -1,8 +1,6 @@
 package org.fulib;
 
 import org.apache.commons.io.IOUtils;
-import org.fulib.builder.ClassBuilder;
-import org.fulib.builder.ClassModelBuilder;
 import org.fulib.classmodel.ClassModel;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
@@ -15,7 +13,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.fulib.builder.Type.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -41,45 +38,5 @@ public class TestClassDiagrams
 
          assertThat(Files.exists(diagramPath), is(true));
       }
-   }
-
-   @Test
-   public void test4Readme()
-   {
-      // @formatter:off
-      // start_code_fragment: test4Readme.classmodel
-      ClassModelBuilder mb = Fulib.classModelBuilder("de.uniks.studyright");
-
-      ClassBuilder uni = mb.buildClass("University")
-                           .buildAttribute("name", STRING);
-
-      ClassBuilder student = mb.buildClass("Student")
-                               .buildAttribute("name", STRING)
-                               .buildAttribute("studentId", STRING)
-                               .buildAttribute("matNo", INT);
-
-      ClassBuilder room = mb.buildClass("Room")
-                            .buildAttribute("roomNo", STRING);
-
-      ClassBuilder professor = mb.buildClass("Professor");
-
-      uni.buildAssociation(student, "students", MANY, "uni", ONE);
-      uni.buildAssociation(room, "rooms", MANY, "uni", ONE).setAggregation();
-      room.buildAssociation(student, "students", MANY, "in", ONE);
-      uni.buildAssociation(professor, "profs", MANY, null, 1);
-
-      ClassModel model = mb.getClassModel();
-      // end_code_fragment:
-      // @formatter:on
-
-      // for usage in java doc
-      FulibTools.classDiagrams().dumpPng(model);
-      // is equivalent to
-      FulibTools.classDiagrams().dumpPng(model, "src/main/java/org/fulib/studyright/doc-files/classDiagram.png");
-      // for usage in e.g. readme.md
-      FulibTools.classDiagrams().dumpSVG(model, "doc/images/StudyRightClassDiagram.svg");
-      FulibTools.classDiagrams().dumpPng(model, "doc/images/StudyRightClassDiagram.png");
-
-      FulibTools.classDiagrams().dumpPng(model, "../fulib/doc/images/SimpleClassDiagram.png");
    }
 }
