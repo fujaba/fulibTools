@@ -9,6 +9,7 @@ import org.junit.Test;
 import studyRight.Student;
 import studyRight.StudyRight;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -18,8 +19,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 
 public class TestObjectDiagrams
@@ -102,5 +102,18 @@ public class TestObjectDiagrams
 
       FulibTools.objectDiagrams().dumpSVG("tmp/students.svg", students);
       FulibTools.objectDiagrams().dumpYaml("tmp/students.yaml", students);
+   }
+
+   @Test
+   public void dumpYamlCreatesParentDir()
+   {
+      StudyRight studyRight = new StudyRight().setId("studyRight");
+
+      new File("dumpYaml/studyRight.yaml").delete();
+      new File("dumpYaml").delete();
+
+      FulibTools.objectDiagrams().dumpYaml("dumpYaml/studyRight.yaml", studyRight);
+
+      assertThat(new File("dumpYaml/studyRight.yaml").exists(), equalTo(true));
    }
 }
