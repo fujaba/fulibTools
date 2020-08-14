@@ -2,6 +2,7 @@ package org.fulib;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.fulib.tools.ObjectDiagrams;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 import studyRight.Student;
@@ -50,6 +51,30 @@ public class TestObjectDiagrams
       assertThat(svgText, containsString("exam"));
       assertThat(svgText, containsString("courses"));
       assertThat(svgText, containsString("topic"));
+   }
+
+   @Test
+   public void dumpPngFileName() throws IOException
+   {
+      final ObjectDiagrams diagrams = FulibTools.objectDiagrams();
+
+      final StudyRight studyRight1 = new StudyRight().setId("studyRight1");
+      final String fileName1 = diagrams.dumpPng(studyRight1);
+      assertThat(fileName1, equalTo("tmp/StudyRight.1.png"));
+      assertThat(new File("tmp/StudyRight.1.png").exists(), equalTo(true));
+
+      final String fileName1_ = diagrams.dumpPng(studyRight1);
+      assertThat(fileName1_, equalTo("tmp/StudyRight.1.png"));
+
+      final StudyRight studyRight2 = new StudyRight().setId("studyRight2");
+      final String fileName2 = diagrams.dumpPng(studyRight2);
+      assertThat(fileName2, equalTo("tmp/StudyRight.2.png"));
+      assertThat(new File("tmp/StudyRight.2.png").exists(), equalTo(true));
+
+      Student student = new Student().setName("Alice");
+      final String fileName3 = diagrams.dumpPng(student);
+      assertThat(fileName3, equalTo("tmp/Student.3.png"));
+      assertThat(new File("tmp/Student.3.png").exists(), equalTo(true));
    }
 
    @Test
