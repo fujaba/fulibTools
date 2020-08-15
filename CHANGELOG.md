@@ -33,3 +33,19 @@
 ## Bugfixes
 
 * HTML special characters in attribute values no longer produce incorrectly escaped text. #3
+
+# fulibTools v1.2.1
+
+## General
+
+* Updated to fulib v1.2.1.
+
+## Improvements
+
+* Improved object diagram rendering performance. #14 #18
+* The title of object diagrams is now the package name of the displayed objects' types. #19
+* The `ObjectDiagrams.dumpYaml` method now automatically creates parent directories of the target file. #23 #24
+
+## Bugfixes
+
+* Fixed an exception when attempting to generate class diagrams for models with attributes of generic types. #21 #22
