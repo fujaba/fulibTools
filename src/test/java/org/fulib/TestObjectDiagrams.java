@@ -2,6 +2,8 @@ package org.fulib;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.fulib.builder.ClassModelManager;
+import org.fulib.classmodel.Clazz;
 import org.fulib.tools.ObjectDiagrams;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
@@ -13,6 +15,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
+import static org.fulib.builder.Type.MANY;
+import static org.fulib.builder.Type.STRING;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -163,5 +167,27 @@ public class TestObjectDiagrams
       FulibTools.objectDiagrams().dumpYaml("dumpYaml/studyRight.yaml", studyRight);
 
       assertThat(new File("dumpYaml/studyRight.yaml").exists(), equalTo(true));
+   }
+
+   @Test
+   public void inheritance() throws IOException
+   {
+      ClassModelManager mm = new ClassModelManager();
+      mm.setPackageName("studyRight.inherited").setMainJavaDir("");
+      Clazz student = mm.haveClass("Student");
+      Clazz prof = mm.haveClass("Prof");
+      Clazz human = mm.haveClass("Human");
+      mm.haveAttribute(human, "id", STRING);
+
+      mm.associate(prof, "teaches", MANY, student, "profs", MANY);
+
+      student.setSuperClass(human);
+      prof.setSuperClass(human);
+
+      FulibTools.classDiagrams().dumpSVG(mm.getClassModel(), "./tmp/StudIsHuman.svg");
+
+      // do we have an isA edge?
+      final String svgText = FileUtils.readFileToString(new File("tmp/StudIsHuman.svg"), StandardCharsets.UTF_8);
+      assertThat(svgText, containsString("<!-- Student&#45;&gt;Human -->"));
    }
 }
