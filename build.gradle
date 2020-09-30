@@ -56,22 +56,22 @@ dependencies {
    fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.4.0'
 
    // https://mvnrepository.com/artifact/org.fulib/fulib
-   api group: 'org.fulib', name: 'fulib', version: '1.2.1'
+   api group: 'org.fulib', name: 'fulib', version: '1.3.0'
 
    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
-   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.8'
+   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
 
    // https://mvnrepository.com/artifact/org.antlr/ST4
-   implementation group: 'org.antlr', name: 'ST4', version: '4.3'
+   implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
 
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.16.3'
+   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.17.0'
 
    // https://mvnrepository.com/artifact/org.junit/junit
    testImplementation group: 'junit', name: 'junit', version: '4.13'
 
    // https://mvnrepository.com/artifact/commons-io/commons-io
-   testImplementation group: 'commons-io', name: 'commons-io', version: '2.7'
+   testImplementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
 }
 
 // --------------- Misc. Settings ---------------
