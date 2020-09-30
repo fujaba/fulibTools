@@ -49,3 +49,13 @@
 ## Bugfixes
 
 * Fixed an exception when attempting to generate class diagrams for models with attributes of generic types. #21 #22
+
+# fulibTools v1.3.0
+
+## General
+
+* Updated to fulib v1.3.0
+
+## New Features
+
++ Class Diagrams now include edges for inheritance. #15
