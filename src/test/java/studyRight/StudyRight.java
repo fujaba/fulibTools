@@ -10,17 +10,12 @@ import java.util.Collection;
 
 public class StudyRight
 {
-
-   public static final String PROPERTY_id = "id";
+   public static final String PROPERTY_ID = "id";
+   public static final String PROPERTY_DESCRIPTION = "description";
+   public static final String PROPERTY_STUDENTS = "students";
 
    private String id;
-
-   public static final String PROPERTY_description = "description";
-
    private String description;
-
-   public static final String PROPERTY_students = "students";
-
    private List<Student> students;
 
    protected PropertyChangeSupport listeners;
@@ -39,7 +34,7 @@ public class StudyRight
 
       final String oldValue = this.id;
       this.id = value;
-      this.firePropertyChange(PROPERTY_id, oldValue, value);
+      this.firePropertyChange(PROPERTY_ID, oldValue, value);
       return this;
    }
 
@@ -57,7 +52,7 @@ public class StudyRight
 
       final String oldValue = this.description;
       this.description = value;
-      this.firePropertyChange(PROPERTY_description, oldValue, value);
+      this.firePropertyChange(PROPERTY_DESCRIPTION, oldValue, value);
       return this;
    }
 
@@ -76,7 +71,7 @@ public class StudyRight
       {
          this.students.add(value);
          value.setUni(this);
-         this.firePropertyChange(PROPERTY_students, null, value);
+         this.firePropertyChange(PROPERTY_STUDENTS, null, value);
       }
       return this;
    }
@@ -104,7 +99,7 @@ public class StudyRight
       if (this.students != null && this.students.remove(value))
       {
          value.setUni(null);
-         this.firePropertyChange(PROPERTY_students, value, null);
+         this.firePropertyChange(PROPERTY_STUDENTS, value, null);
       }
       return this;
    }

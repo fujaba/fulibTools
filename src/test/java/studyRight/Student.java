@@ -7,20 +7,15 @@ import java.util.function.Predicate;
 
 public class Student
 {
-
-   public static final String PROPERTY_name = "name";
+   public static final String PROPERTY_NAME = "name";
+   public static final String PROPERTY_PREDICATE = "predicate";
+   public static final String PROPERTY_UNI = "uni";
 
    private String name;
-
-   public static final String PROPERTY_uni = "uni";
-
    private StudyRight uni;
+   private Predicate<?> predicate;
 
    protected PropertyChangeSupport listeners;
-
-   public static final String PROPERTY_predicate = "predicate";
-
-   private Predicate<?> predicate;
 
    public String getName()
    {
@@ -36,7 +31,7 @@ public class Student
 
       final String oldValue = this.name;
       this.name = value;
-      this.firePropertyChange(PROPERTY_name, oldValue, value);
+      this.firePropertyChange(PROPERTY_NAME, oldValue, value);
       return this;
    }
 
@@ -63,7 +58,7 @@ public class Student
       {
          value.withStudents(this);
       }
-      this.firePropertyChange(PROPERTY_uni, oldValue, value);
+      this.firePropertyChange(PROPERTY_UNI, oldValue, value);
       return this;
    }
 
@@ -142,7 +137,7 @@ public class Student
 
       final Predicate<?> oldValue = this.predicate;
       this.predicate = value;
-      this.firePropertyChange(PROPERTY_predicate, oldValue, value);
+      this.firePropertyChange(PROPERTY_PREDICATE, oldValue, value);
       return this;
    }
 }

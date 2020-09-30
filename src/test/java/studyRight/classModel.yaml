@@ -39,6 +39,7 @@
   name: 	id
   propertyStyle: 	Bean
   type: 	String
+  typeSignature: 	String
 
 - studyRight_description: 	Attribute
   clazz: 	studyRight
@@ -47,6 +48,7 @@
   name: 	description
   propertyStyle: 	Bean
   type: 	String
+  typeSignature: 	String
 
 - studyRight_students: 	AssocRole
   aggregation: 	false
@@ -67,6 +69,7 @@
   name: 	name
   propertyStyle: 	Bean
   type: 	String
+  typeSignature: 	String
 
 - student_predicate: 	Attribute
   clazz: 	student
@@ -75,6 +78,7 @@
   name: 	predicate
   propertyStyle: 	Bean
   type: 	"Predicate<?>"
+  typeSignature: 	"Predicate<?>"
 
 - student_uni: 	AssocRole
   aggregation: 	false
