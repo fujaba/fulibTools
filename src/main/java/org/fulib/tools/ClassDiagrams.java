@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Provides various methods for storing class diagrams as files.
@@ -171,13 +172,8 @@ public class ClassDiagrams
       return result;
    }
 
-   private static Set<Clazz> getClassesWithSuperClasses(ClassModel model) {
-      Set<Clazz> result = new HashSet<>();
-      for (Clazz clazz : model.getClasses()) {
-         if (clazz.getSuperClass() != null) {
-            result.add(clazz);
-         }
-      }
-      return result;
+   private static Set<Clazz> getClassesWithSuperClasses(ClassModel model)
+   {
+      return model.getClasses().stream().filter(c -> c.getSuperClass() != null).collect(Collectors.toSet());
    }
 }
