@@ -8,7 +8,7 @@ digraph "$title$" {
 >>
 
 object(object) ::= <<
-$object.id$ [
+"$object.id$" [
     shape=plaintext
     fontsize="10"
     label=<
@@ -22,7 +22,7 @@ $object.id$ [
 
 
 edge(edge) ::= <<
-$edge.source$ -> $edge.target$ [
+"$edge.source$" -> "$edge.target$" [
     arrowhead=none
     fontsize="10"
     headlabel="$edge.sourceLabel$"
