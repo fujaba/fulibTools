@@ -14,7 +14,7 @@ digraph "{classModel.packageName}" \{
 >>
 
 class(class) ::= <<
-{class.name} [
+"{class.name}" [
    shape=plaintext
    label=<
      <table border='0' cellborder='1' cellspacing='0'>
@@ -30,7 +30,7 @@ attribute(attr) ::= <<
 >>
 
 role(role) ::= <<
-{role.other.clazz.name} -> {role.clazz.name} [
+"{role.other.clazz.name}" -> "{role.clazz.name}" [
    arrowhead=none
    taillabel="{role.name}{if(role.toMany)} *{endif}"
    headlabel="{role.other.name}{if(role.other.toMany)} *{endif}"
@@ -38,7 +38,7 @@ role(role) ::= <<
 >>
 
 isA(subClass) ::= <<
-{subClass.name} -> {subClass.superClass.name} [
+"{subClass.name}" -> "{subClass.superClass.name}" [
    arrowhead=onormal
 ];
 >>

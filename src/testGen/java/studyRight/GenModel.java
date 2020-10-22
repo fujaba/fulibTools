@@ -23,6 +23,10 @@ public class GenModel implements ClassModelDecorator
          c.imports(Predicate.class.getCanonicalName());
       });
 
+      final Clazz node = mm.haveClass("Node");
+      mm.haveAttribute(node, "id", Type.STRING);
+      mm.associate(node, "children", Type.MANY, node, "parent", Type.ONE);
+
       mm.associate(studyRight, "students", Type.MANY, student, "uni", Type.ONE);
    }
 }
