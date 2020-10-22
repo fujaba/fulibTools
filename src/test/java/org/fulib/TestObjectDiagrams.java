@@ -7,6 +7,7 @@ import org.fulib.classmodel.Clazz;
 import org.fulib.tools.ObjectDiagrams;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
+import studyRight.Node;
 import studyRight.Student;
 import studyRight.StudyRight;
 
@@ -120,6 +121,18 @@ public class TestObjectDiagrams
       final String svgText = FileUtils.readFileToString(new File("tmp/specialChars.svg"), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("&lt;i&gt;Greatest Ever&lt;/i&gt;"));
+   }
+
+   @Test
+   public void dumpWithDotKeywords() throws IOException
+   {
+      final Node node = new Node().setId("strict");
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/dotKeywords.svg", node);
+      FulibTools.objectDiagrams().dumpPng("tmp/dotKeywords.png", node);
+
+      assertThat(new File("tmp/dotKeywords.png").exists(), equalTo(true));
+      assertThat(new File("tmp/dotKeywords.svg").exists(), equalTo(true));
    }
 
    @Test
