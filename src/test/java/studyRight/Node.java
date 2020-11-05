@@ -9,15 +9,60 @@ import java.util.Objects;
 
 public class Node
 {
-   public static final String PROPERTY_CHILDREN = "children";
-   public static final String PROPERTY_PARENT = "parent";
    public static final String PROPERTY_ID = "id";
+   public static final String PROPERTY_PARENT = "parent";
+   public static final String PROPERTY_CHILDREN = "children";
 
-   private List<Node> children;
+   private String id;
    private Node parent;
+   private List<Node> children;
 
    protected PropertyChangeSupport listeners;
-   private String id;
+
+   public String getId()
+   {
+      return this.id;
+   }
+
+   public Node setId(String value)
+   {
+      if (Objects.equals(value, this.id))
+      {
+         return this;
+      }
+
+      final String oldValue = this.id;
+      this.id = value;
+      this.firePropertyChange(PROPERTY_ID, oldValue, value);
+      return this;
+   }
+
+   public Node getParent()
+   {
+      return this.parent;
+   }
+
+   public Node setParent(Node value)
+   {
+      if (this.parent == value)
+      {
+         return this;
+      }
+
+      final Node oldValue = this.parent;
+      if (this.parent != null)
+      {
+         this.parent = null;
+         oldValue.withoutChildren(this);
+      }
+      this.parent = value;
+      if (value != null)
+      {
+         value.withChildren(this);
+      }
+      this.firePropertyChange(PROPERTY_PARENT, oldValue, value);
+      return this;
+   }
 
    public List<Node> getChildren()
    {
@@ -85,51 +130,6 @@ public class Node
       return this;
    }
 
-   public Node getParent()
-   {
-      return this.parent;
-   }
-
-   public Node setParent(Node value)
-   {
-      if (this.parent == value)
-      {
-         return this;
-      }
-
-      final Node oldValue = this.parent;
-      if (this.parent != null)
-      {
-         this.parent = null;
-         oldValue.withoutChildren(this);
-      }
-      this.parent = value;
-      if (value != null)
-      {
-         value.withChildren(this);
-      }
-      this.firePropertyChange(PROPERTY_PARENT, oldValue, value);
-      return this;
-   }
-
-   public String getId()
-   {
-      return this.id;
-   }
-
-   public Node setId(String value)
-   {
-      if (Objects.equals(value, this.id))
-      {
-         return this;
-      }
-
-      final String oldValue = this.id;
-      this.id = value;
-      this.firePropertyChange(PROPERTY_ID, oldValue, value);
-      return this;
-   }
-
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -180,8 +180,8 @@ public class Node
 
    public void removeYou()
    {
-      this.withoutChildren(new ArrayList<>(this.getChildren()));
       this.setParent(null);
+      this.withoutChildren(new ArrayList<>(this.getChildren()));
    }
 
    @Override

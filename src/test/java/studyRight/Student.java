@@ -12,8 +12,8 @@ public class Student
    public static final String PROPERTY_UNI = "uni";
 
    private String name;
+   private java.util.function.Predicate<?> predicate;
    private StudyRight uni;
-   private Predicate<?> predicate;
 
    protected PropertyChangeSupport listeners;
 
@@ -32,6 +32,24 @@ public class Student
       final String oldValue = this.name;
       this.name = value;
       this.firePropertyChange(PROPERTY_NAME, oldValue, value);
+      return this;
+   }
+
+   public java.util.function.Predicate<?> getPredicate()
+   {
+      return this.predicate;
+   }
+
+   public Student setPredicate(java.util.function.Predicate<?> value)
+   {
+      if (Objects.equals(value, this.predicate))
+      {
+         return this;
+      }
+
+      final java.util.function.Predicate<?> oldValue = this.predicate;
+      this.predicate = value;
+      this.firePropertyChange(PROPERTY_PREDICATE, oldValue, value);
       return this;
    }
 
@@ -121,23 +139,5 @@ public class Student
    public void removeYou()
    {
       this.setUni(null);
-   }
-
-   public Predicate<?> getPredicate()
-   {
-      return this.predicate;
-   }
-
-   public Student setPredicate(Predicate<?> value)
-   {
-      if (Objects.equals(value, this.predicate))
-      {
-         return this;
-      }
-
-      final Predicate<?> oldValue = this.predicate;
-      this.predicate = value;
-      this.firePropertyChange(PROPERTY_PREDICATE, oldValue, value);
-      return this;
    }
 }

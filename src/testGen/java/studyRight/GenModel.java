@@ -3,30 +3,46 @@ package studyRight;
 import org.fulib.builder.ClassModelDecorator;
 import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.Type;
+import org.fulib.builder.reflect.Link;
 import org.fulib.classmodel.Clazz;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 public class GenModel implements ClassModelDecorator
 {
+   class StudyRight
+   {
+      String id;
+      String description;
+
+      @Link("uni")
+      List<Student> students;
+   }
+
+   class Student
+   {
+      String name;
+      Predicate<?> predicate;
+
+      @Link("students")
+      StudyRight uni;
+   }
+
+   class Node
+   {
+      String id;
+
+      @Link("children")
+      Node parent;
+
+      @Link("parent")
+      List<Node> children;
+   }
+
    @Override
    public void decorate(ClassModelManager mm)
    {
-      final Clazz studyRight = mm.haveClass("StudyRight", c -> {
-         c.attribute("id", Type.STRING);
-         c.attribute("description", Type.STRING);
-      });
-
-      final Clazz student = mm.haveClass("Student", c -> {
-         c.attribute("name", Type.STRING);
-         c.attribute("predicate", "Predicate<?>");
-         c.imports(Predicate.class.getCanonicalName());
-      });
-
-      final Clazz node = mm.haveClass("Node");
-      mm.haveAttribute(node, "id", Type.STRING);
-      mm.associate(node, "children", Type.MANY, node, "parent", Type.ONE);
-
-      mm.associate(studyRight, "students", Type.MANY, student, "uni", Type.ONE);
+      mm.haveNestedClasses(GenModel.class);
    }
 }
