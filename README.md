@@ -41,3 +41,7 @@ You can create Object Diagrams using the [`ObjectDiagrams`](https://javadoc.io/d
 
 This feature allows you to keep your documentation up-to-date by automatically copying code fragments between source files.
 Check out the [`CodeFragments` JavaDocs](https://javadoc.io/doc/org.fulib/fulibTools/latest/org/fulib/tools/CodeFragments.html) for an extensive explanation.
+
+## License
+
+[MIT](LICENSE.md)
