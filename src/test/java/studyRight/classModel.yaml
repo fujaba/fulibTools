@@ -1,11 +1,27 @@
 - c: 	ClassModel
-  classes: 	studyRight 	student 	node
+  classes: 	node 	student 	studyRight
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
   mainJavaDir: 	"src/test/java"
   packageName: 	studyRight
   packageSrcFolder: 	"src/test/java/studyRight"
+
+- node: 	Clazz
+  attributes: 	node_id
+  model: 	c
+  modified: 	false
+  name: 	Node
+  propertyStyle: 	Bean
+  roles: 	node_parent 	node_children
+
+- student: 	Clazz
+  attributes: 	student_name 	student_predicate
+  model: 	c
+  modified: 	false
+  name: 	Student
+  propertyStyle: 	Bean
+  roles: 	student_uni
 
 - studyRight: 	Clazz
   attributes: 	studyRight_id 	studyRight_description
@@ -15,30 +31,71 @@
   propertyStyle: 	Bean
   roles: 	studyRight_students
 
-- student: 	Clazz
-  attributes: 	student_name 	student_predicate
-  importList: 	java.util.function.Predicate
-  imports: 	java.util.function.Predicate
-  model: 	c
-  modified: 	false
-  name: 	Student
-  propertyStyle: 	Bean
-  roles: 	student_uni
-
-- node: 	Clazz
-  attributes: 	node_id
-  model: 	c
-  modified: 	false
-  name: 	Node
-  propertyStyle: 	Bean
-  roles: 	node_children 	node_parent
-
 - c1: 	CollectionType
   implClass: 	class java.util.ArrayList
   implTemplate: 	"java.util.ArrayList<%s>"
   itf: 	org.fulib.classmodel.CollectionInterface.List
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
+
+- node_id: 	Attribute
+  clazz: 	node
+  id: 	Node_id
+  modified: 	false
+  name: 	id
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- node_parent: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	node
+  id: 	Node_parent
+  modified: 	false
+  name: 	parent
+  other: 	node_children
+  propertyStyle: 	Bean
+
+- node_children: 	AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	node
+  collectionType: 	c1
+  id: 	Node_children
+  modified: 	false
+  name: 	children
+  other: 	node_parent
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- student_name: 	Attribute
+  clazz: 	student
+  id: 	Student_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
+- student_predicate: 	Attribute
+  clazz: 	student
+  id: 	Student_predicate
+  modified: 	false
+  name: 	predicate
+  propertyStyle: 	Bean
+  type: 	"import(java.util.function.Predicate)<?>"
+  typeSignature: 	"Predicate<?>"
+
+- student_uni: 	AssocRole
+  aggregation: 	false
+  cardinality: 	1
+  clazz: 	student
+  id: 	Student_uni
+  modified: 	false
+  name: 	uni
+  other: 	studyRight_students
+  propertyStyle: 	Bean
 
 - studyRight_id: 	Attribute
   clazz: 	studyRight
@@ -67,69 +124,6 @@
   modified: 	false
   name: 	students
   other: 	student_uni
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
-- student_name: 	Attribute
-  clazz: 	student
-  id: 	Student_name
-  modified: 	false
-  name: 	name
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- student_predicate: 	Attribute
-  clazz: 	student
-  id: 	Student_predicate
-  modified: 	false
-  name: 	predicate
-  propertyStyle: 	Bean
-  type: 	"Predicate<?>"
-  typeSignature: 	"Predicate<?>"
-
-- student_uni: 	AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	student
-  collectionType: 	c1
-  id: 	Student_uni
-  modified: 	false
-  name: 	uni
-  other: 	studyRight_students
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
-- node_id: 	Attribute
-  clazz: 	node
-  id: 	Node_id
-  modified: 	false
-  name: 	id
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
-- node_children: 	AssocRole
-  aggregation: 	false
-  cardinality: 	42
-  clazz: 	node
-  collectionType: 	c1
-  id: 	Node_children
-  modified: 	false
-  name: 	children
-  other: 	node_parent
-  propertyStyle: 	Bean
-  roleType: 	"java.util.ArrayList<%s>"
-
-- node_parent: 	AssocRole
-  aggregation: 	false
-  cardinality: 	1
-  clazz: 	node
-  collectionType: 	c1
-  id: 	Node_parent
-  modified: 	false
-  name: 	parent
-  other: 	node_children
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 

@@ -56,7 +56,11 @@ dependencies {
    fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.4.0'
 
    // https://mvnrepository.com/artifact/org.fulib/fulib
-   api group: 'org.fulib', name: 'fulib', version: '1.3.0'
+   def fulib = [ group: 'org.fulib', name: 'fulib', version: '1.4.1' ]
+
+   fulibScenarios fulib
+
+   api fulib
 
    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'

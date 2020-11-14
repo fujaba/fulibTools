@@ -8,8 +8,8 @@ import java.util.function.Predicate;
 public class Student
 {
    public static final String PROPERTY_NAME = "name";
-   public static final String PROPERTY_PREDICATE = "predicate";
    public static final String PROPERTY_UNI = "uni";
+   public static final String PROPERTY_PREDICATE = "predicate";
 
    private String name;
    private StudyRight uni;
@@ -59,6 +59,24 @@ public class Student
          value.withStudents(this);
       }
       this.firePropertyChange(PROPERTY_UNI, oldValue, value);
+      return this;
+   }
+
+   public Predicate<?> getPredicate()
+   {
+      return this.predicate;
+   }
+
+   public Student setPredicate(Predicate<?> value)
+   {
+      if (Objects.equals(value, this.predicate))
+      {
+         return this;
+      }
+
+      final Predicate<?> oldValue = this.predicate;
+      this.predicate = value;
+      this.firePropertyChange(PROPERTY_PREDICATE, oldValue, value);
       return this;
    }
 
@@ -121,23 +139,5 @@ public class Student
    public void removeYou()
    {
       this.setUni(null);
-   }
-
-   public Predicate<?> getPredicate()
-   {
-      return this.predicate;
-   }
-
-   public Student setPredicate(Predicate<?> value)
-   {
-      if (Objects.equals(value, this.predicate))
-      {
-         return this;
-      }
-
-      final Predicate<?> oldValue = this.predicate;
-      this.predicate = value;
-      this.firePropertyChange(PROPERTY_PREDICATE, oldValue, value);
-      return this;
    }
 }
