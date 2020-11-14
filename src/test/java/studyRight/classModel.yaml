@@ -84,8 +84,8 @@
   modified: 	false
   name: 	predicate
   propertyStyle: 	Bean
-  type: 	"java.util.function.Predicate<?>"
-  typeSignature: 	"java.util.function.Predicate<?>"
+  type: 	"import(java.util.function.Predicate)<?>"
+  typeSignature: 	"Predicate<?>"
 
 - student_uni: 	AssocRole
   aggregation: 	false
