@@ -5,13 +5,8 @@
 [![Download](https://api.bintray.com/packages/fujaba/maven/fulibTools/images/download.svg)](https://bintray.com/fujaba/maven/fulibTools/_latestVersion "Download")
 [![javadoc](https://javadoc.io/badge2/org.fulib/fulibTools/javadoc.svg)](https://javadoc.io/doc/org.fulib/fulibTools)
 
-fulibTools provides some additional features like class diagrams and object diagrams to the
-[fulib](https://github.com/fujaba/fulib) code generator.
-These additional features require some large dependencies and as not every user benefits from them,
-we separated them from fulib into fulibTools.
-
-Another big difference is that as of fulib v1.2.0, it is not used as a main or test dependency any more.
-fulibTools however serves as a library mostly for testing and should be used as a test dependency.
+fulibTools is a library for testing that complements the [fulib](https://github.com/fujaba/fulib) code generator.
+It provides features like class and object diagrams as well as a mechanism for automatically updating code snippets in documentation.
 
 ## Installation
 

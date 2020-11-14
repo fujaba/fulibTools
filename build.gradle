@@ -13,9 +13,8 @@ plugins {
 
 group = 'org.fulib'
 version = 'git describe --tags'.execute().text[1..-2] // strip v and \n
-description = '''FulibTools provides some additional features like class diagrams and object diagrams to the Fulib 
-code generator. These additional features require some large dependencies and as not every user benefits from them, 
-we seperated these additional features from Fulib into FulibTools.'''
+description = '''fulibTools is a library for testing that complements the fulib (https://github.com/fujaba/fulib) code generator.
+It provides features like class and object diagrams as well as a mechanism for automatically updating code snippets in documentation.'''
 
 publishInfo {
    organization = 'fujaba'
