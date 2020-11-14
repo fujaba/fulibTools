@@ -33,6 +33,10 @@ publishInfo {
       id = 'eicke123'
       name = 'Christoph Eickhoff'
    }
+   developer {
+      id = 'Clashsoft'
+      name = 'Adrian Kunz'
+   }
 
    license {
       name = 'MIT License'
