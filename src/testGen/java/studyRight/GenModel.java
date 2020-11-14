@@ -2,13 +2,12 @@ package studyRight;
 
 import org.fulib.builder.ClassModelDecorator;
 import org.fulib.builder.ClassModelManager;
-import org.fulib.builder.Type;
 import org.fulib.builder.reflect.Link;
-import org.fulib.classmodel.Clazz;
 
 import java.util.List;
 import java.util.function.Predicate;
 
+@SuppressWarnings("unused")
 public class GenModel implements ClassModelDecorator
 {
    class StudyRight
