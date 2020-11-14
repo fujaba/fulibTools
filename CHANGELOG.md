@@ -59,3 +59,17 @@
 ## New Features
 
 + Class Diagrams now include edges for inheritance. #15
+
+# fulibTools v1.4.0
+
+## General
+
+* Updated to fulib v1.4.1. #29
+
+## Improvements
+
+* Attribute types in class diagrams are now simplified if the original type has `import(...)` syntax or annotations. #29
+
+## Bugfixes
+
+* Fixed an exception when generating diagrams for classes or objects named like Graphviz keywords. #27 #28
