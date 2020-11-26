@@ -301,11 +301,7 @@ public class ObjectDiagrams
 
          for (String prop : creator.getOwnProperties())
          {
-            if (obj instanceof YamlObject && ".id".equals(prop))
-            {
-               continue;
-            }
-            if (obj instanceof YamlObject && "type".equals(prop))
+            if (obj instanceof YamlObject && (".id".equals(prop) || "type".equals(prop)))
             {
                continue;
             }
