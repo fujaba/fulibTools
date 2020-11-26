@@ -299,7 +299,7 @@ public class ObjectDiagrams
          final DiagramObject diagramObject = new DiagramObject(key, userKey, className, attributes);
          objects.add(diagramObject);
 
-         for (String prop : creator.getOwnProperties())
+         for (String prop : creator.getAllProperties())
          {
             if (obj instanceof YamlObject && (".id".equals(prop) || "type".equals(prop)))
             {
