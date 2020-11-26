@@ -266,34 +266,10 @@ public class ObjectDiagrams
             continue;
          }
 
-         String className = obj.getClass().getSimpleName();
+         final String className = this.getClassName(obj);
 
-         if (obj instanceof YamlObject)
-         {
-            final YamlObject yamlObj = (YamlObject) obj;
-            final Object type = yamlObj.getType();
-            if (type != null)
-            {
-               className = type.toString();
-            }
-         }
-
-         // attrs
          final Reflector creator = reflectorMap.getReflector(obj);
-         String userKey = key;
-         Object tmp = creator.getValue(obj, "id");
-         if (tmp != null)
-         {
-            userKey = StrUtil.downFirstChar(tmp.toString());
-         }
-         else
-         {
-            tmp = creator.getValue(obj, "name");
-            if (tmp != null)
-            {
-               userKey = StrUtil.downFirstChar(tmp.toString());
-            }
-         }
+         final String userKey = this.getUserKey(key, obj, creator);
 
          final Map<String, Object> attributes = new LinkedHashMap<>();
          final DiagramObject diagramObject = new DiagramObject(key, userKey, className, attributes);
@@ -310,18 +286,9 @@ public class ObjectDiagrams
 
             if (value == null)
             {
-               try
+               if (this.getPropertyType(obj, prop) == String.class)
                {
-                  final Method method = obj.getClass().getMethod("get" + StrUtil.cap(prop));
-                  final Class<?> fieldType = method.getReturnType();
-                  if (fieldType == String.class)
-                  {
-                     attributes.put(prop, "null");
-                  }
-               }
-               catch (Exception e)
-               {
-                  e.printStackTrace();
+                  attributes.put(prop, "null");
                }
                continue;
             }
@@ -363,6 +330,51 @@ public class ObjectDiagrams
                }
             }
          }
+      }
+   }
+
+   private String getClassName(Object obj)
+   {
+      if (obj instanceof YamlObject)
+      {
+         final YamlObject yamlObj = (YamlObject) obj;
+         final Object type = yamlObj.getType();
+         if (type != null)
+         {
+            return type.toString();
+         }
+      }
+
+      return obj.getClass().getSimpleName();
+   }
+
+   private String getUserKey(String key, Object obj, Reflector reflector)
+   {
+      final Object id = reflector.getValue(obj, "id");
+      if (id != null)
+      {
+         return StrUtil.downFirstChar(id.toString());
+      }
+
+      final Object name = reflector.getValue(obj, "name");
+      if (name != null)
+      {
+         return StrUtil.downFirstChar(name.toString());
+      }
+
+      return key;
+   }
+
+   private Class<?> getPropertyType(Object obj, String property)
+   {
+      try
+      {
+         final Method method = obj.getClass().getMethod("get" + StrUtil.cap(property));
+         return method.getReturnType();
+      }
+      catch (Exception e)
+      {
+         return null;
       }
    }
 
