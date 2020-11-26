@@ -19,9 +19,13 @@ public class GenModel implements ClassModelDecorator
       List<Student> students;
    }
 
-   class Student
+   class Person
    {
       String name;
+   }
+
+   class Student extends Person
+   {
       Predicate<?> predicate;
 
       @Link("students")

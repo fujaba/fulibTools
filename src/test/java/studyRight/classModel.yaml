@@ -1,5 +1,5 @@
 - c: 	ClassModel
-  classes: 	node 	student 	studyRight
+  classes: 	node 	student 	person 	studyRight
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
   defaultRoleType: 	"java.util.ArrayList<%s>"
@@ -16,12 +16,21 @@
   roles: 	node_parent 	node_children
 
 - student: 	Clazz
-  attributes: 	student_name 	student_predicate
+  attributes: 	student_predicate
   model: 	c
   modified: 	false
   name: 	Student
   propertyStyle: 	Bean
   roles: 	student_uni
+  superClass: 	person
+
+- person: 	Clazz
+  attributes: 	person_name
+  model: 	c
+  modified: 	false
+  name: 	Person
+  propertyStyle: 	Bean
+  subClasses: 	student
 
 - studyRight: 	Clazz
   attributes: 	studyRight_id 	studyRight_description
@@ -69,15 +78,6 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- student_name: 	Attribute
-  clazz: 	student
-  id: 	Student_name
-  modified: 	false
-  name: 	name
-  propertyStyle: 	Bean
-  type: 	String
-  typeSignature: 	String
-
 - student_predicate: 	Attribute
   clazz: 	student
   id: 	Student_predicate
@@ -96,6 +96,15 @@
   name: 	uni
   other: 	studyRight_students
   propertyStyle: 	Bean
+
+- person_name: 	Attribute
+  clazz: 	person
+  id: 	Person_name
+  modified: 	false
+  name: 	name
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
 
 - studyRight_id: 	Attribute
   clazz: 	studyRight

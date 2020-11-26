@@ -8,6 +8,7 @@ import org.fulib.tools.ObjectDiagrams;
 import org.fulib.yaml.YamlIdMap;
 import org.junit.Test;
 import studyRight.Node;
+import studyRight.Person;
 import studyRight.Student;
 import studyRight.StudyRight;
 
@@ -73,7 +74,7 @@ public class TestObjectDiagrams
       assertThat(fileName2, equalTo("tmp/StudyRight.2.png"));
       assertThat(new File("tmp/StudyRight.2.png").exists(), equalTo(true));
 
-      Student student = new Student().setName("Alice");
+      Person student = new Student().setName("Alice");
       final String fileName3 = diagrams.dumpPng(student);
       assertThat(fileName3, equalTo("tmp/Student.3.png"));
       assertThat(new File("tmp/Student.3.png").exists(), equalTo(true));
@@ -83,8 +84,8 @@ public class TestObjectDiagrams
    public void dumpSVG() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("studyRight");
-      new Student().setName("Alice").setUni(studyRight);
-      new Student().setName("Bob").setUni(studyRight);
+      new Student().setUni(studyRight).setName("Alice");
+      new Student().setUni(studyRight).setName("Bob");
       Student carli = new Student();
 
       FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
@@ -138,7 +139,7 @@ public class TestObjectDiagrams
    @Test
    public void dumpLambdaExpr() throws IOException
    {
-      Student student = new Student().setName("Alice").setPredicate(x -> true);
+      Person student = new Student().setPredicate(x -> true).setName("Alice");
 
       FulibTools.objectDiagrams().dumpSVG("tmp/lambdaExpr.svg", student);
 
