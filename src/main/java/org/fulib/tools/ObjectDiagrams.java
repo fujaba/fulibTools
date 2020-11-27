@@ -304,22 +304,14 @@ public class ObjectDiagrams
                   }
                }
             }
+            else if (relevantObjects.contains(value))
+            {
+               final String targetKey = idMap.getId(value);
+               this.addEdge(edges, key, targetKey, prop);
+            }
             else
             {
-               final String valueKey = idMap.getId(value);
-
-               if (valueKey != null)
-               {
-                  if (relevantObjects.contains(value))
-                  {
-                     String targetKey = idMap.getId(value);
-                     this.addEdge(edges, key, targetKey, prop);
-                  }
-               }
-               else
-               {
-                  attributes.put(prop, this.renderValue(value));
-               }
+               attributes.put(prop, this.renderValue(value));
             }
          }
       }
