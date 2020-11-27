@@ -295,6 +295,7 @@ public class ObjectDiagrams
 
             if (value instanceof Collection)
             {
+               boolean hasValues = false;
                for (Object elem : (Collection<?>) value)
                {
                   if (relevantObjects.contains(elem))
@@ -302,6 +303,14 @@ public class ObjectDiagrams
                      String targetKey = idMap.getId(elem);
                      this.addEdge(edges, key, targetKey, prop);
                   }
+                  else
+                  {
+                     hasValues = true;
+                  }
+               }
+               if (hasValues)
+               {
+                  attributes.put(prop, value.toString());
                }
             }
             else if (relevantObjects.contains(value))
