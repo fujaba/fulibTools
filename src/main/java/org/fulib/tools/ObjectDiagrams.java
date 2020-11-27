@@ -318,15 +318,7 @@ public class ObjectDiagrams
                }
                else
                {
-                  if (value instanceof String)
-                  {
-                     value = "\"" + ((String) value).replace("\"", "\\\"") + "\"";
-                  }
-                  else if (isLambdaClass(value.getClass()))
-                  {
-                     value = "<lambda expression>";
-                  }
-                  attributes.put(prop, value);
+                  attributes.put(prop, this.renderValue(value));
                }
             }
          }
@@ -376,6 +368,19 @@ public class ObjectDiagrams
       {
          return null;
       }
+   }
+
+   private Object renderValue(Object value)
+   {
+      if (value instanceof String)
+      {
+         return "\"" + ((String) value).replace("\"", "\\\"") + "\"";
+      }
+      else if (isLambdaClass(value.getClass()))
+      {
+         return "<lambda expression>";
+      }
+      return value;
    }
 
    private static boolean isLambdaClass(Class<?> aClass)
