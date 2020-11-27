@@ -73,3 +73,11 @@
 ## Bugfixes
 
 * Fixed an exception when generating diagrams for classes or objects named like Graphviz keywords. #27 #28
+
+# fulibTools v1.4.1
+
+## Bugfixes
+
+* Object diagrams now include properties from super classes. #30
+* Collection attributes now show the collection type in class diagrams. #31
+* Object diagrams now show collection attributes if they contain at least one data value. #31
