@@ -63,8 +63,10 @@ public class TestClassDiagrams
       assertThat(svgText, containsString("students *"));
       assertThat(svgText, containsString("Person"));
       assertThat(svgText, containsString("name :String"));
+      assertThat(svgText, containsString("luckyNumbers :Set&lt;Integer&gt;"));
       assertThat(svgText, containsString("Student"));
       assertThat(svgText, containsString("predicate :Predicate&lt;?&gt;"));
+      assertThat(svgText, containsString("notes :List&lt;String&gt;"));
       assertThat(svgText, containsString("Node"));
       assertThat(svgText, containsString("Node&#45;&gt;Node"));
    }

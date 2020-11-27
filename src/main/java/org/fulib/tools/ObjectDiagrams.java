@@ -295,6 +295,7 @@ public class ObjectDiagrams
 
             if (value instanceof Collection)
             {
+               boolean hasValues = false;
                for (Object elem : (Collection<?>) value)
                {
                   if (relevantObjects.contains(elem))
@@ -302,32 +303,24 @@ public class ObjectDiagrams
                      String targetKey = idMap.getId(elem);
                      this.addEdge(edges, key, targetKey, prop);
                   }
+                  else
+                  {
+                     hasValues = true;
+                  }
                }
+               if (hasValues)
+               {
+                  attributes.put(prop, value.toString());
+               }
+            }
+            else if (relevantObjects.contains(value))
+            {
+               final String targetKey = idMap.getId(value);
+               this.addEdge(edges, key, targetKey, prop);
             }
             else
             {
-               final String valueKey = idMap.getId(value);
-
-               if (valueKey != null)
-               {
-                  if (relevantObjects.contains(value))
-                  {
-                     String targetKey = idMap.getId(value);
-                     this.addEdge(edges, key, targetKey, prop);
-                  }
-               }
-               else
-               {
-                  if (value instanceof String)
-                  {
-                     value = "\"" + ((String) value).replace("\"", "\\\"") + "\"";
-                  }
-                  else if (isLambdaClass(value.getClass()))
-                  {
-                     value = "<lambda expression>";
-                  }
-                  attributes.put(prop, value);
-               }
+               attributes.put(prop, this.renderValue(value));
             }
          }
       }
@@ -376,6 +369,19 @@ public class ObjectDiagrams
       {
          return null;
       }
+   }
+
+   private Object renderValue(Object value)
+   {
+      if (value instanceof String)
+      {
+         return "\"" + ((String) value).replace("\"", "\\\"") + "\"";
+      }
+      else if (isLambdaClass(value.getClass()))
+      {
+         return "<lambda expression>";
+      }
+      return value;
    }
 
    private static boolean isLambdaClass(Class<?> aClass)

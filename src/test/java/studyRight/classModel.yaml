@@ -16,7 +16,7 @@
   roles: 	node_parent 	node_children
 
 - student: 	Clazz
-  attributes: 	student_predicate
+  attributes: 	student_predicate 	student_notes
   model: 	c
   modified: 	false
   name: 	Student
@@ -25,7 +25,7 @@
   superClass: 	person
 
 - person: 	Clazz
-  attributes: 	person_name
+  attributes: 	person_name 	person_luckyNumbers
   model: 	c
   modified: 	false
   name: 	Person
@@ -87,6 +87,16 @@
   type: 	"import(java.util.function.Predicate)<?>"
   typeSignature: 	"Predicate<?>"
 
+- student_notes: 	Attribute
+  clazz: 	student
+  collectionType: 	c1
+  id: 	Student_notes
+  modified: 	false
+  name: 	notes
+  propertyStyle: 	Bean
+  type: 	String
+  typeSignature: 	String
+
 - student_uni: 	AssocRole
   aggregation: 	false
   cardinality: 	1
@@ -105,6 +115,16 @@
   propertyStyle: 	Bean
   type: 	String
   typeSignature: 	String
+
+- person_luckyNumbers: 	Attribute
+  clazz: 	person
+  collectionType: 	c3
+  id: 	Person_luckyNumbers
+  modified: 	false
+  name: 	luckyNumbers
+  propertyStyle: 	Bean
+  type: 	Integer
+  typeSignature: 	Integer
 
 - studyRight_id: 	Attribute
   clazz: 	studyRight
@@ -135,4 +155,11 @@
   other: 	student_uni
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
+
+- c3: 	CollectionType
+  implClass: 	class java.util.LinkedHashSet
+  implTemplate: 	"java.util.LinkedHashSet<%s>"
+  itf: 	org.fulib.classmodel.CollectionInterface.Set
+  qualifiedImplName: 	java.util.LinkedHashSet
+  simpleImplName: 	LinkedHashSet
 

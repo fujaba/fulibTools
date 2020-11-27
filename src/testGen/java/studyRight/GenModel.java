@@ -5,6 +5,7 @@ import org.fulib.builder.ClassModelManager;
 import org.fulib.builder.reflect.Link;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 
 @SuppressWarnings("unused")
@@ -22,6 +23,8 @@ public class GenModel implements ClassModelDecorator
    class Person
    {
       String name;
+
+      Set<Integer> luckyNumbers;
    }
 
    class Student extends Person
@@ -30,6 +33,8 @@ public class GenModel implements ClassModelDecorator
 
       @Link("students")
       StudyRight uni;
+
+      List<String> notes;
    }
 
    class Node

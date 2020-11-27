@@ -150,6 +150,19 @@ public class TestObjectDiagrams
    }
 
    @Test
+   public void dumpCollection() throws IOException
+   {
+      Person student = new Student().withNotes("foo", "bar", "baz").withLuckyNumbers(2, 4, 6);
+
+      FulibTools.objectDiagrams().dumpSVG("tmp/valueCollection.svg", student);
+
+      final String svgText = FileUtils.readFileToString(new File("tmp/valueCollection.svg"), StandardCharsets.UTF_8);
+
+      assertThat(svgText, containsString("notes = [foo, bar, baz]"));
+      assertThat(svgText, containsString("luckyNumbers = [2, 4, 6]"));
+   }
+
+   @Test
    public void dumpYaml() throws IOException
    {
       StudyRight studyRight = new StudyRight().setId("StudyRight");
