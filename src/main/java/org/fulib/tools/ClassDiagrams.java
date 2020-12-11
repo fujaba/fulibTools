@@ -43,7 +43,8 @@ public class ClassDiagrams
    }
 
    /**
-    * @param scale the scale factor for rendering
+    * @param scale
+    *    the scale factor for rendering
     *
     * @since 1.2
     */
@@ -136,7 +137,7 @@ public class ClassDiagrams
       classDiagram.add("classModel", model);
       classDiagram.add("roles", getRolesWithoutOthers(model));
       classDiagram.add("subClasses", getClassesWithSuperClasses(model));
-         final String dotString = classDiagram.render();
+      final String dotString = classDiagram.render();
 
       try
       {
@@ -146,7 +147,8 @@ public class ClassDiagrams
       }
       catch (GraphvizException graphvizException)
       {
-         throw new RuntimeException("Graphviz rendering failed for dot string from class model:\n" + dotString, graphvizException);
+         throw new RuntimeException("Graphviz rendering failed for dot string from class model:\n" + dotString,
+                                    graphvizException);
       }
       catch (IOException e)
       {
