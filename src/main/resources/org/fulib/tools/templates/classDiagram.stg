@@ -1,10 +1,10 @@
 delimiters "{", "}"
 
-classDiagram(classModel, roles, subClasses) ::= <<
+classDiagram(classModel, classes, roles, subClasses) ::= <<
 digraph "{classModel.packageName}" \{
    rankdir=BT
 
-   {classModel.classes:class(); separator="\n\n"}
+   {classes:class(); separator="\n\n"}
 
    {roles:role(); separator="\n\n"}
 
