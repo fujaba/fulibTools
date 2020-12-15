@@ -13,7 +13,9 @@ import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.HashSet;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,6 +32,11 @@ public class ClassDiagrams
       TEMPLATE_GROUP.registerRenderer(String.class, new StringRenderer());
    }
 
+   private static final Comparator<AssocRole> ASSOC_ROLE_COMPARATOR = Comparator.nullsFirst(
+      Comparator.comparing(AssocRole::getName));
+
+   private static final Comparator<Clazz> CLAZZ_COMPARATOR = Comparator.comparing(Clazz::getName);
+
    private double scale = 1;
 
    /**
@@ -43,7 +50,8 @@ public class ClassDiagrams
    }
 
    /**
-    * @param scale the scale factor for rendering
+    * @param scale
+    *    the scale factor for rendering
     *
     * @since 1.2
     */
@@ -132,11 +140,13 @@ public class ClassDiagrams
     */
    public String dump(ClassModel model, String diagramFileName, Format format)
    {
+      final List<Clazz> sortedClasses = getSortedClasses(model);
       final ST classDiagram = TEMPLATE_GROUP.getInstanceOf("classDiagram");
       classDiagram.add("classModel", model);
-      classDiagram.add("roles", getRolesWithoutOthers(model));
-      classDiagram.add("subClasses", getClassesWithSuperClasses(model));
-         final String dotString = classDiagram.render();
+      classDiagram.add("classes", sortedClasses);
+      classDiagram.add("roles", getRolesWithoutOthers(sortedClasses));
+      classDiagram.add("subClasses", getClassesWithSuperClasses(sortedClasses));
+      final String dotString = classDiagram.render();
 
       try
       {
@@ -146,7 +156,8 @@ public class ClassDiagrams
       }
       catch (GraphvizException graphvizException)
       {
-         throw new RuntimeException("Graphviz rendering failed for dot string from class model:\n" + dotString, graphvizException);
+         throw new RuntimeException("Graphviz rendering failed for dot string from class model:\n" + dotString,
+                                    graphvizException);
       }
       catch (IOException e)
       {
@@ -156,24 +167,25 @@ public class ClassDiagrams
       return null;
    }
 
-   private static Set<AssocRole> getRolesWithoutOthers(ClassModel model)
+   private static List<Clazz> getSortedClasses(ClassModel model)
    {
-      final Set<AssocRole> result = new HashSet<>();
-      for (final Clazz clazz : model.getClasses())
-      {
-         for (final AssocRole role : clazz.getRoles())
+      return model.getClasses().stream().sorted(CLAZZ_COMPARATOR).collect(Collectors.toList());
+   }
+
+   private static Set<AssocRole> getRolesWithoutOthers(List<Clazz> classes)
+   {
+      final Set<AssocRole> result = new LinkedHashSet<>();
+      classes.stream().map(Clazz::getRoles).flatMap(List::stream).sorted(ASSOC_ROLE_COMPARATOR).forEach(role -> {
+         if (!result.contains(role.getOther()))
          {
-            if (!result.contains(role.getOther()))
-            {
-               result.add(role);
-            }
+            result.add(role);
          }
-      }
+      });
       return result;
    }
 
-   private static Set<Clazz> getClassesWithSuperClasses(ClassModel model)
+   private static List<Clazz> getClassesWithSuperClasses(List<Clazz> classes)
    {
-      return model.getClasses().stream().filter(c -> c.getSuperClass() != null).collect(Collectors.toSet());
+      return classes.stream().filter(c -> c.getSuperClass() != null).collect(Collectors.toList());
    }
 }
