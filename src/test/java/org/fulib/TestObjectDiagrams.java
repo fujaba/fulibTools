@@ -23,16 +23,18 @@ public class TestObjectDiagrams
    @Test
    public void yamlObjects() throws IOException
    {
+      final String fileName = "tmp/objectDiagrams/yamlObjects.svg";
+
       try (final InputStream input = getClass().getResourceAsStream("initStudentsSubscribeToModeling.yaml"))
       {
          final String yamlString = IOUtils.toString(input, StandardCharsets.UTF_8);
          final YamlIdMap idMap = new YamlIdMap();
          final Object root = idMap.decode(yamlString);
 
-         FulibTools.objectDiagrams().dumpSVG("tmp/yamlObjects.svg", root);
+         FulibTools.objectDiagrams().dumpSVG(fileName, root);
       }
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/yamlObjects.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("Alice :UniStudent"));
       assertThat(svgText, containsString("studentId = &quot;m4242&quot;"));
@@ -60,20 +62,20 @@ public class TestObjectDiagrams
       final StudyRight studyRight1 = new StudyRight().setId("studyRight1");
       final String fileName1 = diagrams.dumpPng(studyRight1);
       assertThat(fileName1, equalTo("tmp/StudyRight.1.png"));
-      assertThat(new File("tmp/StudyRight.1.png").exists(), equalTo(true));
+      assertThat(new File(fileName1).exists(), equalTo(true));
 
-      final String fileName1_ = diagrams.dumpPng(studyRight1);
-      assertThat(fileName1_, equalTo("tmp/StudyRight.1.png"));
+      final String fileName1Again = diagrams.dumpPng(studyRight1);
+      assertThat(fileName1Again, equalTo("tmp/StudyRight.1.png"));
 
       final StudyRight studyRight2 = new StudyRight().setId("studyRight2");
       final String fileName2 = diagrams.dumpPng(studyRight2);
       assertThat(fileName2, equalTo("tmp/StudyRight.2.png"));
-      assertThat(new File("tmp/StudyRight.2.png").exists(), equalTo(true));
+      assertThat(new File(fileName2).exists(), equalTo(true));
 
       Person student = new Student().setName("Alice");
       final String fileName3 = diagrams.dumpPng(student);
       assertThat(fileName3, equalTo("tmp/Student.3.png"));
-      assertThat(new File("tmp/Student.3.png").exists(), equalTo(true));
+      assertThat(new File(fileName3).exists(), equalTo(true));
    }
 
    @Test
@@ -84,9 +86,10 @@ public class TestObjectDiagrams
       new Student().setUni(studyRight).setName("Bob");
       Student carli = new Student();
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/studyRight.svg", studyRight, carli);
+      final String fileName = "tmp/objectDiagrams/dumpSVG.svg";
+      FulibTools.objectDiagrams().dumpSVG(fileName, studyRight, carli);
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/studyRight.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("studyRight :StudyRight"));
       assertThat(svgText, containsString("id = &quot;studyRight&quot;"));
@@ -108,14 +111,16 @@ public class TestObjectDiagrams
    @Test
    public void dumpWithSpecialChars() throws IOException
    {
+      final String prefix = "tmp/objectDiagrams/dumpWithSpecialChars/studyRight";
+
       StudyRight studyRight = new StudyRight().setId("studyRight").setDescription("<i>Greatest Ever</i>");
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/specialChars.svg", studyRight);
-      FulibTools.objectDiagrams().dumpPng("tmp/specialChars.png", studyRight);
+      FulibTools.objectDiagrams().dumpSVG(prefix + ".svg", studyRight);
+      FulibTools.objectDiagrams().dumpPng(prefix + ".png", studyRight);
 
-      assertThat(new File("tmp/specialChars.png").exists(), equalTo(true));
+      assertThat(new File(prefix + ".png").exists(), equalTo(true));
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/specialChars.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(prefix + ".svg"), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("&lt;i&gt;Greatest Ever&lt;/i&gt;"));
    }
@@ -123,13 +128,15 @@ public class TestObjectDiagrams
    @Test
    public void dumpWithDotKeywords() throws IOException
    {
+      final String prefix = "tmp/objectDiagrams/dumpWithDotKeywords/node";
+
       final Node node = new Node().setId("strict");
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/dotKeywords.svg", node);
-      FulibTools.objectDiagrams().dumpPng("tmp/dotKeywords.png", node);
+      FulibTools.objectDiagrams().dumpSVG(prefix + ".svg", node);
+      FulibTools.objectDiagrams().dumpPng(prefix + ".png", node);
 
-      assertThat(new File("tmp/dotKeywords.png").exists(), equalTo(true));
-      assertThat(new File("tmp/dotKeywords.svg").exists(), equalTo(true));
+      assertThat(new File(prefix + ".png").exists(), equalTo(true));
+      assertThat(new File(prefix + ".svg").exists(), equalTo(true));
    }
 
    @Test
@@ -137,9 +144,10 @@ public class TestObjectDiagrams
    {
       Person student = new Student().setPredicate(x -> true).setName("Alice");
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/lambdaExpr.svg", student);
+      final String fileName = "tmp/objectDiagrams/dumpLambdaExpr.svg";
+      FulibTools.objectDiagrams().dumpSVG(fileName, student);
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/lambdaExpr.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("&lt;lambda expression&gt;"));
       assertThat(svgText, not(containsString("$$Lambda$")));
@@ -150,9 +158,10 @@ public class TestObjectDiagrams
    {
       Person student = new Student().withNotes("foo", "bar", "baz").withLuckyNumbers(2, 4, 6);
 
-      FulibTools.objectDiagrams().dumpSVG("tmp/valueCollection.svg", student);
+      final String fileName = "tmp/objectDiagrams/dumpCollection.svg";
+      FulibTools.objectDiagrams().dumpSVG(fileName, student);
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/valueCollection.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       assertThat(svgText, containsString("notes = [foo, bar, baz]"));
       assertThat(svgText, containsString("luckyNumbers = [2, 4, 6]"));
@@ -163,11 +172,10 @@ public class TestObjectDiagrams
    {
       StudyRight studyRight = new StudyRight().setId("StudyRight");
 
-      FulibTools.objectDiagrams().dumpYaml("tmp/studyRight.yaml", studyRight);
+      final String fileName = "tmp/objectDiagrams/dumpYaml.yaml";
+      FulibTools.objectDiagrams().dumpYaml(fileName, studyRight);
 
-      assertThat(new File("tmp/studyRight.yaml").exists(), equalTo(true));
-
-      final String yaml = FileUtils.readFileToString(new File("tmp/studyRight.yaml"), StandardCharsets.UTF_8);
+      final String yaml = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       // language=YAML
       assertThat(yaml, equalTo("- studyRight: \tStudyRight\n" + "  id: \tStudyRight\n\n"));
@@ -177,18 +185,5 @@ public class TestObjectDiagrams
 
       assertThat(decoded, instanceOf(StudyRight.class));
       assertThat(((StudyRight) decoded).getId(), equalTo("StudyRight"));
-   }
-
-   @Test
-   public void dumpYamlCreatesParentDir()
-   {
-      StudyRight studyRight = new StudyRight().setId("studyRight");
-
-      new File("dumpYaml/studyRight.yaml").delete();
-      new File("dumpYaml").delete();
-
-      FulibTools.objectDiagrams().dumpYaml("dumpYaml/studyRight.yaml", studyRight);
-
-      assertThat(new File("dumpYaml/studyRight.yaml").exists(), equalTo(true));
    }
 }

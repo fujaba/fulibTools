@@ -45,17 +45,19 @@ public class TestClassDiagrams
    @Test
    public void dumpPngWithFileName()
    {
-      FulibTools.classDiagrams().dumpPng(model, "tmp/classModel.png");
+      final String fileName = "tmp/classDiagrams/classModel.png";
+      FulibTools.classDiagrams().dumpPng(model, fileName);
 
-      assertThat(new File("tmp/classModel.png").exists(), equalTo(true));
+      assertThat(new File(fileName).exists(), equalTo(true));
    }
 
    @Test
    public void dumpSVG() throws IOException
    {
-      FulibTools.classDiagrams().dumpSVG(model, "tmp/classModel.svg");
+      final String fileName = "tmp/classDiagrams/classModel.svg";
+      FulibTools.classDiagrams().dumpSVG(model, fileName);
 
-      final String svgText = FileUtils.readFileToString(new File("tmp/classModel.svg"), StandardCharsets.UTF_8);
+      final String svgText = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
       assertThat(svgText, containsString("StudyRight"));
       assertThat(svgText, containsString("id :String"));
       assertThat(svgText, containsString("description :String"));
