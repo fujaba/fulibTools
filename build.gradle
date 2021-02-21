@@ -1,14 +1,14 @@
 plugins {
    id 'java-library'
    id 'maven-publish'
-   // https://plugins.gradle.org/plugin/com.jfrog.bintray
-   id 'com.jfrog.bintray' version '1.8.5'
-   // https://plugins.gradle.org/plugin/de.clashsoft.simple-publish
-   id 'de.clashsoft.simple-publish' version '0.6.0'
    // https://plugins.gradle.org/plugin/com.palantir.revapi
    id 'com.palantir.revapi' version '1.4.3'
    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
    id 'org.fulib.fulibGradle' version '0.4.0'
+   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
+   id 'com.bmuschko.nexus' version '2.3.1'
+   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
+   id 'io.codearte.nexus-staging' version '0.22.0'
 }
 
 group = 'org.fulib'
@@ -16,31 +16,42 @@ version = 'git describe --tags'.execute().text[1..-2] // strip v and \n
 description = '''fulibTools is a library for testing that complements the fulib (https://github.com/fujaba/fulib) code generator.
 It provides features like class and object diagrams as well as a mechanism for automatically updating code snippets in documentation.'''
 
-publishInfo {
-   organization = 'fujaba'
-   githubRepo = 'fujaba/fulibTools'
-   labels = [ 'fulib', 'code-generator', 'tools' ]
+modifyPom {
+   project {
+      name = project.name
+      description = project.description
+      url = 'https://github.com/fujaba/fulibTools'
+      inceptionYear = '2018'
 
-   developer {
-      id = 'zuendorf'
-      name = 'Albert Zuendorf'
-   }
-   developer {
-      id = 'digitalhoax'
-      name = 'Tobias George'
-   }
-   developer {
-      id = 'eicke123'
-      name = 'Christoph Eickhoff'
-   }
-   developer {
-      id = 'Clashsoft'
-      name = 'Adrian Kunz'
-   }
+      scm {
+         url = 'https://github.com/fujaba/fulibTools'
+      }
 
-   license {
-      name = 'MIT License'
-      url = 'http://www.opensource.org/licenses/mit-license.php'
+      licenses {
+         license {
+            name = 'MIT License'
+            url = 'http://www.opensource.org/licenses/mit-license.php'
+         }
+      }
+
+      developers {
+         developer {
+            id = 'zuendorf'
+            name = 'Albert Zuendorf'
+         }
+         developer {
+            id = 'digitalhoax'
+            name = 'Tobias George'
+         }
+         developer {
+            id = 'eicke123'
+            name = 'Christoph Eickhoff'
+         }
+         developer {
+            id = 'Clashsoft'
+            name = 'Adrian Kunz'
+         }
+      }
    }
 }
 
