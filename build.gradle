@@ -67,10 +67,10 @@ repositories {
 
 dependencies {
    // https://mvnrepository.com/artifact/org.fulib/fulibScenarios
-   fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.4.0'
+   fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.6.2'
 
    // https://mvnrepository.com/artifact/org.fulib/fulib
-   def fulib = [ group: 'org.fulib', name: 'fulib', version: '1.4.1' ]
+   def fulib = [ group: 'org.fulib', name: 'fulib', version: '1.5.1' ]
 
    fulibScenarios fulib
 
@@ -83,7 +83,7 @@ dependencies {
    implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
 
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.17.0'
+   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.0'
 
    // https://mvnrepository.com/artifact/org.junit/junit
    testImplementation group: 'junit', name: 'junit', version: '4.13'
