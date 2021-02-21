@@ -1,4 +1,4 @@
-- c: 	ClassModel
+- c: 	org.fulib.classmodel.ClassModel
   classes: 	node 	student 	person 	studyRight
   defaultCollectionType: 	c1
   defaultPropertyStyle: 	Bean
@@ -7,7 +7,7 @@
   packageName: 	studyRight
   packageSrcFolder: 	"src/test/java/studyRight"
 
-- node: 	Clazz
+- node: 	org.fulib.classmodel.Clazz
   attributes: 	node_id
   model: 	c
   modified: 	false
@@ -15,7 +15,7 @@
   propertyStyle: 	Bean
   roles: 	node_parent 	node_children
 
-- student: 	Clazz
+- student: 	org.fulib.classmodel.Clazz
   attributes: 	student_predicate 	student_notes
   model: 	c
   modified: 	false
@@ -24,7 +24,7 @@
   roles: 	student_uni
   superClass: 	person
 
-- person: 	Clazz
+- person: 	org.fulib.classmodel.Clazz
   attributes: 	person_name 	person_luckyNumbers
   model: 	c
   modified: 	false
@@ -32,7 +32,7 @@
   propertyStyle: 	Bean
   subClasses: 	student
 
-- studyRight: 	Clazz
+- studyRight: 	org.fulib.classmodel.Clazz
   attributes: 	studyRight_id 	studyRight_description
   model: 	c
   modified: 	false
@@ -40,14 +40,14 @@
   propertyStyle: 	Bean
   roles: 	studyRight_students
 
-- c1: 	CollectionType
+- c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
   implTemplate: 	"java.util.ArrayList<%s>"
   itf: 	org.fulib.classmodel.CollectionInterface.List
   qualifiedImplName: 	java.util.ArrayList
   simpleImplName: 	ArrayList
 
-- node_id: 	Attribute
+- node_id: 	org.fulib.classmodel.Attribute
   clazz: 	node
   id: 	Node_id
   modified: 	false
@@ -56,7 +56,7 @@
   type: 	String
   typeSignature: 	String
 
-- node_parent: 	AssocRole
+- node_parent: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
   clazz: 	node
@@ -66,7 +66,7 @@
   other: 	node_children
   propertyStyle: 	Bean
 
-- node_children: 	AssocRole
+- node_children: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	node
@@ -78,7 +78,7 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- student_predicate: 	Attribute
+- student_predicate: 	org.fulib.classmodel.Attribute
   clazz: 	student
   id: 	Student_predicate
   modified: 	false
@@ -87,7 +87,7 @@
   type: 	"import(java.util.function.Predicate)<?>"
   typeSignature: 	"Predicate<?>"
 
-- student_notes: 	Attribute
+- student_notes: 	org.fulib.classmodel.Attribute
   clazz: 	student
   collectionType: 	c1
   id: 	Student_notes
@@ -97,7 +97,7 @@
   type: 	String
   typeSignature: 	String
 
-- student_uni: 	AssocRole
+- student_uni: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	1
   clazz: 	student
@@ -107,7 +107,7 @@
   other: 	studyRight_students
   propertyStyle: 	Bean
 
-- person_name: 	Attribute
+- person_name: 	org.fulib.classmodel.Attribute
   clazz: 	person
   id: 	Person_name
   modified: 	false
@@ -116,7 +116,7 @@
   type: 	String
   typeSignature: 	String
 
-- person_luckyNumbers: 	Attribute
+- person_luckyNumbers: 	org.fulib.classmodel.Attribute
   clazz: 	person
   collectionType: 	c3
   id: 	Person_luckyNumbers
@@ -126,7 +126,7 @@
   type: 	Integer
   typeSignature: 	Integer
 
-- studyRight_id: 	Attribute
+- studyRight_id: 	org.fulib.classmodel.Attribute
   clazz: 	studyRight
   id: 	StudyRight_id
   modified: 	false
@@ -135,7 +135,7 @@
   type: 	String
   typeSignature: 	String
 
-- studyRight_description: 	Attribute
+- studyRight_description: 	org.fulib.classmodel.Attribute
   clazz: 	studyRight
   id: 	StudyRight_description
   modified: 	false
@@ -144,7 +144,7 @@
   type: 	String
   typeSignature: 	String
 
-- studyRight_students: 	AssocRole
+- studyRight_students: 	org.fulib.classmodel.AssocRole
   aggregation: 	false
   cardinality: 	42
   clazz: 	studyRight
@@ -156,7 +156,7 @@
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
-- c3: 	CollectionType
+- c3: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.LinkedHashSet
   implTemplate: 	"java.util.LinkedHashSet<%s>"
   itf: 	org.fulib.classmodel.CollectionInterface.Set
