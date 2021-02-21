@@ -23,7 +23,7 @@ dependencies {
    // ...
    
    // https://mvnrepository.com/artifact/org.fulib/fulibTools
-   testImplementation group: 'org.fulib', name: 'fulibTools', version: '1.4.1'
+   testImplementation group: 'org.fulib', name: 'fulibTools', version: '1.5.0'
 }
 ```
 

@@ -81,3 +81,13 @@
 * Object diagrams now include properties from super classes. #30
 * Collection attributes now show the collection type in class diagrams. #31
 * Object diagrams now show collection attributes if they contain at least one data value. #31
+
+# fulibTools v1.5.0
+
+## General
+
+* Updated to fulib v1.5.1.
+
+## Improvements
+
+* Class and object diagrams are now generated deterministically. #32
