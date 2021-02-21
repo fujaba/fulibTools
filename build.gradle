@@ -2,9 +2,9 @@ plugins {
    id 'java-library'
    id 'maven-publish'
    // https://plugins.gradle.org/plugin/com.palantir.revapi
-   id 'com.palantir.revapi' version '1.4.3'
+   id 'com.palantir.revapi' version '1.4.4'
    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
-   id 'org.fulib.fulibGradle' version '0.4.0'
+   id 'org.fulib.fulibGradle' version '0.5.0'
    // https://plugins.gradle.org/plugin/com.bmuschko.nexus
    id 'com.bmuschko.nexus' version '2.3.1'
    // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
