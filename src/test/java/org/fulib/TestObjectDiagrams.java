@@ -178,7 +178,7 @@ public class TestObjectDiagrams
       final String yaml = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
 
       // language=YAML
-      assertThat(yaml, equalTo("- studyRight: \tStudyRight\n" + "  id: \tStudyRight\n\n"));
+      assertThat(yaml, equalTo("- studyRight: \tstudyRight.StudyRight\n" + "  id: \tStudyRight\n\n"));
 
       final YamlIdMap idMap = new YamlIdMap(StudyRight.class.getPackage().getName());
       final Object decoded = idMap.decode(yaml);
