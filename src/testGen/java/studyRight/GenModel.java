@@ -18,6 +18,9 @@ public class GenModel implements ClassModelDecorator
 
       @Link("uni")
       List<Student> students;
+
+      @Link
+      List<Person> employees;
    }
 
    class Person

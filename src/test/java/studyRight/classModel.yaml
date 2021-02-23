@@ -30,6 +30,7 @@
   modified: 	false
   name: 	Person
   propertyStyle: 	Bean
+  roles: 	person_StudyRight_employees
   subClasses: 	student
 
 - studyRight: 	org.fulib.classmodel.Clazz
@@ -38,7 +39,7 @@
   modified: 	false
   name: 	StudyRight
   propertyStyle: 	Bean
-  roles: 	studyRight_students
+  roles: 	studyRight_students 	studyRight_employees
 
 - c1: 	org.fulib.classmodel.CollectionType
   implClass: 	class java.util.ArrayList
@@ -126,6 +127,17 @@
   type: 	Integer
   typeSignature: 	Integer
 
+- person_StudyRight_employees: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	0
+  clazz: 	person
+  collectionType: 	c1
+  id: 	Person_StudyRight_employees
+  modified: 	false
+  other: 	studyRight_employees
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
 - studyRight_id: 	org.fulib.classmodel.Attribute
   clazz: 	studyRight
   id: 	StudyRight_id
@@ -153,6 +165,18 @@
   modified: 	false
   name: 	students
   other: 	student_uni
+  propertyStyle: 	Bean
+  roleType: 	"java.util.ArrayList<%s>"
+
+- studyRight_employees: 	org.fulib.classmodel.AssocRole
+  aggregation: 	false
+  cardinality: 	42
+  clazz: 	studyRight
+  collectionType: 	c1
+  id: 	StudyRight_employees
+  modified: 	false
+  name: 	employees
+  other: 	person_StudyRight_employees
   propertyStyle: 	Bean
   roleType: 	"java.util.ArrayList<%s>"
 
