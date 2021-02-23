@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static java.util.Comparator.*;
+
 /**
  * Provides various methods for storing class diagrams as files.
  */
@@ -32,10 +34,10 @@ public class ClassDiagrams
       TEMPLATE_GROUP.registerRenderer(String.class, new StringRenderer());
    }
 
-   private static final Comparator<AssocRole> ASSOC_ROLE_COMPARATOR = Comparator.nullsFirst(
-      Comparator.comparing(AssocRole::getName));
+   private static final Comparator<AssocRole> ASSOC_ROLE_COMPARATOR = comparing(AssocRole::getName,
+                                                                                nullsFirst(naturalOrder()));
 
-   private static final Comparator<Clazz> CLAZZ_COMPARATOR = Comparator.comparing(Clazz::getName);
+   private static final Comparator<Clazz> CLAZZ_COMPARATOR = comparing(Clazz::getName);
 
    private double scale = 1;
 
