@@ -13,12 +13,14 @@ public class StudyRight
    public static final String PROPERTY_ID = "id";
    public static final String PROPERTY_DESCRIPTION = "description";
    public static final String PROPERTY_STUDENTS = "students";
+   public static final String PROPERTY_EMPLOYEES = "employees";
 
    private String id;
    private String description;
    private List<Student> students;
 
    protected PropertyChangeSupport listeners;
+   private List<Person> employees;
 
    public String getId()
    {
@@ -122,6 +124,70 @@ public class StudyRight
       return this;
    }
 
+   public List<Person> getEmployees()
+   {
+      return this.employees != null ? Collections.unmodifiableList(this.employees) : Collections.emptyList();
+   }
+
+   public StudyRight withEmployees(Person value)
+   {
+      if (this.employees == null)
+      {
+         this.employees = new ArrayList<>();
+      }
+      if (!this.employees.contains(value))
+      {
+         this.employees.add(value);
+         this.firePropertyChange(PROPERTY_EMPLOYEES, null, value);
+      }
+      return this;
+   }
+
+   public StudyRight withEmployees(Person... value)
+   {
+      for (final Person item : value)
+      {
+         this.withEmployees(item);
+      }
+      return this;
+   }
+
+   public StudyRight withEmployees(Collection<? extends Person> value)
+   {
+      for (final Person item : value)
+      {
+         this.withEmployees(item);
+      }
+      return this;
+   }
+
+   public StudyRight withoutEmployees(Person value)
+   {
+      if (this.employees != null && this.employees.remove(value))
+      {
+         this.firePropertyChange(PROPERTY_EMPLOYEES, value, null);
+      }
+      return this;
+   }
+
+   public StudyRight withoutEmployees(Person... value)
+   {
+      for (final Person item : value)
+      {
+         this.withoutEmployees(item);
+      }
+      return this;
+   }
+
+   public StudyRight withoutEmployees(Collection<? extends Person> value)
+   {
+      for (final Person item : value)
+      {
+         this.withoutEmployees(item);
+      }
+      return this;
+   }
+
    public boolean firePropertyChange(String propertyName, Object oldValue, Object newValue)
    {
       if (this.listeners != null)
@@ -153,5 +219,6 @@ public class StudyRight
    public void removeYou()
    {
       this.withoutStudents(new ArrayList<>(this.getStudents()));
+      this.withoutEmployees(new ArrayList<>(this.getEmployees()));
    }
 }
