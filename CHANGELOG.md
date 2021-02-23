@@ -91,3 +91,9 @@
 ## Improvements
 
 * Class and object diagrams are now generated deterministically. #32
+
+# fulibTools v1.5.1
+
+## Bugfixes
+
+* Fixed a `NullPointerException` when generating class diagrams with unidirectional associations.
