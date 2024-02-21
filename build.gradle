@@ -1,23 +1,35 @@
 plugins {
    id 'java-library'
    id 'maven-publish'
+   id 'signing'
    // https://plugins.gradle.org/plugin/com.palantir.revapi
    id 'com.palantir.revapi' version '1.7.0'
    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
    id 'org.fulib.fulibGradle' version '0.5.0'
-   // https://plugins.gradle.org/plugin/com.bmuschko.nexus
-   id 'com.bmuschko.nexus' version '2.3.1'
-   // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
-   id 'io.codearte.nexus-staging' version '0.30.0'
+   // https://plugins.gradle.org/plugin/io.github.gradle-nexus.publish-plugin
+   id 'io.github.gradle-nexus.publish-plugin' version '1.1.0'
 }
 
 group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
 description = '''fulibTools is a library for testing that complements the fulib (https://github.com/fujaba/fulib) code generator.
 It provides features like class and object diagrams as well as a mechanism for automatically updating code snippets in documentation.'''
+sourceCompatibility = 1.8
 
-modifyPom {
-   project {
+// --------------- Publishing ---------------
+
+// See https://github.com/gradle-nexus/publish-plugin
+
+nexusPublishing.repositories.sonatype()
+
+java {
+   withJavadocJar()
+   withSourcesJar()
+}
+
+publishing.publications.create('mavenJava', MavenPublication) {
+   it.from(components.java)
+   it.pom {
       name = project.name
       description = project.description
       url = 'https://github.com/fujaba/fulibTools'
@@ -55,7 +67,7 @@ modifyPom {
    }
 }
 
-sourceCompatibility = 1.8
+signing.sign publishing.publications.mavenJava
 
 // --------------- Dependencies ---------------
 
@@ -95,6 +107,7 @@ dependencies {
 
 // make the studyRight classModel.yaml available as a resource
 sourceSets.test.resources.srcDir 'src/test/java'
+processTestResources.dependsOn ':generateScenarioSource', ':generateTestScenarioSource'
 
 javadoc {
    failOnError = false
