@@ -15,5 +15,7 @@ jobs:
     steps:
       - name: Checkout sources
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - name: Generate and submit dependency graph
         uses: gradle/actions/dependency-submission@v3
