@@ -2,13 +2,13 @@ plugins {
    id 'java-library'
    id 'maven-publish'
    // https://plugins.gradle.org/plugin/com.palantir.revapi
-   id 'com.palantir.revapi' version '1.4.4'
+   id 'com.palantir.revapi' version '1.7.0'
    // https://plugins.gradle.org/plugin/org.fulib.fulibGradle
    id 'org.fulib.fulibGradle' version '0.5.0'
    // https://plugins.gradle.org/plugin/com.bmuschko.nexus
    id 'com.bmuschko.nexus' version '2.3.1'
    // https://plugins.gradle.org/plugin/io.codearte.nexus-staging
-   id 'io.codearte.nexus-staging' version '0.22.0'
+   id 'io.codearte.nexus-staging' version '0.30.0'
 }
 
 group = 'org.fulib'
@@ -77,19 +77,19 @@ dependencies {
    api fulib
 
    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
-   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.9'
+   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
 
    // https://mvnrepository.com/artifact/org.antlr/ST4
-   implementation group: 'org.antlr', name: 'ST4', version: '4.3.1'
+   implementation group: 'org.antlr', name: 'ST4', version: '4.3.4'
 
    // https://mvnrepository.com/artifact/guru.nidi/graphviz-java
-   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.0'
+   implementation group: 'guru.nidi', name: 'graphviz-java-all-j2v8', version: '0.18.1'
 
-   // https://mvnrepository.com/artifact/org.junit/junit
-   testImplementation group: 'junit', name: 'junit', version: '4.13'
+   // https://mvnrepository.com/artifact/junit/junit
+   testImplementation group: 'junit', name: 'junit', version: '4.13.2'
 
    // https://mvnrepository.com/artifact/commons-io/commons-io
-   testImplementation group: 'commons-io', name: 'commons-io', version: '2.8.0'
+   testImplementation group: 'commons-io', name: 'commons-io', version: '2.15.1'
 }
 
 // --------------- Misc. Settings ---------------
