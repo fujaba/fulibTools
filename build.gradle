@@ -109,7 +109,9 @@ dependencies {
 sourceSets.test.resources.srcDir 'src/test/java'
 processTestResources.dependsOn ':generateScenarioSource', ':generateTestScenarioSource'
 
+compileTestGenJava.dependsOn ':compileJava'
 sourcesJar.dependsOn ':generateScenarioSource'
+generateTestScenarioSource.dependsOn ':jar'
 
 javadoc {
    failOnError = false
