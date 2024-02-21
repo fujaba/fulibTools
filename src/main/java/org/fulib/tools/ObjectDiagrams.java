@@ -387,7 +387,7 @@ public class ObjectDiagrams
    private static boolean isLambdaClass(Class<?> aClass)
    {
       final String className = aClass.getName();
-      final int lambdaIndex = className.indexOf("$$Lambda$");
+      final int lambdaIndex = className.indexOf("$$Lambda");
       return 0 <= lambdaIndex && lambdaIndex <= className.indexOf('/');
    }
 
