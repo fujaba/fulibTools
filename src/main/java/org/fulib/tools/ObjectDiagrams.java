@@ -171,7 +171,7 @@ public class ObjectDiagrams
     * @param fileName the file name
     * @param rootList the list of objects to display
     *
-    * @since 1.7
+    * @since 1.6
     */
    public void dumpToString(String fileName, Object... rootList)
    {
