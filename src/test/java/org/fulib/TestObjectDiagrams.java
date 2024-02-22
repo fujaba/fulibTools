@@ -186,4 +186,23 @@ public class TestObjectDiagrams
       assertThat(decoded, instanceOf(StudyRight.class));
       assertThat(((StudyRight) decoded).getId(), equalTo("StudyRight"));
    }
+
+   @Test
+   public void dumpToString() throws IOException
+   {
+      StudyRight studyRight = new StudyRight().setId("StudyRight");
+      Person alice = new Student().setUni(studyRight).setName("Alice");
+      Person bob = new Student().setUni(studyRight).setName("Bob");
+      Person carli = new Student().setUni(studyRight).setName("Carli");
+
+      final String fileName = "tmp/objectDiagrams/dumpToString.txt";
+      FulibTools.objectDiagrams().dumpToString(fileName, studyRight, alice, bob, carli);
+
+      final String text = FileUtils.readFileToString(new File(fileName), StandardCharsets.UTF_8);
+
+      assertThat(text, equalTo("StudyRight null\n" +
+         "Alice []\n" +
+         "Bob []\n" +
+         "Carli []\n"));
+   }
 }
