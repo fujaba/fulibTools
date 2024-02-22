@@ -424,7 +424,6 @@ public class ObjectDiagrams
 
    private void addEdge(Set<DiagramEdge> edges, String key, String targetKey, String prop)
    {
-      // TODO this is inefficient
       for (DiagramEdge existing : edges)
       {
          if (key.equals(existing.getSource()) && targetKey.equals(existing.getTarget()))
