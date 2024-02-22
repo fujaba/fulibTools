@@ -78,7 +78,7 @@ repositories {
 
 dependencies {
    // https://mvnrepository.com/artifact/org.fulib/fulibScenarios
-   fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.0'
+   fulibScenarios group: 'org.fulib', name: 'fulibScenarios', version: '1.7.1'
 
    // https://mvnrepository.com/artifact/org.fulib/fulib
    def fulib = [ group: 'org.fulib', name: 'fulib', version: '1.6.2' ]
