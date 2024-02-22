@@ -16,6 +16,7 @@ import org.stringtemplate.v4.StringRenderer;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.Writer;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -160,6 +161,36 @@ public class ObjectDiagrams
       }
 
       return this.dump(Format.SVG_STANDALONE, diagramFileName, objectList);
+   }
+
+   /**
+    * Writes a string description of the objects to a file using {@link Object#toString()}.
+    * Each root in the list is written to a separate line.
+    * {@code null} roots are ignored.
+    *
+    * @param fileName the file name
+    * @param rootList the list of objects to display
+    *
+    * @since 1.7
+    */
+   public void dumpToString(String fileName, Object... rootList)
+   {
+      try (final Writer writer = Files.newBufferedWriter(Paths.get(fileName), StandardCharsets.UTF_8))
+      {
+         for (Object obj : rootList)
+         {
+            if (obj == null)
+            {
+               continue;
+            }
+            writer.write(obj.toString());
+            writer.write('\n');
+         }
+      }
+      catch (IOException ex)
+      {
+         ex.printStackTrace();
+      }
    }
 
    /**
