@@ -18,7 +18,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@v3
+        uses: gradle/actions/dependency-submission@v4
         env:
           # https://github.com/gradle/actions/tree/main/dependency-submission#example-of-project-and-configuration-filtering
           # https://github.com/gradle/github-dependency-graph-gradle-plugin?tab=readme-ov-file#controlling-the-scope-of-dependencies-in-the-dependency-graph
