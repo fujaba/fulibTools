@@ -120,7 +120,7 @@ javadoc {
 }
 
 revapi {
-   oldVersion = '1.4.0'
+   oldVersion = '1.6.0'
 }
 
 test {
