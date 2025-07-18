@@ -14,7 +14,9 @@ group = 'org.fulib'
 version = 'git describe --tags'.execute([], rootDir).text[1..-2] // strip v and \n
 description = '''fulibTools is a library for testing that complements the fulib (https://github.com/fujaba/fulib) code generator.
 It provides features like class and object diagrams as well as a mechanism for automatically updating code snippets in documentation.'''
-sourceCompatibility = 1.8
+
+sourceCompatibility = 8
+targetCompatibility = 8
 
 // --------------- Publishing ---------------
 
