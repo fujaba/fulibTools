@@ -90,7 +90,7 @@ dependencies {
    api fulib
 
    // https://mvnrepository.com/artifact/org.apache.commons/commons-text
-   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.13.1'
+   implementation group: 'org.apache.commons', name: 'commons-text', version: '1.14.0'
 
    // https://mvnrepository.com/artifact/org.antlr/ST4
    implementation group: 'org.antlr', name: 'ST4', version: '4.3.4'
